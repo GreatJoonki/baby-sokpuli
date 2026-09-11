@@ -4,14 +4,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import { toPng } from 'html-to-image';
 
 // =======================================================
-// 🔗 서비스 및 후원 계좌 설정
+// 📊 GA4 이벤트 트래킹 헬퍼 함수
+// =======================================================
+function trackEvent(action: string, category: string, label: string) {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', action, {
+      event_category: category,
+      event_label: label,
+    });
+  }
+}
+
+// =======================================================
+// 🔗 UTM이 적용된 서비스 및 후원 링크 설정
 // =======================================================
 const SERVICE_LINKS = {
-  youtube: 'https://www.youtube.com/@Hamin_Hayoon_day',
-  instagramProfile: 'https://www.instagram.com/hamin_hayoon_day/',
-  instagramDM: 'https://ig.me/m/hamin_hayoon_day',
-  coupangDefault: 'https://link.coupang.com',
-  parentHealing: 'https://link.coupang.com',
+  youtube: 'https://www.youtube.com/@Hamin_Hayoon_day?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=youtube',
+  instagramProfile: 'https://www.instagram.com/hamin_hayoon_day/?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=instagram',
+  instagramDM: 'https://ig.me/m/hamin_hayoon_day?utm_source=baby_sokpuli&utm_medium=ai_teaser&utm_campaign=dm_inquiry',
+  // 쿠팡 파트너스 링크에 UTM 파라미터 기본 장착
+  coupangDefault: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=potion_station&utm_campaign=coupang_partners',
+  parentHealing: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=court_waiting&utm_campaign=parent_healing',
 };
 
 const DONATION_CONFIG = {
@@ -21,9 +34,6 @@ const DONATION_CONFIG = {
   colaPrice: '1,500원',
 };
 
-// =======================================================
-// 💌 방문 횟수 기반 맞춤형 환영 훅
-// =======================================================
 function useVisitorTracker() {
   const [visitInfo, setVisitInfo] = useState<{ count: number; message: string }>({
     count: 1,
@@ -63,9 +73,6 @@ function useVisitorTracker() {
   return visitInfo;
 }
 
-// =======================================================
-// 📅 캘린더 정밀 유효성 검증 함수
-// =======================================================
 interface DateValidationResult {
   isValid: boolean;
   errorMsg?: string;
@@ -303,7 +310,7 @@ function getTodayElementGuide() {
   return elements[daySum % elements.length];
 }
 
-// 🌟 [디자인 보정완료] 이미지 배경색과 완벽히 일치하는 포근한 크림톤(bg-[#FAF8F5]) 및 대형 캐릭터 영역
+// 🌟 네모 테두리 느낌을 완전히 없애고 배경에 부드럽게 녹아드는 일러스트 영역
 function BabyAnimalHybridMascot({
   cheonganIndex,
   animalIndex,
@@ -339,27 +346,27 @@ function BabyAnimalHybridMascot({
   };
 
   return (
-    <div className="w-full bg-[#FAF8F5] rounded-2xl border border-amber-100/80 py-3.5 px-3 my-2 flex flex-col items-center justify-center relative shadow-inner overflow-hidden">
+    <div className="w-full bg-[#FAF8F5] rounded-3xl border border-amber-200/50 py-4 px-3 my-2 flex flex-col items-center justify-center relative shadow-inner overflow-hidden">
       
-      {/* 수식어와 종족명을 한 줄에 나란히 배치 */}
-      <div className="bg-white/90 backdrop-blur-xs text-slate-800 text-xs font-black px-4 py-1.5 rounded-full shadow-2xs mb-1.5 border border-slate-200/60 flex items-center space-x-1.5">
+      {/* 수식어와 종족명 한 줄 배치 */}
+      <div className="bg-white/95 backdrop-blur-xs text-slate-800 text-xs font-black px-4 py-1.5 rounded-full shadow-2xs mb-2 border border-slate-200/80 flex items-center space-x-1.5">
         <span className="text-slate-500 font-bold">&ldquo;{animalModifier}&rdquo;</span>
         <span className="text-slate-300">·</span>
         <span className="text-slate-900">{characterTitle}</span>
       </div>
 
-      {/* 캐릭터 크기를 대폭 키워 화면 중심을 확실히 잡도록 배치 */}
-      <div className="relative w-48 h-48 flex items-center justify-center filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.15)] my-1">
+      {/* 모서리 이질감을 없애기 위해 외곽 블렌딩 및 대형 확대 적용 */}
+      <div className="relative w-56 h-56 flex items-center justify-center filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)] my-1">
         {!isError ? (
           <img
             src={imgSrc}
             alt={`${colorLabel} 캐릭터`}
             onError={handleError}
-            className="w-full h-full object-contain rounded-2xl animate-fadeIn scale-110"
+            className="w-full h-full object-contain rounded-3xl animate-fadeIn scale-120 mix-blend-multiply"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-2xl">
-            <span className="text-5xl">🍼</span>
+          <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-3xl">
+            <span className="text-6xl">🍼</span>
           </div>
         )}
       </div>
@@ -956,6 +963,8 @@ export default function Home() {
     setIsAnalyzingChemi(true);
     setCountdown(15);
 
+    trackEvent('click_court_start', 'Engagement', '오행판결소 시작');
+
     clashAnimationRef.current = setInterval(() => {
       const momPower = Math.floor(Math.random() * 55) + 30;
       const dadPower = Math.floor(Math.random() * 55) + 30;
@@ -1023,6 +1032,7 @@ export default function Home() {
     try {
       await navigator.clipboard.writeText(`${DONATION_CONFIG.bankName} ${DONATION_CONFIG.accountNumber}`);
       setCopyFeedback(true);
+      trackEvent('click_copy_account', 'Monetization', '후원 계좌 복사');
       setTimeout(() => setCopyFeedback(false), 2500);
     } catch (err) {
       alert(`${DONATION_CONFIG.bankName} ${DONATION_CONFIG.accountNumber} (${DONATION_CONFIG.holderName}) 계좌를 복사해 주세요!`);
@@ -1032,6 +1042,7 @@ export default function Home() {
   const handleDownloadCard = async () => {
     if (!cardRef.current) return;
     setIsDownloading(true);
+    trackEvent('click_download_card', 'Engagement', '기질카드 이미지 저장');
 
     try {
       const dataUrl = await toPng(cardRef.current, {
@@ -1322,13 +1333,17 @@ export default function Home() {
             <div className="pt-3 pb-1 space-y-3">
               <button
                 type="submit"
+                onClick={() => trackEvent('click_submit_form', 'Engagement', '기질카드 생성하기')}
                 className="w-full py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-black text-sm shadow-md active:scale-[0.98] transition-all flex items-center justify-center break-keep"
               >
                 우리 아이 기질카드 뽑아보기
               </button>
 
               <div 
-                onClick={handleOpenChemiModal}
+                onClick={() => {
+                  trackEvent('click_open_court', 'Engagement', '오행판결소 모달 오픈');
+                  handleOpenChemiModal();
+                }}
                 className="w-full p-4 rounded-2xl bg-gradient-to-r from-indigo-900 via-slate-900 to-indigo-950 border border-indigo-500/30 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep">
@@ -1372,7 +1387,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 🌟 포켓몬 카드 스타일: 배경색 완벽히 통일된 대형 3D 일러스트 영역 */}
+              {/* 캐릭터 일러스트 영역 */}
               <BabyAnimalHybridMascot
                 cheonganIndex={characterCheonganIndex}
                 animalIndex={characterAnimalIndex}
@@ -1446,7 +1461,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 🌟 [오늘의 육아 날씨 예보] 결과 카드 외부 독립 위젯 */}
+            {/* 오늘의 육아 날씨 예보 위젯 */}
             <div className={`w-full p-4 rounded-3xl border bg-gradient-to-br ${babyWeather.bgGradient} text-left shadow-2xs space-y-2 bg-white break-keep`}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
@@ -1473,7 +1488,7 @@ export default function Home() {
               <span>{isDownloading ? '기질 카드 생성 중...' : '우리 아이 기질 카드 저장'}</span>
             </button>
 
-            {/* STEP 3: 솔루션 및 맞춤형 포션 추천 영역 */}
+            {/* 솔루션 및 포션 영역 */}
             <div className="space-y-3 pt-1">
               
               <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-2xs text-left space-y-3">
@@ -1545,6 +1560,7 @@ export default function Home() {
                     href={SERVICE_LINKS.coupangDefault}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent('click_coupang', 'Monetization', '포션 충전소 쿠팡 클릭')}
                     className="text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200 px-3 py-2 rounded-xl active:scale-95 transition-all inline-block shadow-2xs flex-shrink-0 whitespace-nowrap"
                   >
                     최저가 보기
@@ -1558,7 +1574,10 @@ export default function Home() {
 
               {/* AI 심층 육아 보고서 준비 중 티저 */}
               <div 
-                onClick={() => setIsAiReportModalOpen(true)}
+                onClick={() => {
+                  trackEvent('click_ai_teaser', 'Engagement', 'AI 심층보고서 티저 클릭');
+                  setIsAiReportModalOpen(true);
+                }}
                 className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-white p-4 text-left shadow-2xs cursor-pointer hover:scale-[1.01] transition-all space-y-1.5 relative overflow-hidden break-keep"
               >
                 <div className="flex justify-between items-center">
@@ -1592,7 +1611,10 @@ export default function Home() {
                 </p>
 
                 <button
-                  onClick={handleOpenChemiModal}
+                  onClick={() => {
+                    trackEvent('click_open_court', 'Engagement', '오행판결소 모달 오픈');
+                    handleOpenChemiModal();
+                  }}
                   className="w-full mt-3.5 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black shadow-xs active:scale-[0.98] transition-all flex items-center justify-center break-keep"
                 >
                   오늘 당번 가리기 →
@@ -1602,14 +1624,20 @@ export default function Home() {
               {/* 하단 푸터 버튼 */}
               <div className="pt-2 space-y-2.5">
                 <button
-                  onClick={handleAddNewChild}
+                  onClick={() => {
+                    trackEvent('click_add_child', 'Engagement', '다른 아이 추가');
+                    handleAddNewChild();
+                  }}
                   className="w-full py-3.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-all shadow-2xs break-keep"
                 >
                   + 다른 아이 카드도 뽑아보기
                 </button>
 
                 <button
-                  onClick={() => setIsLoungeOpen(true)}
+                  onClick={() => {
+                    trackEvent('click_open_lounge', 'Engagement', '패밀리 라운지 오픈');
+                    setIsLoungeOpen(true);
+                  }}
                   className="w-full py-3 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-all flex items-center justify-center shadow-2xs break-keep"
                 >
                   새로운 기능 제안 및 남매 아빠 후원하기
@@ -1877,7 +1905,7 @@ export default function Home() {
                     <div className={`p-3 rounded-xl border ${chemiResult.dadScore > chemiResult.momScore ? 'border-sky-300 bg-sky-50/60' : 'border-slate-200 bg-slate-50'}`}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="font-bold text-xs text-slate-700 break-keep">👨 아빠의 오늘 오행 파워</span>
-                        <span className="font-mono text-xs text-sky-600">{chemiResult.dadScore}점</span>
+                        <span className="font-mono font-black text-xs text-sky-600">{chemiResult.dadScore}점</span>
                       </div>
                       <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                         <div className="bg-sky-500 h-full rounded-full" style={{ width: `${chemiResult.dadScore}%` }} />
@@ -1989,6 +2017,7 @@ export default function Home() {
                   href={SERVICE_LINKS.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent('click_youtube', 'Outbound', '유튜브 채널 방문')}
                   className="block w-full py-2.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold rounded-xl text-center transition-all break-keep"
                 >
                   하민&하윤이 유튜브 채널 구경가기
@@ -2011,6 +2040,7 @@ export default function Home() {
                   href={SERVICE_LINKS.instagramDM}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackEvent('click_instagram', 'Outbound', '인스타그램 DM 문의')}
                   className="block w-full py-3 bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 text-xs font-bold rounded-xl text-center transition-all active:scale-[0.98] shadow-2xs break-keep"
                 >
                   인스타 DM으로 새로운 기능 제안하기
