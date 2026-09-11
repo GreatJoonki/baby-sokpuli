@@ -22,7 +22,6 @@ const SERVICE_LINKS = {
   youtube: 'https://www.youtube.com/@Hamin_Hayoon_day?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=youtube',
   instagramProfile: 'https://www.instagram.com/hamin_hayoon_day/?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=instagram',
   instagramDM: 'https://ig.me/m/hamin_hayoon_day?utm_source=baby_sokpuli&utm_medium=ai_teaser&utm_campaign=dm_inquiry',
-  // 쿠팡 파트너스 링크에 UTM 파라미터 기본 장착
   coupangDefault: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=potion_station&utm_campaign=coupang_partners',
   parentHealing: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=court_waiting&utm_campaign=parent_healing',
 };
@@ -310,7 +309,7 @@ function getTodayElementGuide() {
   return elements[daySum % elements.length];
 }
 
-// 🌟 네모 테두리 느낌을 완전히 없애고 배경에 부드럽게 녹아드는 일러스트 영역
+// 🌟 [UI 완벽 개선] 캐릭터가 배경에 웅장하게 깔리고, 텍스트 배지가 캐릭터 위에 오버레이되는 구조
 function BabyAnimalHybridMascot({
   cheonganIndex,
   animalIndex,
@@ -346,29 +345,27 @@ function BabyAnimalHybridMascot({
   };
 
   return (
-    <div className="w-full bg-[#FAF8F5] rounded-3xl border border-amber-200/50 py-4 px-3 my-2 flex flex-col items-center justify-center relative shadow-inner overflow-hidden">
+    <div className="w-full bg-[#FAF8F5] rounded-3xl border border-amber-200/60 py-6 px-4 my-2 flex flex-col items-center justify-center relative overflow-hidden shadow-inner min-h-[220px]">
       
-      {/* 수식어와 종족명 한 줄 배치 */}
-      <div className="bg-white/95 backdrop-blur-xs text-slate-800 text-xs font-black px-4 py-1.5 rounded-full shadow-2xs mb-2 border border-slate-200/80 flex items-center space-x-1.5">
-        <span className="text-slate-500 font-bold">&ldquo;{animalModifier}&rdquo;</span>
-        <span className="text-slate-300">·</span>
-        <span className="text-slate-900">{characterTitle}</span>
-      </div>
-
-      {/* 모서리 이질감을 없애기 위해 외곽 블렌딩 및 대형 확대 적용 */}
-      <div className="relative w-56 h-56 flex items-center justify-center filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)] my-1">
+      {/* 🌟 캐릭터 이미지를 배경에 웅장하고 꽉 차게 배치 (절대 가려지지 않음) */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-90 pointer-events-none">
         {!isError ? (
           <img
             src={imgSrc}
             alt={`${colorLabel} 캐릭터`}
             onError={handleError}
-            className="w-full h-full object-contain rounded-3xl animate-fadeIn scale-120 mix-blend-multiply"
+            className="w-56 h-56 object-contain scale-125 filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.15)] mix-blend-multiply"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-3xl">
-            <span className="text-6xl">🍼</span>
-          </div>
+          <div className="text-6xl">🍼</div>
         )}
+      </div>
+
+      {/* 🌟 텍스트 배지를 상단에 세련되게 오버레이하여 가독성 극대화 */}
+      <div className="relative z-10 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-black px-4 py-2 rounded-full shadow-md border border-slate-200/90 flex items-center space-x-1.5">
+        <span className="text-slate-500 font-bold">&ldquo;{animalModifier}&rdquo;</span>
+        <span className="text-slate-300">·</span>
+        <span className="text-slate-900">{characterTitle}</span>
       </div>
     </div>
   );
@@ -746,12 +743,15 @@ export default function Home() {
     const scoreFussy = 30 + ((digitSum * 13) % 55);
     setScores({ curiosity: scoreCuriosity, energy: scoreEnergy, fussy: scoreFussy });
 
+    // 🌟 스탯 점수에 따른 동적 한 줄 요약문 부여 (에너자이저 고정 현상 해소)
     if (scoreCuriosity >= 85) {
       setOneLineSummary('호기심 대폭발! 눈앞의 모든 걸 만져보고 두드려봐야 직성이 풀려요');
     } else if (scoreEnergy >= 85) {
       setOneLineSummary('지치지 않는 에너자이저! 온몸으로 신나게 놀아야 꿀잠을 자요');
-    } else {
+    } else if (scoreCuriosity < 70 && scoreEnergy < 70) {
       setOneLineSummary('다정하고 신중한 관찰자! 세상의 변화를 눈으로 조용히 음미해요');
+    } else {
+      setOneLineSummary('재미있는 호기심과 활력이 조화로운 우리 집 비타민이에요');
     }
 
     let calculatedAgeMode: 'infant' | 'toddler' | 'child' = 'infant';
@@ -1387,7 +1387,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 캐릭터 일러스트 영역 */}
+              {/* 🌟 캐릭터 오버레이 디자인 적용 일러스트 영역 */}
               <BabyAnimalHybridMascot
                 cheonganIndex={characterCheonganIndex}
                 animalIndex={characterAnimalIndex}

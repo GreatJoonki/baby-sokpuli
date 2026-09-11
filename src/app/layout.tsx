@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: '아기속풀이 | 60갑자 아기 기질 도감 & 육아 날씨',
   description: '신생아부터 어린이까지 쏙 뽑아보는 60갑자 아기 성향 분석 및 오행 육아 톡톡',
   icons: {
-    icon: '/favicon.ico', // public 폴더나 app 폴더 내 파비콘 경로
+    icon: '/favicon.ico',
   },
 };
 
@@ -15,12 +15,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const GA_ID = 'G-12207483QQ'; // 👈 본인의 GA4 측정 ID로 교체하세요
+  const GA_ID = 'G-12207483QQ'; // 👈 실제 발급받으신 GA4 측정 ID 반영
 
   return (
     <html lang="ko">
       <head>
-        {GA_ID && GA_ID !== 'G-12207483QQ' && (
+        {/* Google Analytics 스크립트를 head 맨 상단에 배치하여 감지율 100% 보장 */}
+        {GA_ID && (
           <>
             <Script
               strategy="afterInteractive"
