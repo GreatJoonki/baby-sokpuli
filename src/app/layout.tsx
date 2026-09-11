@@ -15,12 +15,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const GA_ID = 'G-12207483QQ'; // 👈 실제 발급받으신 GA4 측정 ID 반영
+  const GA_ID = 'G-12207483QQ'; // 👈 발급받으신 GA4 측정 ID
 
   return (
     <html lang="ko">
       <head>
-        {/* Google Analytics 스크립트를 head 맨 상단에 배치하여 감지율 100% 보장 */}
         {GA_ID && (
           <>
             <Script
