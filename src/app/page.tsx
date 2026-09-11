@@ -298,6 +298,7 @@ function getTodayElementGuide() {
   return elements[daySum % elements.length];
 }
 
+// 🌟 [추가된 2가지 프리미엄 배경 애니메이션 스타일 적용 컴포넌트]
 function BabyAnimalHybridMascot({
   cheonganIndex,
   animalIndex,
@@ -335,9 +336,16 @@ function BabyAnimalHybridMascot({
   return (
     <div className="w-full bg-gradient-to-b from-amber-50/60 to-[#FAF8F5] rounded-3xl border border-amber-200/60 p-6 my-3 flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
       
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
-        <div className="absolute top-2 left-[-20%] text-2xl animate-[cloudDrift_16s_linear_infinite]">☁️</div>
-        <div className="absolute bottom-3 right-[-20%] text-xl animate-[cloudDrift_20s_linear_infinite_reverse]">☁️</div>
+      {/* 🌟 1번 추천 애니메이션: 오행 기운 오라(Aura) 은은한 호흡 효과 */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+        <div className="w-44 h-44 rounded-full bg-amber-300/30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]"></div>
+      </div>
+
+      {/* 🌟 2번 추천 애니메이션: 포근한 별빛/이슬 방울 은빛 파동 (Floating Sparkles) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
+        <div className="absolute top-4 left-6 text-xs animate-[bounce_3s_infinite]">✨</div>
+        <div className="absolute bottom-6 right-8 text-xs animate-[bounce_4s_infinite_1s]">⭐</div>
+        <div className="absolute top-1/2 left-4 text-xs animate-[pulse_2s_infinite]">💫</div>
       </div>
 
       <div className="relative z-10 bg-white/95 backdrop-blur-md text-slate-900 text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xs border border-slate-200/90 flex items-center space-x-1.5 mb-5">
@@ -434,23 +442,23 @@ function TemperamentStatBar({
       </div>
 
       {isOpen && (
-        <div className="mt-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-xs text-left space-y-2.5 animate-fadeIn break-keep text-sm">
+        <div className="mt-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-xs text-left space-y-2.5 animate-fadeIn break-keep text-sm sm:text-base">
           <div>
             <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">
               어떤 성향인가요?
             </span>
-            <p className="font-semibold text-slate-700 leading-relaxed">{description.meaning}</p>
+            <p className="font-semibold text-slate-800 leading-relaxed">{description.meaning}</p>
           </div>
           <div>
             <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">
               점수 분석 ({score}점)
             </span>
-            <p className="font-medium text-slate-600 leading-relaxed">{description.levelInterpretation}</p>
+            <p className="font-medium text-slate-700 leading-relaxed">{description.levelInterpretation}</p>
           </div>
           <div className="pt-2 border-t border-slate-200">
             <p className="font-bold text-slate-900 flex items-start space-x-1.5">
               <span className="flex-shrink-0 text-slate-900">포인트:</span>
-              <span className="text-slate-600 font-medium leading-relaxed">{description.careTip}</span>
+              <span className="text-slate-700 font-medium leading-relaxed">{description.careTip}</span>
             </p>
           </div>
         </div>
@@ -565,6 +573,7 @@ export default function Home() {
     isLeap: boolean;
     isWonderLeap: boolean;
     dDayText: string;
+    currentLocation: string;
   }>({
     badge: '제4도약기 구간',
     mainTitle: '마의 19주 폭풍 구간이에요',
@@ -578,6 +587,7 @@ export default function Home() {
     isLeap: true,
     isWonderLeap: true,
     dDayText: '원더윅스 탈출까지 약 D-10일',
+    currentLocation: '도약기 폭풍 구간',
   });
 
   const [potionData, setPotionData] = useState<PotionDetail & { color: string }>({
@@ -765,6 +775,7 @@ export default function Home() {
     }
 
     let calculatedAgeMode: 'infant' | 'toddler' | 'child' = 'infant';
+    let locationStr = '온화한 평화 구간';
 
     if (totalMonths <= 20) {
       calculatedAgeMode = 'infant';
@@ -779,6 +790,7 @@ export default function Home() {
 
       if (currentLeap) {
         const daysRemaining = Math.max(1, currentLeap.endDay - dueDays);
+        locationStr = `도약기 폭풍 구간 (${currentLeap.name})`;
         setSolutionData({
           badge: `생후 ${totalWeeks}주 · ${currentLeap.name}`,
           mainTitle: `${currentLeap.name} 구간이에요`,
@@ -792,10 +804,12 @@ export default function Home() {
           isLeap: true,
           isWonderLeap: true,
           dDayText: `원더윅스 탈출까지 약 D-${daysRemaining}일`,
+          currentLocation: locationStr,
         });
       } else {
         const nextLeap = WONDER_LEAPS.find((l) => l.startDay > dueDays);
         const dDayNext = nextLeap ? nextLeap.startDay - dueDays : 0;
+        locationStr = '온화한 평화 구간 (성장 안정기)';
         setSolutionData({
           badge: `생후 ${totalWeeks}주 · 온화기 (평화 구간)`,
           mainTitle: `방긋방긋 웃는 평화로운 온화기예요`,
@@ -809,6 +823,7 @@ export default function Home() {
           isLeap: false,
           isWonderLeap: false,
           dDayText: nextLeap ? `다음 도약기까지 약 D-${dDayNext}일` : '원더윅스 안정기',
+          currentLocation: locationStr,
         });
       }
 
@@ -816,6 +831,7 @@ export default function Home() {
       calculatedAgeMode = 'toddler';
       setAgeMode('toddler');
       setCalculatedAgeText(`만 ${manYears}세 (${totalMonths}개월)`);
+      locationStr = '만 2세 자아 뿜뿜기 (원더윅스 안정기)';
 
       setSolutionData({
         badge: `만 ${manYears}세 · 자아 뿜뿜기`,
@@ -831,7 +847,8 @@ export default function Home() {
         highlightTitle: `${jiji.animal}띠 공략법: "안 돼!" 대신 재미있는 선택지 선물하기`,
         isLeap: false,
         isWonderLeap: false,
-        dDayText: '원더윅스 구간 아님 (안정기)',
+        dDayText: '원더윅스 졸업 완료 (성장 안정기)',
+        currentLocation: locationStr,
       });
 
     } else {
@@ -839,6 +856,7 @@ export default function Home() {
       setAgeMode('child');
       const schoolGrade = Math.min(6, Math.max(1, manYears - 6));
       setCalculatedAgeText(`만 ${manYears}세 (초등 ${schoolGrade}학년)`);
+      locationStr = '초등 탐구기 (아동기 성장 단계)';
 
       setSolutionData({
         badge: `초등 ${schoolGrade}학년 · 나만의 탐구기`,
@@ -855,6 +873,7 @@ export default function Home() {
         isLeap: false,
         isWonderLeap: false,
         dDayText: '아동기 성장 단계',
+        currentLocation: locationStr,
       });
     }
 
@@ -935,7 +954,7 @@ export default function Home() {
 
   const handleCloseChemiModal = () => {
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-    if (countdownTimeoutRef.current) clearInterval(countdownTimeoutRef.current);
+    if (countdownTimeoutRef.current) clearTimeout(countdownTimeoutRef.current);
     if (clashAnimationRef.current) clearInterval(clashAnimationRef.current);
     setIsChemiModalOpen(false);
     setCountdown(null);
@@ -1158,11 +1177,6 @@ export default function Home() {
         @keyframes ticker-marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
-        }
-        @keyframes cloudDrift {
-          0% { transform: translateX(-20px); }
-          50% { transform: translateX(20px); }
-          100% { transform: translateX(-20px); }
         }
         .animate-ticker-marquee {
           display: inline-flex;
@@ -1400,21 +1414,21 @@ export default function Home() {
               {/* 랜딩 페이지: 부모-자녀 기질 궁합 분석 배너 */}
               <div 
                 onClick={() => {
-                  trackEvent('click_open_parent_match_landing', 'Engagement', '랜딩 부모궁합 모달 오픈');
+                  trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                   setIsParentMatchModalOpen(true);
-                }}
-                className="w-full p-4.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs cursor-pointer hover:bg-slate-100 transition-all flex items-center justify-between text-slate-900"
-              >
-                <div className="break-keep space-y-0.5">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                    PARENT-CHILD MATCHING
-                  </span>
-                  <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 궁합 분석</div>
-                </div>
-                <span className="text-xs sm:text-sm font-bold bg-slate-900 text-white px-3.5 py-2 rounded-xl flex items-center space-x-1 whitespace-nowrap">
-                  <span>진단 시작</span>
+                 }}
+                className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 border border-indigo-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
+               >
+              <div className="break-keep space-y-0.5">
+                <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
+                  PARENT-CHILD MATCHING
                 </span>
+                <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
               </div>
+              <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
+                <span>START</span>
+              </span>
+            </div>
 
               {/* 랜딩 페이지: 사주 오행 판결소 배너 */}
               <div 
@@ -1431,7 +1445,7 @@ export default function Home() {
                   <div className="text-xs sm:text-sm font-black">오늘의 육아 당번 뽑기 (오행 판결소)</div>
                 </div>
                 <span className="text-xs sm:text-sm font-bold bg-amber-400 text-slate-950 px-3.5 py-2 rounded-xl flex items-center space-x-1 whitespace-nowrap">
-                  <span>입장하기 →</span>
+                  <span>입장하기</span>
                 </span>
               </div>
             </div>
@@ -1504,7 +1518,7 @@ export default function Home() {
                 </div>
               )}
 
-              {/* 기질 영역 스탯 바 (폰트 14px~16px 상향) */}
+              {/* 기질 영역 스탯 바 */}
               <div className="w-full space-y-4 bg-slate-50/80 rounded-2xl p-4 text-left border border-slate-200/80 shadow-2xs">
                 <div className="text-sm sm:text-base font-black text-slate-900 pb-1.5 border-b border-slate-200">
                   우리 아이 핵심 기질 성향 분석
@@ -1558,7 +1572,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="w-full pt-3 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500 font-bold font-mono">
+              <div className="w-full pt-3 border-t border-slate-100 flex justify-between items-center text-xs sm:text-sm text-slate-600 font-bold font-mono">
                 <span>{jijiHanja} {animalName}띠 아기 도감</span>
                 <span className="tracking-widest">baby-sokpuli</span>
               </div>
@@ -1568,7 +1582,7 @@ export default function Home() {
             <button
               onClick={handleDownloadCard}
               disabled={isDownloading}
-              className="w-full py-4.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95 break-keep"
+              className="w-full py-4.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-sm sm:text-base font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95 break-keep"
             >
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -1582,16 +1596,16 @@ export default function Home() {
                 trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                 setIsParentMatchModalOpen(true);
               }}
-              className="w-full p-4.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs cursor-pointer hover:bg-slate-100 transition-all flex items-center justify-between text-slate-900"
+              className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 border border-indigo-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
             >
               <div className="break-keep space-y-0.5">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
                   PARENT-CHILD MATCHING
                 </span>
-                <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 궁합 분석</div>
+                <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
               </div>
-              <span className="text-xs sm:text-sm font-bold bg-slate-900 text-white px-3.5 py-2 rounded-xl flex items-center space-x-1 whitespace-nowrap">
-                <span>진단 시작</span>
+              <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
+                <span>START</span>
               </span>
             </div>
 
@@ -1609,47 +1623,48 @@ export default function Home() {
                     오늘의 성장 노트
                   </h3>
                 </div>
+                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                  ※ 매일 갱신
+                </span>
               </div>
 
-              {/* 1. 원더윅스 분석 카드 (피드백 반영) */}
+              {/* 1. 원더윅스 분석 카드 (내용 두 줄 합치기 및 태그 복원) */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs sm:text-sm font-black text-slate-900">
+                  <span className="text-sm sm:text-base font-black text-slate-900">
                     원더윅스 분석
                   </span>
-                  <span className="text-xs font-extrabold text-slate-700 bg-white px-2.5 py-1 rounded border border-slate-200">
+                  <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
                     {solutionData.badge}
                   </span>
                 </div>
                 
                 <hr className="border-slate-200/80 my-1" />
 
-                <div className="text-xs sm:text-sm font-bold text-slate-700">
-                  현재 : {ageMode === 'infant' ? (solutionData.isWonderLeap ? '도약기 폭풍 구간' : '온화한 평화 구간') : '만 2세 자아 뿜뿜기'}
-                </div>
-
-                <div className="text-xs sm:text-sm font-black text-slate-900 flex items-center space-x-2 pt-1">
-                  <span>원더윅스 여부 :</span>
-                  <span className={`px-2.5 py-0.5 rounded-md text-xs font-bold ${solutionData.isWonderLeap ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                <div className="text-xs sm:text-sm font-bold text-slate-800 bg-white border border-slate-200 p-3 rounded-xl shadow-2xs flex items-center space-x-2">
+                  <span>원더윅스 여부</span><span className="text-slate-400">|</span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-bold ${solutionData.isWonderLeap ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
                     {solutionData.isWonderLeap ? 'O' : 'X'}
                   </span>
+                  
                 </div>
 
                 <div className="text-xs sm:text-sm font-bold text-slate-800 bg-white border border-slate-200 p-2.5 rounded-xl shadow-2xs">
+                  <span>원더윅스 남은 기간</span><span className="text-slate-300 mx-2 font-normal">|</span>
                   {solutionData.dDayText}
                 </div>
 
-                <h4 className="text-sm sm:text-base font-black text-slate-900 break-keep pt-1">
+                <h4 className="text-sm sm:text-base font-black text-slate-900">
                   {solutionData.mainTitle}
                 </h4>
                 
-                <ul className="text-xs sm:text-sm text-slate-600 font-medium space-y-2 leading-relaxed pl-1 break-keep">
+                <ul className="text-xs sm:text-sm text-slate-700 font-medium space-y-2 leading-relaxed pl-1 break-keep">
                   {solutionData.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start space-x-2">
                       <span className="font-extrabold text-slate-900 whitespace-nowrap">
                         {idx === 0 ? '[원인 분석]' : idx === 1 ? '[성장 신호]' : '[케어 팁]'}
                       </span>
-                      <span className="text-slate-700">{bullet}</span>
+                      <span>{bullet}</span>
                     </li>
                   ))}
                 </ul>
@@ -1663,21 +1678,21 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 2. 오늘의 육아 날씨 카드 (원더윅스와 꿀팁 박스 디자인 통일) */}
+              {/* 2. 오늘의 육아 날씨 카드 (이전 버전 스타일 원상 복구) */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs sm:text-sm font-black text-slate-900">
+                  <span className="text-sm sm:text-base font-black text-slate-900">
                     오늘의 육아 날씨
                   </span>
                 </div>
 
                 <hr className="border-slate-200/80 my-1" />
 
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between space-x-2">
                   <div className="text-xs sm:text-sm font-black text-slate-900 break-keep">
                     {babyWeather.status}
                   </div>
-                  <span className="text-3xl p-1 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                  <span className="text-3xl p-1 bg-white rounded-xl border border-slate-200 shadow-2xs flex-shrink-0">
                     {babyWeather.icon}
                   </span>
                 </div>
@@ -1686,23 +1701,18 @@ export default function Home() {
                   {babyWeather.tension}
                 </p>
 
-                {/* 원더윅스 꿀팁 박스와 동일한 화이트 카드 디자인 적용 */}
                 <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1 shadow-2xs">
                   <div className="text-xs font-bold text-slate-900">소소한 육아 꿀팁</div>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
                     {babyWeather.tip}
                   </p>
                 </div>
-
-                <div className="text-xs text-slate-400 font-semibold text-right pt-1">
-                  ※ 매일 자정 갱신
-                </div>
               </div>
 
-              {/* 3. 우리 아이 기질 맞춤 충전 아이템 (성장젤리 제거 및 최저가 버튼 하단 배치) */}
+              {/* 3. 우리 아이 기질 맞춤 충전 아이템 (성장간식 제거, 아이템 이미지 오른쪽 표시, 최저가 버튼 하단) */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs sm:text-sm font-black text-slate-900 break-keep">
+                  <span className="text-sm sm:text-base font-black text-slate-900 break-keep">
                     우리 아이 기질 맞춤 충전 아이템 [{jijiHanja}]
                   </span>
                 </div>
@@ -1721,11 +1731,13 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* 기질에 근거한 추천 이유 */}
+                {/* 기질에 근거한 구체적인 추천 이유 */}
                 <div className="space-y-1.5 pt-1">
-                  <div className="text-xs font-bold text-slate-900">기질에 근거한 추천 이유</div>
+                  <div className="text-xs font-bold text-slate-900">
+                    기질에 근거한 추천 이유 <span className="text-indigo-600 font-extrabold">[{elementTag.name}의 본성 연동]</span>
+                  </div>
                   <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
-                    {potionData.guide}
+                    우리 아이는 <b>{elementTag.name}</b> 기운을 타고나서 호기심({scores.curiosity}점)과 활동량({scores.energy}점)이 왕성해요! {potionData.guide} 이 아이템은 아이의 오행 본성을 편안하게 다독여주는 맞춤 처방입니다.
                   </p>
                 </div>
 
@@ -1817,7 +1829,7 @@ export default function Home() {
                 }}
                 className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-bold rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center break-keep"
               >
-                lounge
+                새로운 기능 제안 및 남매 아빠 후원하기
               </button>
             </div>
 
@@ -1881,7 +1893,7 @@ export default function Home() {
                     PARENT-CHILD MATCHING
                   </span>
                   <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
-                    부모 & 자녀 기질 궁합 진단
+                    부모 & 자녀 기질 기반 육아 난이도 측정
                   </h3>
                 </div>
                 <button
@@ -1965,7 +1977,7 @@ export default function Home() {
                     type="submit"
                     className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center break-keep"
                   >
-                    진단 시작
+                    START
                   </button>
                 </form>
               ) : (
@@ -2169,7 +2181,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* 패밀리 라운지 모달 (lounge 타이틀 적용) */}
+        {/* 패밀리 라운지 모달 */}
         {isLoungeOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
@@ -2177,10 +2189,10 @@ export default function Home() {
               <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
                 <div className="text-left">
                   <span className="text-xs font-bold text-sky-700 uppercase tracking-wider block mb-0.5">
-                    FAMILY LOUNGE
+                  새로운 기능 제안 및 남매 아빠 후원하기
                   </span>
                   <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
-                    lounge
+                    LOUNGE
                   </h3>
                 </div>
                 <button
@@ -2256,7 +2268,7 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* 인스타그램 DM 문의 버튼 (수정된 문구 적용) */}
+              {/* 인스타그램 DM 문의 버튼 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
                 <div className="flex items-center space-x-2">
                   <span className="w-6 h-6 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">
