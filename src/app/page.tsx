@@ -303,15 +303,19 @@ function getTodayElementGuide() {
   return elements[daySum % elements.length];
 }
 
-// 🌟 포켓몬 카드 스타일: 3D 캐릭터 영역 대폭 확대 (w-44 h-44)
+// 🌟 [디자인 보정완료] 이미지 배경색과 완벽히 일치하는 포근한 크림톤(bg-[#FAF8F5]) 및 대형 캐릭터 영역
 function BabyAnimalHybridMascot({
   cheonganIndex,
   animalIndex,
   colorLabel,
+  animalModifier,
+  characterTitle,
 }: {
   cheonganIndex: number;
   animalIndex: number;
   colorLabel: string;
+  animalModifier: string;
+  characterTitle: string;
 }) {
   const colorKey = CHEONGAN_TO_COLOR[cheonganIndex] || 'blue';
   const animalKey = JIJI_TO_ANIMAL[animalIndex] || 'tiger';
@@ -335,19 +339,30 @@ function BabyAnimalHybridMascot({
   };
 
   return (
-    <div className="relative w-44 h-44 flex items-center justify-center filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.25)] my-1">
-      {!isError ? (
-        <img
-          src={imgSrc}
-          alt={`${colorLabel} 캐릭터`}
-          onError={handleError}
-          className="w-full h-full object-contain rounded-3xl animate-fadeIn scale-105"
-        />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center bg-white/20 rounded-3xl">
-          <span className="text-5xl">🍼</span>
-        </div>
-      )}
+    <div className="w-full bg-[#FAF8F5] rounded-2xl border border-amber-100/80 py-3.5 px-3 my-2 flex flex-col items-center justify-center relative shadow-inner overflow-hidden">
+      
+      {/* 수식어와 종족명을 한 줄에 나란히 배치 */}
+      <div className="bg-white/90 backdrop-blur-xs text-slate-800 text-xs font-black px-4 py-1.5 rounded-full shadow-2xs mb-1.5 border border-slate-200/60 flex items-center space-x-1.5">
+        <span className="text-slate-500 font-bold">&ldquo;{animalModifier}&rdquo;</span>
+        <span className="text-slate-300">·</span>
+        <span className="text-slate-900">{characterTitle}</span>
+      </div>
+
+      {/* 캐릭터 크기를 대폭 키워 화면 중심을 확실히 잡도록 배치 */}
+      <div className="relative w-48 h-48 flex items-center justify-center filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.15)] my-1">
+        {!isError ? (
+          <img
+            src={imgSrc}
+            alt={`${colorLabel} 캐릭터`}
+            onError={handleError}
+            className="w-full h-full object-contain rounded-2xl animate-fadeIn scale-110"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-2xl">
+            <span className="text-5xl">🍼</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -896,7 +911,7 @@ export default function Home() {
 
   const handleCloseChemiModal = () => {
     if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-    if (countdownTimeoutRef.current) clearInterval(countdownTimeoutRef.current);
+    if (countdownTimeoutRef.current) clearTimeout(countdownTimeoutRef.current);
     if (clashAnimationRef.current) clearInterval(clashAnimationRef.current);
     setIsChemiModalOpen(false);
     setCountdown(null);
@@ -1357,22 +1372,14 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 🌟 포켓몬 카드 스타일: 캐릭터가 확실히 중심이 되는 대형 3D 일러스트 영역 */}
-              <div className="w-full bg-gradient-to-b from-sky-50 to-sky-100/60 rounded-2xl border border-sky-200/60 p-4 my-2 flex flex-col items-center justify-center relative shadow-inner">
-                
-                {/* 🌟 수식어와 종족명을 한 줄에 나란히 배치 */}
-                <div className="bg-white text-slate-800 text-xs font-black px-4 py-1.5 rounded-full shadow-2xs mb-1 border border-slate-100 flex items-center space-x-1.5">
-                  <span className="text-slate-500 font-bold">&ldquo;{animalModifier}&rdquo;</span>
-                  <span className="text-slate-300">·</span>
-                  <span className="text-slate-900">{characterTitle}</span>
-                </div>
-
-                <BabyAnimalHybridMascot
-                  cheonganIndex={characterCheonganIndex}
-                  animalIndex={characterAnimalIndex}
-                  colorLabel={colorLabel}
-                />
-              </div>
+              {/* 🌟 포켓몬 카드 스타일: 배경색 완벽히 통일된 대형 3D 일러스트 영역 */}
+              <BabyAnimalHybridMascot
+                cheonganIndex={characterCheonganIndex}
+                animalIndex={characterAnimalIndex}
+                colorLabel={colorLabel}
+                animalModifier={animalModifier}
+                characterTitle={characterTitle}
+              />
 
               <div className="w-full bg-slate-100 py-1.5 px-3 rounded-xl my-2 text-xs font-bold text-slate-700 flex justify-between items-center">
                 <span>🎂 {calculatedAgeText}</span>
@@ -1549,7 +1556,7 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* 🌟 [AI 심층 육아 보고서 준비 중] 담백한 페이크 도어 티저 */}
+              {/* AI 심층 육아 보고서 준비 중 티저 */}
               <div 
                 onClick={() => setIsAiReportModalOpen(true)}
                 className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-white p-4 text-left shadow-2xs cursor-pointer hover:scale-[1.01] transition-all space-y-1.5 relative overflow-hidden break-keep"
@@ -1870,7 +1877,7 @@ export default function Home() {
                     <div className={`p-3 rounded-xl border ${chemiResult.dadScore > chemiResult.momScore ? 'border-sky-300 bg-sky-50/60' : 'border-slate-200 bg-slate-50'}`}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="font-bold text-xs text-slate-700 break-keep">👨 아빠의 오늘 오행 파워</span>
-                        <span className="font-mono font-black text-xs text-sky-600">{chemiResult.dadScore}점</span>
+                        <span className="font-mono text-xs text-sky-600">{chemiResult.dadScore}점</span>
                       </div>
                       <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                         <div className="bg-sky-500 h-full rounded-full" style={{ width: `${chemiResult.dadScore}%` }} />
