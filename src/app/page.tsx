@@ -336,12 +336,12 @@ function BabyAnimalHybridMascot({
   return (
     <div className="w-full bg-gradient-to-b from-amber-50/60 to-[#FAF8F5] rounded-3xl border border-amber-200/60 p-6 my-3 flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
       
-      {/* 🌟 1번 추천 애니메이션: 오행 기운 오라(Aura) 은은한 호흡 효과 */}
+      {/* 🌟 1번 애니메이션: 오행 기운 오라(Aura) 은은한 호흡 효과 */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
         <div className="w-44 h-44 rounded-full bg-amber-300/30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]"></div>
       </div>
 
-      {/* 🌟 2번 추천 애니메이션: 포근한 별빛/이슬 방울 은빛 파동 (Floating Sparkles) */}
+      {/* 🌟 2번 애니메이션: 포근한 별빛/이슬 방울 은빛 파동 (Floating Sparkles) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
         <div className="absolute top-4 left-6 text-xs animate-[bounce_3s_infinite]">✨</div>
         <div className="absolute bottom-6 right-8 text-xs animate-[bounce_4s_infinite_1s]">⭐</div>
@@ -488,6 +488,102 @@ const WONDER_LEAPS: WonderLeap[] = [
   { leapIndex: 10, name: '제10도약기 (체계의 완성)', startDay: 494, endDay: 529, description: '엄마 아빠와 대화하고 자아를 자유롭게 뽐내는 꼬마 대장이 되었어요!' },
 ];
 
+// 🌟 [5단계 정밀 육아 난이도 연산 함수]
+interface ParentingDifficultyResult {
+  score: number;
+  grade: string;
+  badge: string;
+  icon: string;
+  level: string;
+  themeColor: string;
+  barColor: string;
+  summary: string;
+  synergy: string;
+  solution: string;
+  desc?: string;
+}
+
+const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): ParentingDifficultyResult => {
+  const babyYear = parseInt(babyDateStr.replace(/[^0-9]/g, '').slice(0, 4), 10) || 2024;
+  const parentYear = parseInt(parentDateStr.replace(/[^0-9]/g, '').slice(0, 4), 10) || 1990;
+
+  const babyEl = (babyYear - 4) % 5;
+  const parentEl = (parentYear - 4) % 5;
+  const diff = Math.abs(babyEl - parentEl);
+
+  if (babyEl === parentEl) {
+    return {
+      score: 95,
+      grade: 'LEVEL 5',
+      badge: '불꽃 스파크',
+      icon: '🔥',
+      level: '최상 (폭풍 성장 챌린지형)',
+      themeColor: 'from-rose-500 to-red-600',
+      barColor: '#E11D48',
+      summary: '서로의 주관과 에너지가 정면 충돌하는 불꽃 타입!',
+      synergy: '아이가 부모의 행동 패턴을 고스란히 닮아 때로는 강하게 부딪힙니다.',
+      solution: '감정적 훈육보다는 명확한 규칙을 설정하고, 매일 충분한 신체 놀이로 에너지를 소진시켜 주세요.',
+      desc: '아이와 부모 모두 주관과 에너지가 넘쳐 매일이 다이내믹한 챌린지예요! 명확한 규칙과 신체 놀이가 필수입니다.',
+    };
+  } else if (diff === 2 || diff === 3) {
+    return {
+      score: 80,
+      grade: 'LEVEL 4',
+      badge: '에너지 밀당',
+      icon: '⚡',
+      level: '상 (밀당 줄다리기형)',
+      themeColor: 'from-orange-500 to-amber-600',
+      barColor: '#EA580C',
+      summary: '호기심 대장 아이 vs 체력 방전 부모의 줄다리기!',
+      synergy: '아이의 빠른 반응 속도와 텐션을 부모가 맞춰주느라 에너지가 빠르게 소진될 수 있습니다.',
+      solution: '모든 요구를 즉각 들어주기보다 선택권을 제공하여 주도권을 조율하고, 부모의 교대 휴식이 필수적입니다.',
+      desc: '아이의 왕성한 호기심을 부모가 맞춰주느라 에너지가 빠르게 소진될 수 있어요. 부모의 휴식 분담이 중요합니다.',
+    };
+  } else if (diff === 0) {
+    return {
+      score: 65,
+      grade: 'LEVEL 3',
+      badge: '지적 탐구',
+      icon: '🔍',
+      level: '중 (서로 배우는 탐구형)',
+      themeColor: 'from-amber-500 to-yellow-600',
+      barColor: '#D97706',
+      summary: '서로를 알아갈수록 끈끈해지는 단짝 메이트!',
+      synergy: '표현 방식의 결이 달라 초반에는 아이의 의도를 파악하는 관찰 시간이 필요합니다.',
+      solution: '아이의 신호를 서두르지 않고 5초만 기다려준 뒤 공감해 주면 둘도 없는 최고의 파트너가 됩니다.',
+      desc: '서로 성향의 결이 달라 조율이 필요하지만, 대화와 관찰을 통해 둘도 없는 최고의 단짝이 될 수 있어요.',
+    };
+  } else if (diff === 1 || diff === 4) {
+    return {
+      score: 40,
+      grade: 'LEVEL 2',
+      badge: '포근한 완충재',
+      icon: '🛡️',
+      level: '하 (상호 보완 완충형)',
+      themeColor: 'from-sky-500 to-indigo-600',
+      barColor: '#0284C7',
+      summary: '아이의 투정을 부모가 넓은 품으로 품어주는 조화!',
+      synergy: '부모의 오행 기운이 아이의 예민한 감각을 자연스럽게 감싸 안아 식혀줍니다.',
+      solution: '아이가 떼를 써도 부모가 여유를 유지할 수 있어, 안정적인 애착 형성에 매우 유리한 관계입니다.',
+      desc: '부모의 차분한 기운이 아이의 투정을 유연하게 녹여줄 수 있는 평온하고 안정적인 육아 궁합입니다.',
+    };
+  } else {
+    return {
+      score: 20,
+      grade: 'LEVEL 1',
+      badge: '찰떡 평화',
+      icon: '🕊️',
+      level: '최하 (무결점 찰떡 평화형)',
+      themeColor: 'from-emerald-500 to-teal-600',
+      barColor: '#059669',
+      summary: '눈빛만 봐도 통하는 천생연분 평화 모드!',
+      synergy: '오행의 상생 흐름이 완벽하게 맞물려 육아 난이도가 가장 순탄한 최상의 조합입니다.',
+      solution: '아이가 큰 마찰 없이 부모의 가이드를 잘 따르므로, 칭찬과 지지 위주의 긍정 훈육을 이어가세요.',
+      desc: '눈빛만 봐도 아이의 마음이 읽히는 환상의 조화예요! 큰 마찰 없이 순탄하게 육아를 이어갈 수 있습니다.',
+    };
+  }
+};
+
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<'form' | 'result'>('form');
@@ -512,10 +608,10 @@ export default function Home() {
   const [isUnknownTime, setIsUnknownTime] = useState(false);
   const [dueDate, setDueDate] = useState('');
 
-  // 독립 모달용 부모 생년월일
+  // 독립 모달용 부모 생년월일 & 5단계 리포트 상태
   const [parentBirth, setParentBirth] = useState('');
   const [parentMatchError, setParentMatchError] = useState<string | undefined>();
-  const [parentingDifficulty, setParentingDifficulty] = useState<{ score: number; level: string; color: string; desc: string } | null>(null);
+  const [parentingDifficulty, setParentingDifficulty] = useState<ParentingDifficultyResult | null>(null);
   const [isParentMatchModalOpen, setIsParentMatchModalOpen] = useState(false);
   const [isAnalyzingParentMatch, setIsAnalyzingParentMatch] = useState(false);
   const [parentMatchCountdown, setParentMatchCountdown] = useState<number | null>(null);
@@ -1064,8 +1160,18 @@ export default function Home() {
     }, 15000);
   };
 
+  // 🌟 [방어 로직 + 5단계 세분화 연동 완료 함수]
   const handleCalculateParentMatchModal = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 🌟 아이 생년월일 미입력 시 즉시 차단
+    if (!birthDate || birthDate.replace(/[^0-9]/g, '').length !== 8) {
+      alert('우리 아이 정보를 먼저 입력하고 진행해주세요');
+      setIsParentMatchModalOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     const parentCheck = validateDateString(parentBirth, {
       allowFuture: false,
       minYear: 1950,
@@ -1091,30 +1197,8 @@ export default function Home() {
     }, 1000);
 
     parentMatchTimeoutRef.current = setTimeout(() => {
-      const babyYear = parseInt(birthDate.replace(/[^0-9]/g, '').slice(0, 4), 10) || 2024;
-      const parentYear = parseInt(parentBirth.replace(/[^0-9]/g, '').slice(0, 4), 10) || 1990;
-      
-      const babyEl = (babyYear - 4) % 5;
-      const parentEl = (parentYear - 4) % 5;
-
-      let score = 75;
-      let level = '보통 (탐구 적응형)';
-      let color = 'text-sky-700 bg-sky-50 border-sky-200';
-      let desc = '서로 성향의 결이 조금 달라 조율이 필요하지만, 서로를 알아갈수록 훌륭한 파트너가 됩니다.';
-
-      if (babyEl === parentEl) {
-        score = 88;
-        level = '상 (불꽃 에너지 챌린지형)';
-        color = 'text-rose-700 bg-rose-50 border-rose-200';
-        desc = '아이와 부모의 기질 에너지가 넘쳐서 때로는 부딪히지만, 에너지를 잘만 쏟아주면 최고의 시너지를 내는 타입이에요.';
-      } else if (Math.abs(babyEl - parentEl) === 1 || Math.abs(babyEl - parentEl) === 4) {
-        score = 45;
-        level = '하 (찰떡 궁합 평화형)';
-        color = 'text-emerald-700 bg-emerald-50 border-emerald-200';
-        desc = '서로의 기운을 다정하게 채워주는 상생의 관계입니다. 아이가 보채더라도 부모가 유연하게 다독여줄 수 있어요.';
-      }
-
-      setParentingDifficulty({ score, level, color, desc });
+      const result = calculate5StepDifficulty(birthDate, parentBirth);
+      setParentingDifficulty(result);
       setIsAnalyzingParentMatch(false);
       setParentMatchCountdown(null);
     }, 15000);
@@ -1177,6 +1261,11 @@ export default function Home() {
         @keyframes ticker-marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
+        }
+        @keyframes cloudDrift {
+          0% { transform: translateX(-20px); }
+          50% { transform: translateX(20px); }
+          100% { transform: translateX(-20px); }
         }
         .animate-ticker-marquee {
           display: inline-flex;
@@ -1378,6 +1467,7 @@ export default function Home() {
                 />
               </div>
 
+              {/* 🌟 1. 출산 당시 예정일 및 안내 문구 복구 완료 */}
               <div className="bg-slate-50 p-4.5 rounded-2xl border border-slate-100 shadow-2xs space-y-2">
                 <div className="flex justify-between items-center">
                   <label className="text-xs sm:text-sm font-bold text-slate-800 break-keep">출산 당시 예정일 (선택)</label>
@@ -1395,6 +1485,9 @@ export default function Home() {
                     errors.dueDate ? 'border-rose-500 bg-rose-50/50' : 'border-slate-200 focus:border-slate-800'
                   }`}
                 />
+                <p className="text-xs text-slate-500 leading-relaxed pt-0.5">
+                  ※ 원더윅스 급성장기 도약기는 실제 출생일이 아닌 <b>수정일(출산 예정일)</b>을 기준으로 뇌 신경망 성장을 정확하게 분석합니다.
+                </p>
                 {errors.dueDate && (
                   <p className="text-xs sm:text-sm font-semibold text-rose-600 mt-1 break-keep">⚠️ {errors.dueDate}</p>
                 )}
@@ -1416,19 +1509,19 @@ export default function Home() {
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                   setIsParentMatchModalOpen(true);
-                 }}
+                }}
                 className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 border border-indigo-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
-               >
-              <div className="break-keep space-y-0.5">
-                <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
-                  PARENT-CHILD MATCHING
+              >
+                <div className="break-keep space-y-0.5">
+                  <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
+                    PARENT-CHILD MATCHING
+                  </span>
+                  <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
+                </div>
+                <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
+                  <span>START</span>
                 </span>
-                <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
               </div>
-              <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
-                <span>START</span>
-              </span>
-            </div>
 
               {/* 랜딩 페이지: 사주 오행 판결소 배너 */}
               <div 
@@ -1439,7 +1532,7 @@ export default function Home() {
                 className="w-full p-4.5 rounded-2xl bg-slate-900 text-white shadow-sm cursor-pointer hover:bg-slate-800 transition-all flex items-center justify-between"
               >
                 <div className="break-keep space-y-0.5">
-                  <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+                  <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest block">
                     FIVE ELEMENTS COURT
                   </span>
                   <div className="text-xs sm:text-sm font-black">오늘의 육아 당번 뽑기 (오행 판결소)</div>
@@ -1497,26 +1590,6 @@ export default function Home() {
               <div className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-slate-900 leading-relaxed break-keep">
                 &ldquo;{oneLineSummary}&rdquo;
               </div>
-
-              {/* 부모 기질 비교 및 육아 난이도 진단 결과 카드 */}
-              {parentingDifficulty && (
-                <div className="w-full p-4 rounded-2xl border text-left space-y-2 bg-slate-50 border-slate-200 shadow-2xs break-keep">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-black uppercase tracking-wider text-slate-700">
-                      부모-자녀 기질 비교 및 육아 난이도
-                    </span>
-                    <span className="text-xs font-black px-2.5 py-0.5 rounded bg-slate-900 text-white shadow-2xs font-mono">
-                      난이도 점수: {parentingDifficulty.score}점 / 100점
-                    </span>
-                  </div>
-                  <div className="text-xs sm:text-sm font-black text-slate-900">
-                    진단 결과: {parentingDifficulty.level}
-                  </div>
-                  <p className="text-xs sm:text-sm font-medium text-slate-600 leading-relaxed">
-                    {parentingDifficulty.desc}
-                  </p>
-                </div>
-              )}
 
               {/* 기질 영역 스탯 바 */}
               <div className="w-full space-y-4 bg-slate-50/80 rounded-2xl p-4 text-left border border-slate-200/80 shadow-2xs">
@@ -1609,9 +1682,7 @@ export default function Home() {
               </span>
             </div>
 
-            {/* =======================================================
-                🌟 [오늘의 성장 노트] 통합 대시보드 영역 (피드백 전면 반영 개편)
-            ======================================================= */}
+            {/* 오늘의 성장 노트 통합 대시보드 */}
             <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm text-slate-900 space-y-6 border border-slate-200">
               
               <div className="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -1628,7 +1699,7 @@ export default function Home() {
                 </span>
               </div>
 
-              {/* 1. 원더윅스 분석 카드 (내용 두 줄 합치기 및 태그 복원) */}
+              {/* 1. 원더윅스 분석 카드 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex items-center justify-between">
                   <span className="text-sm sm:text-base font-black text-slate-900">
@@ -1646,7 +1717,6 @@ export default function Home() {
                   <span className={`px-2 py-0.5 rounded text-xs font-bold ${solutionData.isWonderLeap ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
                     {solutionData.isWonderLeap ? 'O' : 'X'}
                   </span>
-                  
                 </div>
 
                 <div className="text-xs sm:text-sm font-bold text-slate-800 bg-white border border-slate-200 p-2.5 rounded-xl shadow-2xs">
@@ -1678,7 +1748,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 2. 오늘의 육아 날씨 카드 (이전 버전 스타일 원상 복구) */}
+              {/* 2. 오늘의 육아 날씨 카드 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
                   <span className="text-sm sm:text-base font-black text-slate-900">
@@ -1709,7 +1779,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 3. 우리 아이 기질 맞춤 충전 아이템 (성장간식 제거, 아이템 이미지 오른쪽 표시, 최저가 버튼 하단) */}
+              {/* 3. 우리 아이 기질 맞춤 충전 아이템 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
                   <span className="text-sm sm:text-base font-black text-slate-900 break-keep">
@@ -1719,7 +1789,6 @@ export default function Home() {
 
                 <hr className="border-slate-200/80 my-1" />
 
-                {/* 추천 아이템 (오른쪽에 아이콘/이미지 포함) */}
                 <div className="flex items-center space-x-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
                   <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center border border-slate-200 flex-shrink-0">
                     <HealingPotionIcon potionColor={potionData.color} />
@@ -1731,7 +1800,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* 기질에 근거한 구체적인 추천 이유 */}
                 <div className="space-y-1.5 pt-1">
                   <div className="text-xs font-bold text-slate-900">
                     기질에 근거한 추천 이유 <span className="text-indigo-600 font-extrabold">[{elementTag.name}의 본성 연동]</span>
@@ -1741,7 +1809,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* 내용 아래에 시원하게 배치된 최저가 보기 버튼 및 쿠팡 파트너스 고지 */}
                 <div className="pt-2 space-y-1.5">
                   <a
                     href={SERVICE_LINKS.coupangDefault}
@@ -1882,14 +1949,14 @@ export default function Home() {
           </div>
         )}
 
-        {/* 부모-자녀 기질 비교 진단 모달 */}
+        {/* 🌟 2 & 3. 방어 로직 및 화려한 5단계 비주얼 리포트 모달 적용 완료 */}
         {isParentMatchModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
               
               <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
                 <div>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-0.5">
                     PARENT-CHILD MATCHING
                   </span>
                   <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
@@ -1981,24 +2048,66 @@ export default function Home() {
                   </button>
                 </form>
               ) : (
+                /* 🌟 화려하고 전문적인 5단계 상징 비주얼 리포트 카드 */
                 <div className="space-y-4 text-left animate-fadeIn">
-                  <div className="p-5 bg-slate-50 rounded-3xl text-center text-slate-900 space-y-2 border border-slate-200 shadow-2xs">
-                    <span className="text-xs font-extrabold bg-slate-900 text-white px-3 py-1 rounded-full uppercase tracking-wider">
-                      정밀 진단 완료
-                    </span>
-                    <h4 className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-mono">
-                      육아 난이도 점수: {parentingDifficulty.score}점 / 100점
-                    </h4>
-                    <div className="text-sm font-bold text-slate-700">{parentingDifficulty.level}</div>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1 break-keep">
-                      {parentingDifficulty.desc}
-                    </p>
+                  <div className="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 shadow-xl space-y-4 relative overflow-hidden">
+                    
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl shadow-inner border border-white/15">
+                          {parentingDifficulty.icon}
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-black tracking-widest text-amber-400 uppercase">
+                            {parentingDifficulty.grade} · {parentingDifficulty.badge}
+                          </span>
+                          <h4 className="text-base sm:text-lg font-black text-white">
+                            {parentingDifficulty.level}
+                          </h4>
+                        </div>
+                      </div>
+                      <div className="text-right font-mono">
+                        <div className="text-[11px] text-slate-400 font-bold">난이도 지수</div>
+                        <div className="text-2xl font-black text-amber-400">{parentingDifficulty.score}<span className="text-xs text-white/60">/100</span></div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 pt-1">
+                      <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden p-0.5">
+                        <div
+                          className="h-full rounded-full transition-all duration-700 shadow-xs"
+                          style={{ width: `${parentingDifficulty.score}%`, backgroundColor: parentingDifficulty.barColor }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                        <span>평화 모드 (10점)</span>
+                        <span>챌린지 모드 (100점)</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2.5 pt-2 text-xs sm:text-sm">
+                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1">
+                        <div className="font-extrabold text-amber-300">📌 핵심 케미스트리</div>
+                        <div className="text-slate-200 font-medium leading-relaxed">{parentingDifficulty.summary}</div>
+                      </div>
+
+                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1">
+                        <div className="font-extrabold text-sky-300">⚡ 상호 작용 (시너지)</div>
+                        <div className="text-slate-300 font-normal leading-relaxed">{parentingDifficulty.synergy}</div>
+                      </div>
+
+                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1">
+                        <div className="font-extrabold text-emerald-300">💡 실전 육아 솔루션</div>
+                        <div className="text-slate-300 font-normal leading-relaxed">{parentingDifficulty.solution}</div>
+                      </div>
+                    </div>
                   </div>
+
                   <button
                     onClick={() => setIsParentMatchModalOpen(false)}
-                    className="w-full py-4 bg-slate-900 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
+                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
                   >
-                    확인 완료 / 닫기
+                    진단 결과 확인 완료 / 닫기
                   </button>
                 </div>
               )}
@@ -2189,7 +2298,7 @@ export default function Home() {
               <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
                 <div className="text-left">
                   <span className="text-xs font-bold text-sky-700 uppercase tracking-wider block mb-0.5">
-                  새로운 기능 제안 및 남매 아빠 후원하기
+                    새로운 기능 제안 및 남매 아빠 후원하기
                   </span>
                   <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
                     LOUNGE
