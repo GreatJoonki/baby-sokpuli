@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: '아기속풀이',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://baby-sokpuli.vercel.app/og-image.png', // 👈 절대 경로로 수정,
         width: 1200,
         height: 630,
         alt: '우리 아이 기질카드 대표 썸네일',
@@ -26,11 +26,12 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     type: 'website',
   },
+  // 🌟 [추가/수정] 트위터 카드 메타 태그 (절대 경로 적용)
   twitter: {
     card: 'summary_large_image',
     title: '우리 아이 기질카드 & 육아 난이도 측정 🍼',
-    description: '타고난 사주 오행으로 보는 우리 아이 성향과 부모 케미 분석!',
-    images: ['/og-image.png'],
+    description: '생년월일로 쏙 뽑아보는 60갑자 기질 분석과 부모-자녀 육아 난이도 진단!',
+    images: ['https://baby-sokpuli.vercel.app/og-image.png'],
   },
 };
 
