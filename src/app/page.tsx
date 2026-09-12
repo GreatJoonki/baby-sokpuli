@@ -883,12 +883,23 @@ export default function Home() {
     const updated = profiles.filter((p) => p.id !== idToDelete);
     setProfiles(updated);
     localStorage.setItem('baby_profiles', JSON.stringify(updated));
-
+  
     if (activeProfileId === idToDelete) {
       if (updated.length > 0) {
+        // 남은 아이가 있으면 첫 번째 아이로 자동 전환
         handleSelectChild(updated[0]);
       } else {
-        handleAddNewChild();
+        // 🌟 [수정 포인트] 모든 아이를 다 지웠다면 결과 화면을 닫고 깨끗한 입력 폼으로 전환
+        setActiveProfileId(null);
+        setName('');
+        setGender('boy');
+        setBirthDate('');
+        setBirthTime('');
+        setIsUnknownTime(false);
+        setDueDate('');
+        setErrors({});
+        setParentingDifficulty(null); // 난이도 진단 결과도 초기화
+        setStep('form');
       }
     }
   };
