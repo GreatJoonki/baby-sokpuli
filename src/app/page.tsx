@@ -16,8 +16,71 @@ const SERVICE_LINKS = {
   youtube: 'https://www.youtube.com/@Hamin_Hayoon_day?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=youtube',
   instagramProfile: 'https://www.instagram.com/hamin_hayoon_day/?utm_source=baby_sokpuli&utm_medium=lounge&utm_campaign=instagram',
   instagramDM: 'https://ig.me/m/hamin_hayoon_day?utm_source=baby_sokpuli&utm_medium=ai_teaser&utm_campaign=dm_inquiry',
-  coupangDefault: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=potion_station&utm_campaign=coupang_partners',
-  parentHealing: 'https://link.coupang.com?utm_source=baby_sokpuli&utm_medium=court_waiting&utm_campaign=parent_healing',
+  coupangDefault: 'https://link.coupang.com/a/gZzbA8ezNk',
+  parentHealing: 'https://link.coupang.com/a/gZAUwv5ctw',
+};
+
+// 🌟 [1] 부모 힐링템 파트너스 링크 매핑
+const PARENT_HEALING_PRODUCTS = {
+  level5: {
+    title: '무선 온열 목·어깨 마사지기',
+    subTitle: '지친 하루, 뻐근해진 승모근과 목을 시원하게',
+    icon: '💆',
+    link: 'https://link.coupang.com/a/gZzATurY6u',
+  },
+  level4: {
+    title: '콜드브루 디카페인 파우치 세트',
+    subTitle: '지친 오후 부모 멘탈을 채워줄 든든한 카페인 수혈',
+    icon: '☕',
+    link: 'https://link.coupang.com/a/gZzDh8XAE8',
+  },
+  level3: {
+    title: '유기농 카모마일 릴랙스 티 세트',
+    subTitle: '육퇴 후 복잡한 생각을 비우고 편안한 숙면을',
+    icon: '🫖',
+    link: 'https://link.coupang.com/a/gZzHmhAhae',
+  },
+  level2: {
+    title: '천연 아로마 롤온 힐링 테라피',
+    subTitle: '하루 1분, 손목에 가볍게 바르는 스트레스 완화',
+    icon: '🌿',
+    link: 'https://link.coupang.com/a/gZzJINaiAK',
+  },
+  level1: {
+    title: '프리미엄 페어링 디저트 컬렉션',
+    subTitle: '평화로운 육퇴 후 부부가 함께 나누는 달콤한 보상',
+    icon: '🍪',
+    link: 'https://link.coupang.com/a/gZzLYIshOK',
+  },
+};
+
+// 🌟 [2] 아이 오행별/성장단계별 맞춤 충전 아이템 파트너스 링크 매핑
+const BABY_POTION_LINKS: Record<'wood' | 'fire' | 'earth' | 'metal' | 'water', Record<'infant' | 'toddler' | 'child', string>> = {
+  wood: {
+    infant: 'https://link.coupang.com/a/gZxQNRGK0i',
+    toddler: 'https://link.coupang.com/a/gZzTAoFGHA',
+    child: 'https://link.coupang.com/a/gZzWiJKXxA',
+  },
+  fire: {
+    infant: 'https://link.coupang.com/a/gZz0FSD20y',
+    toddler: 'https://link.coupang.com/a/gZz2WPe6cS',
+    child: 'https://link.coupang.com/a/gZz5q33Qqa',
+  },
+  earth: {
+    infant: 'https://link.coupang.com/a/gZz7vAV37s',
+    toddler: 'https://link.coupang.com/a/gZAB1mecDY',
+    child: 'https://link.coupang.com/a/gZADU7LZvw',
+  },
+  metal: {
+    infant: 'https://link.coupang.com/a/gZAF6nJOrk',
+    toddler: 'https://link.coupang.com/a/gZAH1uI9zU',
+    child: 'https://link.coupang.com/a/gZAJNeiG4q',
+  },
+  water: {
+    infant: 'https://link.coupang.com/a/gZANoTDZEi',
+    toddler: 'https://link.coupang.com/a/gZAPp2bXVI',
+    child: 'https://link.coupang.com/a/gZARxR6UJo',
+  },
 };
 
 const DONATION_CONFIG = {
@@ -489,7 +552,6 @@ interface ParentingDifficultyResult {
   badge: string;
   icon: string;
   level: string;
-  themeColor: string;
   barColor: string;
   summary: string;
   synergy: string;
@@ -518,37 +580,25 @@ const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): P
       badge: '불꽃 스파크',
       icon: '🔥',
       level: '최상 (폭풍 성장 챌린지형)',
-      themeColor: 'from-rose-500 to-red-600',
       barColor: '#E11D48',
-      summary: '서로의 주관과 에너지가 정면 충돌하는 불꽃 타입!',
-      synergy: '아이가 부모의 행동 패턴을 고스란히 닮아 때로는 강하게 부딪힙니다.',
-      solution: '아이가 소리칠 때 "네가 흥분했구나"라고 감정을 먼저 읽어준 뒤 3초 침묵하세요.',
-      parentHealingItem: {
-        title: '무선 온열 목·어깨 마사지기',
-        subTitle: '에너지 소모가 극심한 오늘, 굳은 승모근 힐링',
-        icon: '💆',
-        link: SERVICE_LINKS.parentHealing,
-      },
+      summary: '서로의 주관과 활동성이 정면으로 부딪히기 쉬운 불꽃 타입이에요!',
+      synergy: '아이가 부모의 고집과 행동 방식을 쏙 빼닮아 양보 없는 상황이 자주 일어납니다.',
+      solution: '아이가 고집부릴 때 즉각적인 훈계보다 "지금 많이 속상했구나"라고 감정을 먼저 읽어준 뒤 3초간 침묵하며 진정할 시간을 주세요.',
+      parentHealingItem: PARENT_HEALING_PRODUCTS.level5,
       desc: '아이와 부모 모두 주관과 에너지가 넘쳐 매일이 다이내믹한 챌린지예요! 명확한 규칙과 신체 놀이가 필수입니다.',
     };
   } else if (diff === 2 || diff === 3) {
     return {
       score: 80,
       grade: 'LEVEL 4',
-      badge: '에너지 밀당',
+      badge: '에너지 불균형',
       icon: '⚡',
-      level: '상 (밀당 줄다리기형)',
-      themeColor: 'from-orange-500 to-amber-600',
+      level: '상 (체력 조율형)',
       barColor: '#EA580C',
-      summary: '호기심 대장 아이 vs 체력 방전 부모의 줄다리기!',
-      synergy: '아이의 빠른 반응 속도와 텐션을 부모가 맞춰주느라 에너지가 빠르게 소진될 수 있습니다.',
-      solution: '"안 돼" 대신 "A 먼저 할래, B 먼저 할래?"로 선택권을 주어 주도권을 양보하세요.',
-      parentHealingItem: {
-        title: '콜드브루 디카페인 원액 파우치 세트',
-        subTitle: '지친 오후, 부모 멘탈을 붙잡아줄 긴급 카페인 수혈',
-        icon: '☕',
-        link: SERVICE_LINKS.parentHealing,
-      },
+      summary: '아이의 폭발적인 활동량을 부모의 체력이 따라가며 조율해야 하는 타입이에요!',
+      synergy: '아이의 빠른 반응과 텐션에 맞춰주느라 부모의 에너지가 쉽게 방전될 수 있습니다.',
+      solution: '"안 돼!"라는 단정적 제지 대신 "신발 먼저 신을까, 양말 먼저 신을까?"처럼 사소한 선택권을 주어 아이 스스로 통제감을 느끼게 유도하세요.',
+      parentHealingItem: PARENT_HEALING_PRODUCTS.level4,
       desc: '아이의 왕성한 호기심을 부모가 맞춰주느라 에너지가 빠르게 소진될 수 있어요. 부모의 휴식 분담이 중요합니다.',
     };
   } else if (diff === 0) {
@@ -558,17 +608,11 @@ const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): P
       badge: '지적 탐구',
       icon: '🔍',
       level: '중 (서로 배우는 탐구형)',
-      themeColor: 'from-amber-500 to-yellow-600',
       barColor: '#D97706',
-      summary: '서로를 알아갈수록 끈끈해지는 단짝 메이트!',
-      synergy: '표현 방식의 결이 달라 초반에는 아이의 의도를 파악하는 관찰 시간이 필요합니다.',
-      solution: '아이가 혼자 놀 때 끼어들지 말고, 눈을 맞추며 행동을 따라 해주는 미러링이 통합니다.',
-      parentHealingItem: {
-        title: '포근한 유기농 카모마일 릴랙스 티 세트',
-        subTitle: '육퇴 후 복잡한 생각을 비우고 숙면을 돕는 차',
-        icon: '🫖',
-        link: SERVICE_LINKS.parentHealing,
-      },
+      summary: '서로의 표현 방식을 알아갈수록 끈끈한 단짝이 되는 관계예요!',
+      synergy: '성향의 결이 조금 달라 초반에는 아이가 원하는 바를 세심하게 관찰하는 시간이 필요합니다.',
+      solution: '아이가 놀이에 몰입해 있을 때 먼저 개입하기보다는, 5초간 지켜보며 아이의 행동과 표정을 조용히 따라 해주는 미러링 교감이 효과적입니다.',
+      parentHealingItem: PARENT_HEALING_PRODUCTS.level3,
       desc: '서로 성향의 결이 달라 조율이 필요하지만, 대화와 관찰을 통해 둘도 없는 최고의 단짝이 될 수 있어요.',
     };
   } else if (diff === 1 || diff === 4) {
@@ -578,17 +622,11 @@ const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): P
       badge: '포근한 완충재',
       icon: '🛡️',
       level: '하 (상호 보완 완충형)',
-      themeColor: 'from-sky-500 to-indigo-600',
       barColor: '#0284C7',
-      summary: '아이의 투정을 부모가 넓은 품으로 품어주는 조화!',
-      synergy: '부모의 오행 기운이 아이의 예민한 감각을 자연스럽게 감싸 안아 식혀줍니다.',
-      solution: '아이가 짜증 낼 때 논리적인 설득 대신 가벼운 스킨십과 허그가 가장 빠릅니다.',
-      parentHealingItem: {
-        title: '천연 아로마 롤온 힐링 테라피',
-        subTitle: '하루 1분, 손목에 톡톡 바르는 스트레스 완화',
-        icon: '🌿',
-        link: SERVICE_LINKS.parentHealing,
-      },
+      summary: '아이의 예민한 투정을 부모의 넓은 품으로 유연하게 감싸주는 조화예요!',
+      synergy: '부모의 차분한 기운이 아이의 날 선 감각을 부드럽게 식혀주어 마찰이 적습니다.',
+      solution: '아이가 투정을 부릴 땐 길고 복잡한 논리적 설득보다 따뜻한 눈맞춤과 가벼운 허그가 가장 빠르게 안정을 찾게 합니다.',
+      parentHealingItem: PARENT_HEALING_PRODUCTS.level2,
       desc: '부모의 차분한 기운이 아이의 투정을 유연하게 녹여줄 수 있는 평온하고 안정적인 육아 궁합입니다.',
     };
   } else {
@@ -598,17 +636,11 @@ const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): P
       badge: '찰떡 평화',
       icon: '🕊️',
       level: '최하 (무결점 찰떡 평화형)',
-      themeColor: 'from-emerald-500 to-teal-600',
       barColor: '#059669',
-      summary: '눈빛만 봐도 통하는 천생연분 평화 모드!',
-      synergy: '오행의 상생 흐름이 완벽하게 맞물려 육아 난이도가 가장 순탄한 최상의 조합입니다.',
-      solution: '작은 성취에도 엄지를 세워주며 부모의 신뢰를 말로 전해주는 것이 핵심입니다.',
-      parentHealingItem: {
-        title: '부부 페어링 프리미엄 스낵 컬렉션',
-        subTitle: '평화로운 육퇴 후 부부가 함께 즐기는 달콤한 보상',
-        icon: '🍪',
-        link: SERVICE_LINKS.parentHealing,
-      },
+      summary: '눈빛만 봐도 서로의 컨디션이 읽히는 환상의 평화 모드예요!',
+      synergy: '기질의 궁합이 완벽하게 맞물려 큰 갈등 없이 자연스럽고 순탄하게 하루가 흘러갑니다.',
+      solution: '평소 작은 행동에도 구체적인 칭찬과 지지를 아끼지 마시고, 부모의 확고한 신뢰를 다정한 말로 자주 표현해 주세요.',
+      parentHealingItem: PARENT_HEALING_PRODUCTS.level1,
       desc: '눈빛만 봐도 아이의 마음이 읽히는 환상의 조화예요! 큰 마찰 없이 순탄하게 육아를 이어갈 수 있습니다.',
     };
   }
@@ -644,10 +676,6 @@ export default function Home() {
   const [isParentMatchModalOpen, setIsParentMatchModalOpen] = useState(false);
   const [isAnalyzingParentMatch, setIsAnalyzingParentMatch] = useState(false);
   const [parentMatchCountdown, setParentMatchCountdown] = useState<number | null>(null);
-
-  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
-  const [leadEmail, setLeadEmail] = useState('');
-  const [leadSubmitted, setLeadSubmitted] = useState(false);
 
   const [pushSubscribed, setPushSubscribed] = useState(false);
 
@@ -721,12 +749,13 @@ export default function Home() {
     currentLocation: '도약기 폭풍 구간',
   });
 
-  const [potionData, setPotionData] = useState<PotionDetail & { color: string }>({
+  const [potionData, setPotionData] = useState<PotionDetail & { color: string; link?: string }>({
     title: '유기농 서양자두 푸룬·사과 퓨레',
     subTitle: '수(水)의 원활한 순환과 시원한 배변',
     tag: '쾌변 퓨레',
     color: '#1E293B',
     guide: '신장과 배설 순환을 도와 아기의 속을 시원하게 뚫어주고 정서적 안정감을 찾아주는 보라빛 포션이에요.',
+    link: SERVICE_LINKS.coupangDefault,
   });
 
   const todayGuide = getTodayElementGuide();
@@ -887,65 +916,47 @@ export default function Home() {
     }
   };
 
-  const handleShareKakao = () => {
-    trackEvent('click_share_kakao', 'Viral', '카카오톡 공유');
-    const shareTitle = `우리 집 육아 난이도: ${parentingDifficulty?.score || 85}점! [${parentingDifficulty?.level || '기질 분석'}]`;
-    const shareDesc = `${name || '아이'}와 부모의 사주 오행 궁합 및 실전 대화법을 확인해보세요.`;
+  const handleShareResult = async () => {
+    trackEvent('click_share_result', 'Viral', '육아 난이도 결과 공유');
+    const shareTitle = `우리 집 육아 난이도: ${parentingDifficulty?.score || 80}점! [${parentingDifficulty?.level || '기질 분석'}]`;
+    const shareDesc = `${name || '아이'}와 부모의 사주 오행 케미 및 실전 훈육 대화법을 확인해보세요 🍼`;
     const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://baby-sokpuli.vercel.app';
 
     if (typeof window !== 'undefined' && (window as any).Kakao && (window as any).Kakao.isInitialized()) {
-      (window as any).Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: shareTitle,
-          description: shareDesc,
-          imageUrl: 'https://baby-sokpuli.vercel.app/og-image.png',
-          link: {
-            mobileWebUrl: currentUrl,
-            webUrl: currentUrl,
+      try {
+        (window as any).Kakao.Share.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: shareTitle,
+            description: shareDesc,
+            imageUrl: 'https://baby-sokpuli.vercel.app/og-image.png',
+            link: {
+              mobileWebUrl: currentUrl,
+              webUrl: currentUrl,
+            },
           },
-        },
-      });
-    } else {
-      navigator.clipboard.writeText(`${shareTitle}\n${shareDesc}\n${currentUrl}`);
-      alert('결과 링크가 복사되었습니다! 카카오톡 대화방에 붙여넣어 공유해보세요 💌');
+        });
+        return;
+      } catch (e) {
+        console.error('카카오 공유 실패, 폴백 진행', e);
+      }
     }
-  };
-
-  const handleShareInstagramOrNative = async () => {
-    trackEvent('click_share_instagram', 'Viral', '인스타그램/네이티브 공유');
-    const shareData = {
-      title: '우리 아이 기질카드 & 육아 난이도 분석',
-      text: `${name || '우리 아이'}의 기질 분석 결과! 육아 난이도 ${parentingDifficulty?.score || 85}점 🍼`,
-      url: typeof window !== 'undefined' ? window.location.href : 'https://baby-sokpuli.vercel.app',
-    };
 
     if (navigator.share) {
       try {
-        await navigator.share(shareData);
+        await navigator.share({
+          title: shareTitle,
+          text: shareDesc,
+          url: currentUrl,
+        });
+        return;
       } catch (err) {
         console.log('공유 취소됨');
       }
-    } else {
-      navigator.clipboard.writeText(shareData.url);
-      alert('링크가 복사되었습니다! 인스타그램 스토리나 피드에 링크 스티커로 공유해보세요 ✨');
     }
-  };
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!leadEmail || !leadEmail.includes('@')) {
-      alert('올바른 이메일 주소를 입력해주세요.');
-      return;
-    }
-    trackEvent('submit_lead_email', 'Conversion', '상세 대화 스크립트 신청');
-    setLeadSubmitted(true);
-    setTimeout(() => {
-      setIsLeadModalOpen(false);
-      setLeadSubmitted(false);
-      setLeadEmail('');
-      alert('신청이 완료되었습니다! 정식 리포트 발행 시 가장 먼저 무료로 보내드릴게요 🎁');
-    }, 1500);
+    navigator.clipboard.writeText(`${shareTitle}\n${shareDesc}\n${currentUrl}`);
+    alert('결과 링크가 복사되었습니다! 카카오톡 대화방이나 인스타에 붙여넣어 공유해보세요 💌');
   };
 
   const runAdaptiveEngine = (bDateStr: string, dDateStr: string) => {
@@ -1097,9 +1108,14 @@ export default function Home() {
 
     const elementKey = cheongan.elementKey;
     const selectedPotion = POTION_MATRIX[elementKey][calculatedAgeMode];
+    
+    // 🌟 [3] 오행별/월령별 맞춤 충전 아이템 쿠팡 링크 자동 매칭
+    const linkedPotionUrl = BABY_POTION_LINKS[elementKey][calculatedAgeMode] || SERVICE_LINKS.coupangDefault;
+
     setPotionData({
       ...selectedPotion,
       color: cheongan.mainColor,
+      link: linkedPotionUrl,
     });
 
     const weather = calculateTodayBabyWeather(elementKey);
@@ -1605,7 +1621,7 @@ export default function Home() {
                   }`}
                 />
                 <p className="text-xs text-slate-500 leading-relaxed pt-0.5">
-                  ※ 원더윅스 급성장기 도약기는 실제 출생일이 아닌 <b>수정일(출산 예정일)</b>을 기준으로 뇌 신경망 성장을 정확하게 분석합니다.
+                  ※ 원더윅스 급성장기 도약기는 실제 출생일이 아닌 <b>수정일(출산 예정일)</b>을 기준으로 뇌 신경망 성장을 정확하게 분석합니다. 예정일을 모르는 경우 비워두셔도 됩니다.
                 </p>
                 {errors.dueDate && (
                   <p className="text-xs sm:text-sm font-semibold text-rose-600 mt-1 break-keep">⚠️ {errors.dueDate}</p>
@@ -1623,7 +1639,6 @@ export default function Home() {
                 <span>✨ 우리 아이 기질카드 뽑아보기</span>
               </button>
 
-              {/* 랜딩 페이지: 부모-자녀 기질 궁합 분석 배너 */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
@@ -1642,7 +1657,6 @@ export default function Home() {
                 </span>
               </div>
 
-              {/* 랜딩 페이지: 사주 오행 판결소 배너 */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_court', 'Engagement', '오행판결소 모달 오픈');
@@ -1651,7 +1665,7 @@ export default function Home() {
                 className="w-full p-4.5 rounded-2xl bg-slate-900 text-white shadow-sm cursor-pointer hover:bg-slate-800 transition-all flex items-center justify-between"
               >
                 <div className="break-keep space-y-0.5">
-                  <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+                  <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest block">
                     FIVE ELEMENTS COURT
                   </span>
                   <div className="text-xs sm:text-sm font-black">오늘의 육아 당번 뽑기 (오행 판결소)</div>
@@ -1668,7 +1682,6 @@ export default function Home() {
         {step === 'result' && (
           <div className="space-y-6 pb-4 pt-1">
             
-            {/* 기질 카드 영역 */}
             <div
               ref={cardRef}
               className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden border border-slate-200 space-y-4"
@@ -1691,7 +1704,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 캐릭터 일러스트 영역 */}
               <BabyAnimalHybridMascot
                 cheonganIndex={characterCheonganIndex}
                 animalIndex={characterAnimalIndex}
@@ -1709,9 +1721,8 @@ export default function Home() {
                 &ldquo;{oneLineSummary}&rdquo;
               </div>
 
-              {/* 부모 기질 비교 및 육아 난이도 진단 결과 요약 */}
               {parentingDifficulty && (
-                <div className="w-full p-4 rounded-2xl border text-left space-y-2 bg-slate-50 border-slate-200 shadow-2xs break-keep">
+                <div className="w-full p-4.5 rounded-2xl border text-left space-y-2 bg-slate-50 border-slate-200 shadow-2xs break-keep">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-black uppercase tracking-wider text-slate-700">
                       부모-자녀 기질 비교 및 육아 난이도
@@ -1730,7 +1741,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* 기질 영역 스탯 바 */}
               <div className="w-full space-y-4 bg-slate-50/80 rounded-2xl p-4 text-left border border-slate-200/80 shadow-2xs">
                 <div className="text-sm sm:text-base font-black text-slate-900 pb-1.5 border-b border-slate-200">
                   우리 아이 핵심 기질 성향 분석
@@ -1790,7 +1800,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 기질 카드 저장 버튼 (인스타 인증 안내 포함) */}
             <div className="space-y-1.5">
               <button
                 onClick={handleDownloadCard}
@@ -1807,30 +1816,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 바이럴 공유 버튼 그룹 (카카오톡 + 링크 복사) */}
-            <div className="grid grid-cols-2 gap-2.5">
-              <button
-                onClick={handleShareKakao}
-                className="py-3.5 px-3 bg-[#FEE500] hover:bg-[#FADA0A] text-[#191919] font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 active:scale-95"
-              >
-                <span>💬</span>
-                <span>카카오톡 공유</span>
-              </button>
-              <button
-                onClick={() => {
-                  trackEvent('click_copy_link', 'Viral', '결과 링크 복사');
-                  const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://baby-sokpuli.vercel.app';
-                  navigator.clipboard.writeText(shareUrl);
-                  alert('결과 링크가 복사되었습니다! 원하는 대화방이나 커뮤니티에 붙여넣어 보세요 💌');
-                }}
-                className="py-3.5 px-3 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 active:scale-95"
-              >
-                <span>🔗</span>
-                <span>링크 복사</span>
-              </button>
-            </div>
-
-            {/* 부모 & 자녀 기질 궁합 진단 버튼 */}
             <div 
               onClick={() => {
                 trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
@@ -1849,7 +1834,6 @@ export default function Home() {
               </span>
             </div>
 
-            {/* 오늘의 성장 노트 통합 대시보드 */}
             <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm text-slate-900 space-y-6 border border-slate-200">
               
               <div className="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -1866,7 +1850,6 @@ export default function Home() {
                 </span>
               </div>
 
-              {/* 1. 원더윅스 분석 카드 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex items-center justify-between">
                   <span className="text-sm sm:text-base font-black text-slate-900">
@@ -1914,7 +1897,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* 시점별 웹 알림 구독 CTA */}
                 <div className="p-3 bg-indigo-50/60 border border-indigo-100 rounded-xl flex items-center justify-between">
                   <div className="text-xs font-bold text-indigo-950">
                     🔔 다음 발달 도약기 시작일에 알림 받기
@@ -1932,7 +1914,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 2. 오늘의 육아 날씨 카드 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
                   <span className="text-sm sm:text-base font-black text-slate-900">
@@ -1963,7 +1944,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 3. 우리 아이 기질 맞춤 충전 아이템 */}
+              {/* 🌟 [아이 기질 맞춤 충전 아이템 영역 - 오행/월령별 쿠팡 파트너스 링크 연동] */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
                   <span className="text-sm sm:text-base font-black text-slate-900 break-keep">
@@ -1995,13 +1976,13 @@ export default function Home() {
 
                 <div className="pt-2 space-y-1.5">
                   <a
-                    href={SERVICE_LINKS.coupangDefault}
+                    href={potionData.link || SERVICE_LINKS.coupangDefault}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackEvent('click_coupang', 'Monetization', '성장노트 충전템 쿠팡 클릭')}
                     className="block w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl text-center transition-all shadow-2xs"
                   >
-                    🛒 최저가 보기
+                    🛒 추천 보기
                   </a>
                   <p className="text-[10px] text-slate-400 font-medium text-center leading-tight">
                     ※ 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
@@ -2011,7 +1992,6 @@ export default function Home() {
 
             </div>
 
-            {/* AI 분석 서비스 티저 */}
             <div 
               onClick={() => {
                 trackEvent('click_ai_teaser', 'Engagement', 'AI 심층보고서 티저 클릭');
@@ -2036,7 +2016,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 오행 판결소 배너 */}
             <div className="rounded-3xl border border-slate-900 bg-slate-900 p-5 text-center text-white shadow-sm relative overflow-hidden">
               <div className="inline-block bg-amber-400 text-slate-950 text-xs font-extrabold px-3.5 py-1 rounded-full mb-2.5 uppercase tracking-wider">
                 ⚖️ FIVE ELEMENTS COURT
@@ -2060,7 +2039,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* 하단 푸터 버튼 */}
             <div className="pt-2 space-y-3">
               <button
                 onClick={() => {
@@ -2087,7 +2065,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* AI 분석 서비스 목차 모달 */}
         {isAiReportModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
@@ -2133,23 +2110,22 @@ export default function Home() {
           </div>
         )}
 
-        {/* 부모-자녀 기질 비교 진단 모달 */}
         {isParentMatchModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
               
-              <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
                 <div>
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">
                     PARENT-CHILD MATCHING
                   </span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 break-keep">
                     부모 & 자녀 기질 기반 육아 난이도 측정
                   </h3>
                 </div>
                 <button
                   onClick={() => setIsParentMatchModalOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-700 flex items-center justify-center hover:bg-slate-200"
+                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 flex items-center justify-center hover:bg-slate-200"
                 >
                   ✕
                 </button>
@@ -2233,30 +2209,31 @@ export default function Home() {
                 </form>
               ) : (
                 <div className="space-y-4 text-left animate-fadeIn">
-                  <div className="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 shadow-xl space-y-4 relative overflow-hidden">
+                  
+                  <div className="bg-slate-50 p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
                     
                     <div className="flex justify-between items-start">
                       <div className="flex items-center space-x-2.5">
-                        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl shadow-inner border border-white/15">
+                        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-xl shadow-2xs border border-slate-200">
                           {parentingDifficulty.icon}
                         </div>
                         <div>
-                          <span className="text-[10px] font-black tracking-widest text-amber-400 uppercase">
+                          <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase">
                             {parentingDifficulty.grade} · {parentingDifficulty.badge}
                           </span>
-                          <h4 className="text-base sm:text-lg font-black text-white">
+                          <h4 className="text-base sm:text-lg font-black text-slate-900">
                             {parentingDifficulty.level}
                           </h4>
                         </div>
                       </div>
                       <div className="text-right font-mono">
-                        <div className="text-[11px] text-slate-400 font-bold">난이도 지수</div>
-                        <div className="text-2xl font-black text-amber-400">{parentingDifficulty.score}<span className="text-xs text-white/60">/100</span></div>
+                        <div className="text-[11px] text-slate-500 font-bold">난이도 지수</div>
+                        <div className="text-2xl font-black text-slate-900">{parentingDifficulty.score}<span className="text-xs text-slate-400">/100</span></div>
                       </div>
                     </div>
 
-                    <div className="space-y-1 pt-1">
-                      <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden p-0.5">
+                    <div className="space-y-1 pt-0.5">
+                      <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden p-0.5">
                         <div
                           className="h-full rounded-full transition-all duration-700 shadow-xs"
                           style={{ width: `${parentingDifficulty.score}%`, backgroundColor: parentingDifficulty.barColor }}
@@ -2268,65 +2245,68 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="space-y-2.5 pt-2 text-xs sm:text-sm">
-                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1">
-                        <div className="font-extrabold text-amber-300">📌 핵심 케미스트리</div>
-                        <div className="text-slate-200 font-medium leading-relaxed">{parentingDifficulty.summary}</div>
-                      </div>
-
-                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1">
-                        <div className="font-extrabold text-sky-300">⚡ 상호 작용 (시너지)</div>
-                        <div className="text-slate-300 font-normal leading-relaxed">{parentingDifficulty.synergy}</div>
-                      </div>
-
-                      <div className="p-3 bg-white/5 rounded-xl border border-white/10 space-y-2 relative overflow-hidden">
-                        <div className="flex justify-between items-center">
-                          <div className="font-extrabold text-emerald-300">💡 실전 훈육 대화 스크립트</div>
-                          <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">무료 미리보기</span>
+                    <div className="space-y-2.5 pt-1 text-xs sm:text-sm">
+                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1 shadow-2xs">
+                        <div className="font-extrabold text-amber-700 flex items-center space-x-1">
+                          <span>📌</span><span>핵심 케미스트리</span>
                         </div>
-                        <div className="text-slate-300 font-normal leading-relaxed">
+                        <div className="text-slate-800 font-semibold leading-relaxed">{parentingDifficulty.summary}</div>
+                      </div>
+
+                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1 shadow-2xs">
+                        <div className="font-extrabold text-sky-700 flex items-center space-x-1">
+                          <span>⚡</span><span>상호 작용 (시너지)</span>
+                        </div>
+                        <div className="text-slate-700 font-medium leading-relaxed">{parentingDifficulty.synergy}</div>
+                      </div>
+
+                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1.5 shadow-2xs">
+                        <div className="flex justify-between items-center">
+                          <div className="font-extrabold text-emerald-700 flex items-center space-x-1">
+                            <span>💡</span><span>실전 훈육 대화 스크립트</span>
+                          </div>
+                          <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md font-bold">전체 공개</span>
+                        </div>
+                        <div className="text-slate-700 font-medium leading-relaxed break-keep bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                           {parentingDifficulty.solution}
                         </div>
-                        <div className="relative pt-1">
-                          <div className="blur-xs select-none text-slate-400 text-xs">
-                            그 다음 아이가 다시 떼를 쓰면 눈높이를 맞추고 손을 가볍게 잡은 뒤 &ldquo;네가 하고 싶은 건 알지만 지금은 규칙 시간이야&rdquo;라고 차분하게...
-                          </div>
-                          <div className="absolute inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-2xs rounded-lg">
-                            <button
-                              onClick={() => setIsLeadModalOpen(true)}
-                              className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black rounded-lg shadow-sm transition-all"
-                            >
-                              전체 대화 스크립트 무료 받기 🔓
-                            </button>
-                          </div>
-                        </div>
                       </div>
 
-                      <div className="p-3.5 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-transparent rounded-xl border border-amber-400/30 flex items-center justify-between">
+                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                         <div className="flex items-center space-x-2.5">
-                          <span className="text-2xl">{parentingDifficulty.parentHealingItem.icon}</span>
-                          <div>
-                            <div className="text-xs font-bold text-amber-200">오늘 고생한 부모를 위한 충전 템</div>
-                            <div className="text-xs sm:text-sm font-black text-white">{parentingDifficulty.parentHealingItem.title}</div>
+                          <span className="text-2xl flex-shrink-0">{parentingDifficulty.parentHealingItem.icon}</span>
+                          <div className="break-keep">
+                            <div className="text-[11px] font-bold text-amber-700">고생한 부모를 위한 충전템</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900 mt-0.5">{parentingDifficulty.parentHealingItem.title}</div>
+                            <div className="text-[10px] text-slate-500">{parentingDifficulty.parentHealingItem.subTitle}</div>
                           </div>
                         </div>
                         <a
                           href={parentingDifficulty.parentHealingItem.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-3 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-black whitespace-nowrap shadow-xs"
+                          className="w-full sm:w-auto px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold text-center whitespace-nowrap shadow-xs"
                         >
-                          힐링템 보기
+                          추천 보기
                         </a>
                       </div>
+
                     </div>
                   </div>
+
+                  <button
+                    onClick={handleShareResult}
+                    className="w-full py-3.5 bg-[#FEE500] hover:bg-[#FADA0A] text-[#191919] font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 active:scale-[0.99]"
+                  >
+                    <span>💬</span>
+                    <span>결과 공유하기 (카톡 / 링크)</span>
+                  </button>
 
                   <button
                     onClick={() => setIsParentMatchModalOpen(false)}
                     className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
                   >
-                    진단 결과 확인 완료 / 닫기
+                    진단 결과 확인 완료
                   </button>
                 </div>
               )}
@@ -2334,53 +2314,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* 실전 대화 스크립트 이메일 리드 수집 모달 */}
-        {isLeadModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
-            <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-slate-900 space-y-4 shadow-2xl text-left">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-black text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
-                  FREE SCRIPT REPORT
-                </span>
-                <button
-                  onClick={() => setIsLeadModalOpen(false)}
-                  className="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-xs font-bold text-slate-600"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-1">
-                <h4 className="text-base font-black text-slate-900">
-                  기질별 맞춤 대화 스크립트 전체본 받기
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  남매 아빠가 직접 작성한 <b>상황별 훈육 대화 예시 10선 PDF</b>를 이메일로 가장 먼저 무료 발송해 드립니다.
-                </p>
-              </div>
-
-              <form onSubmit={handleLeadSubmit} className="space-y-3 pt-1">
-                <input
-                  type="email"
-                  required
-                  placeholder="리포트 받으실 이메일 주소"
-                  value={leadEmail}
-                  onChange={(e) => setLeadEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold focus:outline-none focus:border-slate-800"
-                />
-                <button
-                  type="submit"
-                  disabled={leadSubmitted}
-                  className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-xs"
-                >
-                  {leadSubmitted ? '발송 예약 완료!' : '무료 리포트 신청하기 ✨'}
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* 오행 판결소 모달 */}
         {isChemiModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-gradient-to-b from-amber-950 via-slate-900 to-indigo-950 rounded-t-3xl sm:rounded-3xl border-2 border-amber-500/50 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
@@ -2448,7 +2381,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* 애드센스 대기 전 스폰서드 뷰 */}
                   <div className="w-full p-4 bg-gradient-to-br from-slate-900 to-slate-950 border border-amber-400/40 rounded-2xl text-left text-white space-y-2.5 shadow-md">
                     <div className="flex justify-between items-center">
                       <span className="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest">
@@ -2555,7 +2487,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* 패밀리 라운지 모달 */}
         {isLoungeOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
@@ -2577,7 +2508,6 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* 카카오뱅크 후원 영역 */}
               <div className="bg-gradient-to-br from-amber-500/10 via-rose-500/10 to-amber-500/5 border border-amber-400/50 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
@@ -2618,7 +2548,6 @@ export default function Home() {
                 )}
               </div>
 
-              {/* 유튜브 채널 바로가기 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
                 <div className="flex items-center space-x-2">
                   <span className="w-6 h-6 bg-red-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">
@@ -2642,7 +2571,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* 인스타그램 DM 문의 버튼 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
                 <div className="flex items-center space-x-2">
                   <span className="w-6 h-6 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">
@@ -2676,7 +2604,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* 사파리 이미지 저장 모달 */}
         {iosSavedImageUrl && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
             <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-center space-y-4 shadow-2xl">
