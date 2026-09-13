@@ -1632,7 +1632,7 @@ export default function Home() {
                   }`}
                 />
                 <p className="text-xs text-slate-500 leading-relaxed pt-0.5">
-                  ※ 원더윅스 급성장기 도약기는 실제 출생일이 아닌 <b>수정일(출산 예정일)</b>을 기준으로 뇌 신경망 성장을 정확하게 분석합니다. 예정일을 모르는 경우 비워두셔도 됩니다.
+                ※ 원더윅스 도약기는 아기가 엄마 배 속에서부터 자란 기간을 고려해, 출생일 대신 <b>출산 예정일</b>을 기준으로 계산합니다. (모르시면 비워두셔도 괜찮아요)
                 </p>
                 {errors.dueDate && (
                   <p className="text-xs sm:text-sm font-semibold text-rose-600 mt-1 break-keep">⚠️ {errors.dueDate}</p>
