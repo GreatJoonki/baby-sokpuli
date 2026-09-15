@@ -925,6 +925,7 @@ export default function Home() {
   const [isDownloadingParentMatch, setIsDownloadingParentMatch] = useState(false);
 
   const [pushSubscribed, setPushSubscribed] = useState(false);
+  const [tarotPushSubscribed, setTarotPushSubscribed] = useState(false);
 
   const parentMatchIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const parentMatchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -1077,6 +1078,7 @@ export default function Home() {
     }
     if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
       setPushSubscribed(true);
+      setTarotPushSubscribed(true);
     }
   }, []);
 
@@ -1085,17 +1087,23 @@ export default function Home() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
 
-  // 🌟 타로 데이터 캐시 호환 로더 (이전 name 속성 파싱 지원)
-  const handleOpenTarotModal = () => {
+  // 🌟 아이별 독립 타로 캐시 키 생성기
+  const getTarotStorageKey = (profileId: string | null) => {
     const todayStr = getTodayDateString();
-    const cachedTarot = localStorage.getItem(`daily_tarot_${todayStr}`);
+    const targetId = profileId || (name.trim() ? `child_${name.trim()}` : 'guest_child');
+    return `daily_tarot_${todayStr}_${targetId}`;
+  };
+
+  // 🌟 타로 모달 열기: 현재 선택된 아이 기준으로 격리 조회
+  const handleOpenTarotModal = () => {
+    const storageKey = getTarotStorageKey(activeProfileId);
+    const cachedTarot = localStorage.getItem(storageKey);
     setTarotImgError(false);
 
     if (cachedTarot) {
       try {
         const parsed = JSON.parse(cachedTarot);
         if (parsed) {
-          // 구버전 name 속성 호환 처리
           if (!parsed.korTitle && parsed.name) {
             const raw = parsed.name as string;
             const parts = raw.split('(');
@@ -1117,6 +1125,7 @@ export default function Home() {
     setIsTarotModalOpen(true);
   };
 
+  // 🌟 타로 카드 선택 및 저장: 현재 선택된 아이 전용 키에 보존
   const handleSelectTarotCard = (cardIdx: number) => {
     if (isTarotRevealed || isTarotAnalyzing) return;
 
@@ -1143,8 +1152,8 @@ export default function Home() {
       setIsTarotRevealed(true);
       setTarotCountdown(null);
 
-      const todayStr = getTodayDateString();
-      localStorage.setItem(`daily_tarot_${todayStr}`, JSON.stringify(chosen));
+      const storageKey = getTarotStorageKey(activeProfileId);
+      localStorage.setItem(storageKey, JSON.stringify(chosen));
     }, 15000);
   };
 
@@ -1184,14 +1193,21 @@ export default function Home() {
     setDueDate(profile.dueDate);
   };
 
+  // 🌟 아이 탭 선택 시 타로 상태 초기화 연동
   const handleSelectChild = (profile: BabyProfile) => {
     setActiveProfileId(profile.id);
     applyProfileToState(profile);
     runAdaptiveEngine(profile.birthDate, profile.dueDate);
+
+    setTarotSelectedCard(null);
+    setIsTarotRevealed(false);
+    setIsTarotAnalyzing(false);
+
     setStep('result');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // 🌟 다른 아이 추가 시 타로 상태 초기화 연동
   const handleAddNewChild = () => {
     setActiveProfileId(null);
     setName('');
@@ -1201,6 +1217,11 @@ export default function Home() {
     setIsUnknownTime(false);
     setDueDate('');
     setErrors({});
+
+    setTarotSelectedCard(null);
+    setIsTarotRevealed(false);
+    setIsTarotAnalyzing(false);
+
     setStep('form');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1241,6 +1262,30 @@ export default function Home() {
         trackEvent('subscribe_web_push', 'Engagement', '성장 알림 구독 완료');
         new Notification('아기속풀이 성장 알림이 켜졌어요!', {
           body: `${name || '아이'}의 다음 도약기 D-Day와 매일 자정 육아 날씨를 배달해 드릴게요 💌`,
+          icon: '/favicon.ico',
+        });
+      } else {
+        alert('알림 권한이 차단되어 있습니다. 브라우저 설정에서 알림을 허용해주세요.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('알림 등록 중 일시적인 오류가 발생했습니다.');
+    }
+  };
+
+  // 🌟 매일 자정 타로 갱신 알림 구독 핸들러
+  const handleSubscribeTarotPush = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) {
+      alert('현재 브라우저는 웹 알림 기능을 지원하지 않습니다.');
+      return;
+    }
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        setTarotPushSubscribed(true);
+        trackEvent('subscribe_tarot_push', 'Engagement', '타로 갱신 알림 구독 완료');
+        new Notification('🔮 육아 타로 운세 알림이 등록되었습니다!', {
+          body: `매일 자정 새로운 우주의 기운과 ${name || '우리 아이'}의 속마음 카드를 배달해 드릴게요 ✨`,
           icon: '/favicon.ico',
         });
       } else {
@@ -1755,7 +1800,6 @@ export default function Home() {
     );
   }
 
-  // 동적 아기 이름 파싱
   const babyDisplayName = name.trim() ? `${name.trim()}의` : '우리 아이의';
 
   return (
@@ -1790,7 +1834,7 @@ export default function Home() {
           </p>
         </header>
 
-        {/* 🌟 1. 끊김 없는 완벽한 무한 롤링 티커 배너 (2벌 100% 미러링) */}
+        {/* 🌟 1. 끊김 없는 무한 롤링 티커 배너 (2벌 100% 미러링) */}
         <div className="mb-4 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
           <div className="animate-ticker-marquee flex items-center text-xs sm:text-sm font-semibold text-slate-600 select-none">
             
@@ -1813,7 +1857,7 @@ export default function Home() {
               <span className="text-slate-300">✦</span>
             </div>
 
-            {/* 세트 2 (루프 연결용 완전 복제) */}
+            {/* 세트 2 */}
             <div className="inline-flex items-center space-x-8 pr-8">
               <span className="flex items-center space-x-1.5">
                 <span>💌</span>
@@ -2021,7 +2065,7 @@ export default function Home() {
 
             </div>
 
-            {/* 🌟 2. 메인 3종 배너 (아이콘 위치 수정 & 버튼 너비/폰트 완전 일치) */}
+            {/* 🌟 2. 메인 3종 배너 (디자인 시스템 & 버튼 규격 완전 일치) */}
             <div className="pt-3 pb-1 space-y-3">
               <button
                 type="submit"
@@ -2031,7 +2075,7 @@ export default function Home() {
                 <span>✨ 우리 아이 기질카드 뽑아보기</span>
               </button>
 
-              {/* [배너 1] 오늘의 육아 타로 배너 (서브타이틀 앞으로 아이콘 이동 & 버튼명/규격 통일) */}
+              {/* [배너 1] 오늘의 육아 타로 배너 */}
               <div
                 onClick={() => {
                   trackEvent('click_open_tarot', 'Engagement', '메인 오늘의 육아 타로 배너 클릭');
@@ -2056,7 +2100,7 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* [배너 2] 육아 난이도 배너 (버튼 너비/폰트 일치) */}
+              {/* [배너 2] 육아 난이도 배너 */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
@@ -2081,7 +2125,7 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* [배너 3] 오행 판결소 배너 (버튼 너비/폰트 일치) */}
+              {/* [배너 3] 오행 판결소 배너 */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_court', 'Engagement', '오행판결소 모달 오픈');
@@ -2541,7 +2585,7 @@ export default function Home() {
         )}
 
         {/* ======================================================= */}
-        {/* 🔮 3. 타로 카드 선택 및 결과 모달 (타이틀 100% 호환 보장 & 확인 완료 버튼) */}
+        {/* 🔮 3. 타로 모달 (다자녀 분리 & 자정 갱신 알림 기능 탑재) */}
         {/* ======================================================= */}
         {isTarotModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
@@ -2634,9 +2678,8 @@ export default function Home() {
                   </p>
                 </div>
               ) : (
-                /* 🌟 타로 결과 화면 (구버전 캐시 100% 방어 & 와이드 골드 베젤 프레임) */
+                /* 🌟 타로 결과 화면 */
                 tarotSelectedCard && (() => {
-                  // 구버전/신버전 타이틀 호환 추출
                   const displayKorTitle = tarotSelectedCard.korTitle || tarotSelectedCard.name?.split('(')[0]?.trim() || '18. 돌고래 샤우팅';
                   const displayEngSub = tarotSelectedCard.engSub || tarotSelectedCard.name?.split('(')[1]?.replace(')', '').trim() || 'The Judgment';
 
@@ -2649,7 +2692,7 @@ export default function Home() {
                         </span>
                       </div>
 
-                      {/* 🌟 럭셔리 와이드 골드 타로 카드 액자 🌟 */}
+                      {/* 럭셔리 와이드 골드 타로 카드 액자 */}
                       <div className="relative w-64 mx-auto rounded-2xl p-[3px] bg-gradient-to-b from-[#F7E5A9] via-[#AA7922] to-[#E3BE63] shadow-[0_12px_35px_rgba(0,0,0,0.85)]">
                         <div className="relative w-full rounded-[13px] bg-[#070B16] p-3 flex flex-col items-center border border-[#FFE799]/40 overflow-hidden">
                           
@@ -2679,7 +2722,7 @@ export default function Home() {
                             )}
                           </div>
 
-                          {/* 🌟 2단 분리 타이틀 (호환 처리 완료) */}
+                          {/* 2단 분리 타이틀 */}
                           <div className="w-full mt-2.5 pt-2 border-t border-[#D4AF37]/30 flex flex-col items-center">
                             <span className="text-sm sm:text-base font-extrabold text-[#FFEAA7] tracking-tight">
                               {displayKorTitle}
@@ -2717,7 +2760,31 @@ export default function Home() {
                         🌙 오늘 밤 난이도: {tarotSelectedCard.nightDifficulty}
                       </div>
 
-                      {/* 하단 확인 버튼 명칭 수정 */}
+                      {/* 🌟 신규: 매일 자정 타로 갱신 알림 신청 박스 */}
+                      <div className="p-3.5 bg-indigo-950/60 border border-indigo-400/40 rounded-2xl flex items-center justify-between shadow-inner">
+                        <div className="text-left space-y-0.5">
+                          <div className="text-xs font-bold text-amber-300 flex items-center space-x-1">
+                            <span>🔔</span>
+                            <span>매일 자정 타로 갱신 알림</span>
+                          </div>
+                          <div className="text-[11px] text-slate-300">
+                            내일 밤 통잠 운세도 놓치지 마세요!
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleSubscribeTarotPush}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all shadow-xs flex-shrink-0 ${
+                            tarotPushSubscribed
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white animate-pulse'
+                          }`}
+                        >
+                          {tarotPushSubscribed ? '✓ 알림 켜짐' : '알림 받기'}
+                        </button>
+                      </div>
+
+                      {/* 하단 확인 버튼 */}
                       <button
                         onClick={handleCloseTarotModal}
                         className="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-110 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-md break-keep"
