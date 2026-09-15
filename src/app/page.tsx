@@ -89,6 +89,236 @@ const DONATION_CONFIG = {
   holderName: '김준기',
 };
 
+// 🔮 [3] 12간지 세계관 완벽 통일 육아 타로 카드 21장 전체 데이터
+interface TarotCardItem {
+  id: number;
+  image: string;
+  name: string;
+  animal: string;
+  keyword: string;
+  babyVoice: string;
+  prescription: string;
+  nightDifficulty: string;
+}
+
+const TAROT_CARDS_DATA: TarotCardItem[] = [
+  // [수면 / 밤잠 축]
+  {
+    id: 1,
+    image: '/tarot_cards_clay/01_peaceful_sleep.png',
+    name: '01. 통잠의 축복 (The Slumber)',
+    animal: '돼지',
+    keyword: '수면의 평화',
+    babyVoice: '오늘따라 달님 베개가 너무 포근해... 통잠 자줄 테니 둘 다 푹 쉬어 😴',
+    prescription: '넷플릭스 켜고 야식 시키세요. 오늘은 온 우주가 돕는 합법적 자유의 밤입니다.',
+    nightDifficulty: '최하 (로또 맞은 날)',
+  },
+  {
+    id: 2,
+    image: '/tarot_cards_clay/02_back_sensor.png',
+    name: '02. 등센서의 경고 (The Sensor)',
+    animal: '강아지',
+    keyword: '밀착 육아',
+    babyVoice: '바닥 매트리스에 등 닿는 순간 비상벨 울린다? 절대 내려놓지 마!',
+    prescription: '눕히기보단 아기띠를 차고 한 몸이 되는 것이 부모의 정신건강에 이롭습니다.',
+    nightDifficulty: '상 (팔근육 단련의 날)',
+  },
+  {
+    id: 3,
+    image: '/tarot_cards_clay/03_midnight_party.png',
+    name: '03. 새벽의 파티피플 (The Party)',
+    animal: '강아지',
+    keyword: '밤샘 각성',
+    babyVoice: '엄마 아빠 왜 자? 디스코볼 켜졌는데 이제부터가 진짜 본게임이야 일어나!',
+    prescription: '조명을 절대 켜지 마시고, 말도 걸지 않는 무반응 침묵 육아로 대응하세요.',
+    nightDifficulty: '극상 (새벽 3시 각성 주의)',
+  },
+  {
+    id: 4,
+    image: '/tarot_cards_clay/04_micro_nap.png',
+    name: '04. 15분 칼낮잠 (The Micro-Nap)',
+    animal: '양',
+    keyword: '얕은 수면',
+    babyVoice: '15분 딱 눈 감았더니 배터리 100% 충전 완료! 다시 출동하자!',
+    prescription: '커피 한 모금 마실 틈도 없습니다. 빠르게 육아 교대를 신청하세요.',
+    nightDifficulty: '중 (낮 동안 체력 방전 필요)',
+  },
+  {
+    id: 5,
+    image: '/tarot_cards_clay/05_crib_escape.png',
+    name: '05. 탈출 본능 (The Escape)',
+    animal: '원숭이',
+    keyword: '대근육 폭발',
+    babyVoice: '날 가두지 마라! 이 난간만 넘으면 넓은 거실 월드가 펼쳐진다!',
+    prescription: '침대 주변 낙상 위험 요소와 단단한 가드를 최우선으로 점검해 주세요.',
+    nightDifficulty: '중상 (시야 고정보조 필요)',
+  },
+  {
+    id: 6,
+    image: '/tarot_cards_clay/06_dawn_wake.png',
+    name: '06. 새벽 5시 모닝콜 (The Early Bird)',
+    animal: '닭',
+    keyword: '일출 기상',
+    babyVoice: '꼬끼오! 일찍 일어나는 새가 먼저 모이를 먹는대! 얼른 일어나서 놀자!',
+    prescription: '암막 커튼 틈새로 새는 빛을 완벽히 차단하고 밤잠 시간을 30분 늦춰보세요.',
+    nightDifficulty: '중 (부모 수면 부족 주의)',
+  },
+  {
+    id: 7,
+    image: '/tarot_cards_clay/07_deep_slumber.png',
+    name: '07. 구름떡 기절 숙면 (The Coma)',
+    animal: '소',
+    keyword: '완벽 방전',
+    babyVoice: '구름 이불에 싸여서 숨소리만 색색 내며 잘 테니까 푹 쉬어...',
+    prescription: '작은 소음에도 깨지 않는 날입니다. 밀린 집안일을 편안히 해치우세요.',
+    nightDifficulty: '최하 (평화로운 고요)',
+  },
+
+  // [수유 / 식사 / 컨디션 축]
+  {
+    id: 8,
+    image: '/tarot_cards_clay/08_teething_cranky.png',
+    name: '08. 이앓이 몬스터 (The Teething)',
+    animal: '토끼',
+    keyword: '잇몸 열감',
+    babyVoice: '잇몸이 간지럽고 욱신거려! 뭐든 입에 다 넣고 깨물어 버릴 거야!',
+    prescription: '냉장고에 시원하게 넣어둔 쿨링 치발기를 물려주는 것이 최고의 명약입니다.',
+    nightDifficulty: '상 (이유 없는 칭얼거림)',
+  },
+  {
+    id: 9,
+    image: '/tarot_cards_clay/09_wonder_weeks.png',
+    name: '09. 원더윅스 타워 (The Tower)',
+    animal: '용',
+    keyword: '도약의 폭풍',
+    babyVoice: '나도 내 뇌가 왜 이러는지 몰라! 세상이 너무 넓어져서 다 서러워 😭',
+    prescription: '지능이 급성장하며 겪는 과부하입니다. 훈육 대신 넓은 포옹을 건네주세요.',
+    nightDifficulty: '극상 (부모 멘탈 관리 필수)',
+  },
+  {
+    id: 10,
+    image: '/tarot_cards_clay/10_milk_drunk.png',
+    name: '10. 배부른 만수르 (The Feast)',
+    animal: '돼지',
+    keyword: '포만감 만족',
+    babyVoice: '맘마 원샷 때리고 배 빵빵하니 기분 최고야! 아무것도 안 부러워.',
+    prescription: '시원하게 트림만 잘 시켜주면 오늘 반나절은 매우 순둥순둥 모드입니다.',
+    nightDifficulty: '하 (수유 성공적)',
+  },
+  {
+    id: 11,
+    image: '/tarot_cards_clay/11_food_strike.png',
+    name: '11. 단식 투쟁가 (The Strike)',
+    animal: '닭',
+    keyword: '식사 거부',
+    babyVoice: '이유식 숟가락 치워! 입 꾹 닫고 고개 휙 돌려버릴 거야!',
+    prescription: '억지로 먹이지 말고 과감히 식판을 치우세요. 굶주림이 다음 끼니의 최고의 반찬입니다.',
+    nightDifficulty: '중 (부모 속터짐 주의)',
+  },
+  {
+    id: 12,
+    image: '/tarot_cards_clay/12_belly_discomfort.png',
+    name: '12. 배앓이 주의보 (The Gas)',
+    animal: '양',
+    keyword: '복부 팽만',
+    babyVoice: '뱃속에 방귀 공기가 찼나 봐... 다리 배로 끌어올리고 뿌엥 울 거야.',
+    prescription: '따뜻한 손으로 시계 방향 배 마사지와 하늘자전거 다리 운동을 해주세요.',
+    nightDifficulty: '중상 (소화케어 집중)',
+  },
+  {
+    id: 13,
+    image: '/tarot_cards_clay/13_messy_eater.png',
+    name: '13. 촉감 대환장파티 (The Artist)',
+    animal: '쥐',
+    keyword: '오감 탐색',
+    babyVoice: '음식은 먹는 게 아니라 온몸과 식판에 바르고 주무르는 예술이야!',
+    prescription: '마음을 비우면 편안해집니다. 식사 후 바로 따뜻한 목욕탕으로 직행하세요.',
+    nightDifficulty: '중 (청소 지옥 주의)',
+  },
+  {
+    id: 14,
+    image: '/tarot_cards_clay/14_healing_recovery.png',
+    name: '14. 컨디션 완충 (The Healing)',
+    animal: '말',
+    keyword: '활력 회복',
+    babyVoice: '미열도 내리고 쌩쌩해졌어! 그동안 간호해 줘서 고마워요.',
+    prescription: '체온만 가볍게 확인하시고, 오늘은 아이와 함께 편안히 누워 힐링하세요.',
+    nightDifficulty: '하 (안정권 진입)',
+  },
+
+  // [놀이 / 기분 / 육아 일상 축]
+  {
+    id: 15,
+    image: '/tarot_cards_clay/15_hyper_active.png',
+    name: '15. 무한 에너자이저 (The Chariot)',
+    animal: '토끼',
+    keyword: '무한 체력',
+    babyVoice: '세상이 너무 신나! 기어 다니고 뛰어다니고 온 집안을 다 털어버릴 거야!',
+    prescription: '낮 동안 신나는 신체 놀이로 체력을 0%로 완전히 방전시켜야 밤이 편합니다.',
+    nightDifficulty: '중상 (육지컬 승부)',
+  },
+  {
+    id: 16,
+    image: '/tarot_cards_clay/16_clingy_mode.png',
+    name: '16. 강력 접착제 모드 (The Lovers)',
+    animal: '강아지',
+    keyword: '분리 불안',
+    babyVoice: '화장실도 가지 마! 1cm만 시야에서 사라져도 대성통곡할 거야.',
+    prescription: '분리불안 시기입니다. 틈틈이 눈을 맞추고 포옹하며 든든한 안정감을 주세요.',
+    nightDifficulty: '상 (자유시간 제로)',
+  },
+  {
+    id: 17,
+    image: '/tarot_cards_clay/17_curious_explorer.png',
+    name: '17. 서랍 털이 탐험가 (The Explorer)',
+    animal: '호랑이',
+    keyword: '공간 탐구',
+    babyVoice: '물티슈 뽑기 장인 등판! 판도라의 서랍은 다 열려야 제맛이지.',
+    prescription: '서랍 안전장치를 점검하고, 마음껏 찢어도 되는 탐색 상자를 쥐여주세요.',
+    nightDifficulty: '중 (사고 방지 집중)',
+  },
+  {
+    id: 18,
+    image: '/tarot_cards_clay/18_meltdown_alarm.png',
+    name: '18. 돌고래 샤우팅 (The Judgment)',
+    animal: '호랑이',
+    keyword: '의사 표현',
+    babyVoice: '내 뜻대로 안 되면 우주가 떠나가라 돌고래 고음 샤우팅 발사!',
+    prescription: '놀라거나 함께 흥분하지 마시고, 차분하고 나긋나긋한 톤으로 호응해 주세요.',
+    nightDifficulty: '상 (부모 귀마개 권장)',
+  },
+  {
+    id: 19,
+    image: '/tarot_cards_clay/19_angelic_smile.png',
+    name: '19. 심쿵 천사표 미소 (The Star)',
+    animal: '소',
+    keyword: '극강 애교',
+    babyVoice: '눈 마주치면 헤헤 웃어줄게! 내 살인 애교 한 방에 사르르 녹지?',
+    prescription: '카메라를 켜고 연사로 셔터를 누르세요. 오늘 평생 간직할 인생샷이 나옵니다.',
+    nightDifficulty: '최하 (피로가 싹 풀림)',
+  },
+  {
+    id: 20,
+    image: '/tarot_cards_clay/20_toy_collector.png',
+    name: '20. 블록 성애자 (The Builder)',
+    animal: '쥐',
+    keyword: '집중 몰입',
+    babyVoice: '높이높이 쌓아놓은 블록 와르르 무너뜨리는 소리가 제일 짜릿해!',
+    prescription: '소근육과 인과관계를 탐구 중입니다. 마음껏 무너뜨려도 되는 블록을 깔아주세요.',
+    nightDifficulty: '하 (집중력 최고조)',
+  },
+  {
+    id: 21,
+    image: '/tarot_cards_clay/21_master_negotiator.png',
+    name: '21. 육아 상전 지휘관 (The Emperor)',
+    animal: '용',
+    keyword: '군림 본능',
+    babyVoice: '오늘은 내가 황제야. 안아주는 각도부터 맘마 온도까지 내 뜻대로 맞춰라!',
+    prescription: '아이에게 두 가지 중 하나를 고르게 하는 선택권을 주어 주도성을 존중해 주세요.',
+    nightDifficulty: '상 (극진한 수발 필요)',
+  },
+];
+
 function useVisitorTracker() {
   const [visitInfo, setVisitInfo] = useState<{ count: number; message: string }>({
     count: 1,
@@ -677,6 +907,10 @@ export default function Home() {
   const [isAnalyzingParentMatch, setIsAnalyzingParentMatch] = useState(false);
   const [parentMatchCountdown, setParentMatchCountdown] = useState<number | null>(null);
 
+  // 🌟 육아 난이도 모달 전용 캡처 Ref 및 다운로드 상태
+  const parentMatchCardRef = useRef<HTMLDivElement>(null);
+  const [isDownloadingParentMatch, setIsDownloadingParentMatch] = useState(false);
+
   const [pushSubscribed, setPushSubscribed] = useState(false);
 
   const parentMatchIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -698,6 +932,15 @@ export default function Home() {
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const countdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clashAnimationRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 🔮 오늘의 육아 타로 모달 및 상태
+  const [isTarotModalOpen, setIsTarotModalOpen] = useState(false);
+  const [tarotSelectedCard, setTarotSelectedCard] = useState<TarotCardItem | null>(null);
+  const [isTarotAnalyzing, setIsTarotAnalyzing] = useState(false);
+  const [tarotCountdown, setTarotCountdown] = useState<number | null>(null);
+  const [isTarotRevealed, setIsTarotRevealed] = useState(false);
+  const tarotIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const tarotTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [activeTooltip, setActiveTooltip] = useState<'curiosity' | 'energy' | 'fussy' | null>(null);
 
@@ -829,6 +1072,67 @@ export default function Home() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
 
+  // 🔮 타로 모달 열기 및 당일 보존 로드
+  const handleOpenTarotModal = () => {
+    const todayStr = getTodayDateString();
+    const cachedTarot = localStorage.getItem(`daily_tarot_${todayStr}`);
+
+    if (cachedTarot) {
+      try {
+        const parsed = JSON.parse(cachedTarot);
+        setTarotSelectedCard(parsed);
+        setIsTarotRevealed(true);
+      } catch (e) {
+        setIsTarotRevealed(false);
+      }
+    } else {
+      setIsTarotRevealed(false);
+      setTarotSelectedCard(null);
+    }
+    setIsTarotAnalyzing(false);
+    setTarotCountdown(null);
+    setIsTarotModalOpen(true);
+  };
+
+  const handleSelectTarotCard = (cardIdx: number) => {
+    if (isTarotRevealed || isTarotAnalyzing) return;
+
+    trackEvent('click_pick_tarot', 'Engagement', `타로 카드 선택 (${cardIdx}번)`);
+    setIsTarotAnalyzing(true);
+    setTarotCountdown(15);
+
+    // 21장 중 1장 확정
+    const chosen = TAROT_CARDS_DATA[Math.floor(Math.random() * TAROT_CARDS_DATA.length)];
+    setTarotSelectedCard(chosen);
+
+    tarotIntervalRef.current = setInterval(() => {
+      setTarotCountdown((prev) => {
+        if (prev === null || prev <= 1) {
+          if (tarotIntervalRef.current) clearInterval(tarotIntervalRef.current);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    tarotTimeoutRef.current = setTimeout(() => {
+      setIsTarotAnalyzing(false);
+      setIsTarotRevealed(true);
+      setTarotCountdown(null);
+
+      const todayStr = getTodayDateString();
+      localStorage.setItem(`daily_tarot_${todayStr}`, JSON.stringify(chosen));
+    }, 15000);
+  };
+
+  const handleCloseTarotModal = () => {
+    if (tarotIntervalRef.current) clearInterval(tarotIntervalRef.current);
+    if (tarotTimeoutRef.current) clearTimeout(tarotTimeoutRef.current);
+    setIsTarotModalOpen(false);
+    setIsTarotAnalyzing(false);
+    setTarotCountdown(null);
+  };
+
   const handleOpenChemiModal = () => {
     const todayStr = getTodayDateString();
     const cachedToday = localStorage.getItem(`duty_verdict_${todayStr}`);
@@ -883,13 +1187,11 @@ export default function Home() {
     const updated = profiles.filter((p) => p.id !== idToDelete);
     setProfiles(updated);
     localStorage.setItem('baby_profiles', JSON.stringify(updated));
-  
+
     if (activeProfileId === idToDelete) {
       if (updated.length > 0) {
-        // 남은 아이가 있으면 첫 번째 아이로 자동 전환
         handleSelectChild(updated[0]);
       } else {
-        // 🌟 [수정 포인트] 모든 아이를 다 지웠다면 결과 화면을 닫고 깨끗한 입력 폼으로 전환
         setActiveProfileId(null);
         setName('');
         setGender('boy');
@@ -898,7 +1200,7 @@ export default function Home() {
         setIsUnknownTime(false);
         setDueDate('');
         setErrors({});
-        setParentingDifficulty(null); // 난이도 진단 결과도 초기화
+        setParentingDifficulty(null);
         setStep('form');
       }
     }
@@ -968,6 +1270,37 @@ export default function Home() {
 
     navigator.clipboard.writeText(`${shareTitle}\n${shareDesc}\n${currentUrl}`);
     alert('결과 링크가 복사되었습니다! 카카오톡 대화방이나 인스타에 붙여넣어 공유해보세요 💌');
+  };
+
+  // 🌟 육아 난이도 모달 전용 이미지 저장 핸들러
+  const handleDownloadParentMatchCard = async () => {
+    if (!parentMatchCardRef.current) return;
+    setIsDownloadingParentMatch(true);
+    trackEvent('click_download_parent_match', 'Engagement', '육아난이도 카드 이미지 저장');
+
+    try {
+      const dataUrl = await toPng(parentMatchCardRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: '#FFFFFF',
+      });
+
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      if (isIOS) {
+        setIosSavedImageUrl(dataUrl);
+      } else {
+        const link = document.createElement('a');
+        link.download = `${name || '아이'}_육아난이도_${parentingDifficulty?.grade || '진단결과'}.png`;
+        link.href = dataUrl;
+        link.click();
+      }
+    } catch (error) {
+      console.error('육아난이도 이미지 저장 실패:', error);
+      alert('이미지 저장 중 일시적인 오류가 발생했습니다. 화면을 직접 캡처해 공유해 보세요!');
+    } finally {
+      setIsDownloadingParentMatch(false);
+    }
   };
 
   const runAdaptiveEngine = (bDateStr: string, dDateStr: string) => {
@@ -1119,8 +1452,6 @@ export default function Home() {
 
     const elementKey = cheongan.elementKey;
     const selectedPotion = POTION_MATRIX[elementKey][calculatedAgeMode];
-    
-    // 🌟 [3] 오행별/월령별 맞춤 충전 아이템 쿠팡 링크 자동 매칭
     const linkedPotionUrl = BABY_POTION_LINKS[elementKey][calculatedAgeMode] || SERVICE_LINKS.coupangDefault;
 
     setPotionData({
@@ -1409,10 +1740,9 @@ export default function Home() {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        @keyframes cloudDrift {
-          0% { transform: translateX(-20px); }
-          50% { transform: translateX(20px); }
-          100% { transform: translateX(-20px); }
+        @keyframes tarotPulse {
+          0%, 100% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.03); opacity: 1; }
         }
         .animate-ticker-marquee {
           display: inline-flex;
@@ -1421,6 +1751,9 @@ export default function Home() {
         }
         .animate-ticker-marquee:hover {
           animation-play-state: paused;
+        }
+        .animate-tarot-pulse {
+          animation: tarotPulse 3s ease-in-out infinite;
         }
       `}} />
 
@@ -1450,6 +1783,11 @@ export default function Home() {
             <span className="flex items-center space-x-1.5">
               <span>🍼</span>
               <span>신생아부터 어린이까지 쏙 뽑아보는 60갑자 성향 분석</span>
+            </span>
+            <span className="text-slate-300">✦</span>
+            <span className="flex items-center space-x-1.5">
+              <span>🔮</span>
+              <span>오늘 밤 통잠 잘 수 있을까? 오늘의 육아 타로 오픈!</span>
             </span>
             <span className="text-slate-300">✦</span>
           </div>
@@ -1632,7 +1970,7 @@ export default function Home() {
                   }`}
                 />
                 <p className="text-xs text-slate-500 leading-relaxed pt-0.5">
-                ※ 원더윅스 도약기는 아기가 엄마 배 속에서부터 자란 기간을 고려해, 출생일 대신 <b>출산 예정일</b>을 기준으로 계산합니다. (모르시면 비워두셔도 괜찮아요)
+                  ※ 원더윅스 도약기는 아기가 엄마 배 속에서부터 자란 기간을 고려해, 출생일 대신 <b>출산 예정일</b>을 기준으로 계산합니다. (모르시면 비워두셔도 괜찮아요)
                 </p>
                 {errors.dueDate && (
                   <p className="text-xs sm:text-sm font-semibold text-rose-600 mt-1 break-keep">⚠️ {errors.dueDate}</p>
@@ -1650,21 +1988,45 @@ export default function Home() {
                 <span>✨ 우리 아이 기질카드 뽑아보기</span>
               </button>
 
+              {/* 🔮 오늘의 육아 타로 배너 (입력 폼) */}
+              <div
+                onClick={() => {
+                  trackEvent('click_open_tarot', 'Engagement', '메인 오늘의 육아 타로 배너 클릭');
+                  handleOpenTarotModal();
+                }}
+                className="w-full p-4 rounded-2xl bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 border border-purple-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
+              >
+                <div className="break-keep space-y-0.5">
+                  <span className="text-[10px] font-extrabold text-purple-300 uppercase tracking-widest block">
+                    TODAY&apos;S BABY TAROT
+                  </span>
+                  <div className="text-xs sm:text-sm font-black flex items-center space-x-1">
+                    <span>🔮 오늘 밤 통잠 잘까? 아기 속마음 타로</span>
+                  </div>
+                </div>
+                <span className="text-xs font-black bg-purple-500 hover:bg-purple-400 text-white px-3.5 py-1.5 rounded-xl shadow-xs whitespace-nowrap">
+                  카드 뽑기
+                </span>
+              </div>
+
+              {/* 🔥 육아 난이도 배너 (입력 폼) */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                   setIsParentMatchModalOpen(true);
                 }}
-                className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 border border-indigo-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
+                className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-[#FF5E3A] via-[#FF3B30] to-[#FF2A68] border border-white/30 shadow-[0_8px_20px_rgba(255,42,104,0.28)] cursor-pointer hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-0.5">
-                  <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
-                    PARENT-CHILD MATCHING
+                  <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest block flex items-center space-x-1">
+                    <span>🔥 PARENT-CHILD MATCHING</span>
                   </span>
-                  <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
+                  <div className="text-xs sm:text-sm font-black text-white drop-shadow-xs">
+                    엄마 vs 아빠 누가 더 매운맛? 육아 난이도 측정
+                  </div>
                 </div>
-                <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
-                  <span>START</span>
+                <span className="text-xs sm:text-sm font-black bg-amber-400 text-slate-950 px-4 py-2 rounded-xl shadow-md flex items-center space-x-1 whitespace-nowrap animate-pulse">
+                  <span>측정하기 →</span>
                 </span>
               </div>
 
@@ -1827,21 +2189,48 @@ export default function Home() {
               </p>
             </div>
 
+            {/* 🔮 신규: 결과 화면 전용 오늘의 육아 타로 배너 */}
+            <div
+              onClick={() => {
+                trackEvent('click_open_tarot_result', 'Engagement', '결과페이지 오늘의 육아 타로 배너 클릭');
+                handleOpenTarotModal();
+              }}
+              className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-purple-950 via-indigo-900 to-purple-900 border-2 border-purple-400/50 shadow-[0_8px_24px_rgba(147,51,234,0.25)] cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white animate-tarot-pulse"
+            >
+              <div className="break-keep space-y-1">
+                <span className="text-[11px] font-extrabold text-amber-300 uppercase tracking-widest block flex items-center space-x-1">
+                  <span>✨ 매일 1회 무료 뽑기</span>
+                </span>
+                <div className="text-sm sm:text-base font-black text-white">
+                  🔮 {name || '아이'}의 오늘 밤 속마음 타로 확인하기
+                </div>
+                <p className="text-xs text-purple-200 font-medium">
+                  오늘 밤 통잠 잘 수 있을까? 카드로 미리 엿보기
+                </p>
+              </div>
+              <span className="text-xs sm:text-sm font-black bg-gradient-to-r from-amber-400 to-amber-300 text-slate-950 px-4 py-2.5 rounded-xl shadow-md whitespace-nowrap">
+                지금 뽑기 →
+              </span>
+            </div>
+
+            {/* 🔥 육아 난이도 배너 (결과 화면) */}
             <div 
               onClick={() => {
                 trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                 setIsParentMatchModalOpen(true);
               }}
-              className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 border border-indigo-400/40 shadow-sm cursor-pointer hover:scale-[1.01] transition-all flex items-center justify-between text-white"
+              className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-[#FF5E3A] via-[#FF3B30] to-[#FF2A68] border border-white/30 shadow-[0_8px_20px_rgba(255,42,104,0.28)] cursor-pointer hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-between text-white"
             >
               <div className="break-keep space-y-0.5">
-                <span className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block">
-                  PARENT-CHILD MATCHING
+                <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest block flex items-center space-x-1">
+                  <span>🔥 PARENT-CHILD MATCHING</span>
                 </span>
-                <div className="text-xs sm:text-sm font-black">부모 & 자녀 기질 기반 육아 난이도 측정</div>
+                <div className="text-xs sm:text-sm font-black text-white drop-shadow-xs">
+                  엄마 vs 아빠 누가 더 매운맛? 육아 난이도 측정
+                </div>
               </div>
-              <span className="text-xs sm:text-sm font-black bg-indigo-500 text-white px-4 py-2 rounded-xl shadow-xs flex items-center space-x-1 whitespace-nowrap">
-                <span>START</span>
+              <span className="text-xs sm:text-sm font-black bg-amber-400 text-slate-950 px-4 py-2 rounded-xl shadow-md flex items-center space-x-1 whitespace-nowrap">
+                <span>측정하기 →</span>
               </span>
             </div>
 
@@ -1955,7 +2344,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 🌟 [아이 기질 맞춤 충전 아이템 영역 - 오행/월령별 쿠팡 파트너스 링크 연동] */}
+              {/* 아이 기질 맞춤 충전 아이템 영역 */}
               <div className="bg-slate-50 rounded-2xl p-4.5 border border-slate-100 space-y-3 text-left">
                 <div className="flex justify-between items-center">
                   <span className="text-sm sm:text-base font-black text-slate-900 break-keep">
@@ -2076,6 +2465,182 @@ export default function Home() {
           </div>
         )}
 
+        {/* ======================================================= */}
+        {/* 🔮 오늘의 육아 타로 모달 (1픽셀 오차 없는 일체형 골드 프레임 템플릿) */}
+        {/* ======================================================= */}
+        {isTarotModalOpen && (
+          <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+            <div className="w-full max-w-md bg-gradient-to-b from-[#131127] via-[#0A0E1A] to-[#120F24] rounded-t-3xl sm:rounded-3xl border border-amber-400/30 p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-white">
+              
+              {/* 모달 헤더 */}
+              <div className="flex justify-between items-center pb-3.5 border-b border-amber-400/20">
+                <div>
+                  <span className="text-xs font-black text-amber-300 uppercase tracking-widest block mb-0.5">
+                    🔮 TODAY&apos;S BABY TAROT
+                  </span>
+                  <h3 className="text-base sm:text-lg font-black text-purple-100 break-keep">
+                    오늘의 육아 속마음 타로
+                  </h3>
+                </div>
+                <button
+                  onClick={handleCloseTarotModal}
+                  className="w-8 h-8 bg-white/10 border border-white/20 rounded-full text-xs font-bold text-white flex items-center justify-center hover:bg-white/20"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {isTarotAnalyzing ? (
+                /* 15초 인터스티셜 수익화 화면 */
+                <div className="py-8 text-center space-y-5 animate-fadeIn">
+                  <div className="space-y-1.5">
+                    <div className="w-16 h-16 mx-auto bg-slate-900 text-amber-300 rounded-full flex items-center justify-center text-xl font-black shadow-md border border-amber-400/40 animate-pulse">
+                      {tarotCountdown !== null ? tarotCountdown : '✨'}초
+                    </div>
+                    <h4 className="text-sm sm:text-base font-black text-white mt-2 break-keep">
+                      아이의 오늘 기운과 카드를 매칭하는 중...
+                    </h4>
+                    <p className="text-xs sm:text-sm text-purple-200 break-keep">
+                      오늘 밤 통잠 여부와 아기의 귀여운 속마음을 읽어내고 있습니다!
+                    </p>
+                  </div>
+
+                  <div className="w-full p-4.5 bg-black/50 border border-purple-400/30 rounded-2xl text-left text-white space-y-2.5 shadow-md">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest">
+                        SPONSORED · 부모 충전소
+                      </span>
+                      <span className="text-[10px] text-slate-400">15초 후 타로 공개</span>
+                    </div>
+                    <p className="text-xs sm:text-sm font-bold leading-snug break-keep text-purple-100">
+                      카드 여는 동안 남매 유튜브 숏폼 구경 & 부모 힐링템 충전 ☕
+                    </p>
+                    <div className="flex space-x-2 pt-1">
+                      <a
+                        href={SERVICE_LINKS.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
+                      >
+                        ▶ 유튜브 숏폼
+                      </a>
+                      <a
+                        href={SERVICE_LINKS.parentHealing}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
+                      >
+                        🛒 부모 힐링템 구경
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ) : !isTarotRevealed ? (
+                /* 카드 선택 대기 화면 (인터랙션) */
+                <div className="space-y-4 text-center">
+                  <div className="p-4 bg-purple-950/50 rounded-2xl border border-purple-400/20 text-xs sm:text-sm text-purple-200 leading-relaxed break-keep">
+                    💡 오늘 아이의 <b>수면, 수유, 잠투정</b> 중 가장 궁금한 점을 마음속으로 3초간 떠올린 후, 마음에 와닿는 <b>카드 한 장</b>을 터치해 보세요!
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2.5 py-4">
+                    {[1, 2, 3].map((num) => (
+                      <div
+                        key={num}
+                        onClick={() => handleSelectTarotCard(num)}
+                        className="aspect-[3/4] bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 rounded-2xl border-2 border-amber-400/60 flex flex-col items-center justify-center cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all group"
+                      >
+                        <span className="text-2xl group-hover:scale-125 transition-transform">🔮</span>
+                        <span className="text-[10px] font-black text-amber-300 mt-2">선택하기</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-purple-300">
+                    ※ 카드는 하루에 단 한 번만 뽑을 수 있으며, 자정에 리셋됩니다.
+                  </p>
+                </div>
+              ) : (
+                /* 🌟 타로 결과 화면 (CSS 완벽 규격 골드 프레임 템플릿) 🌟 */
+                tarotSelectedCard && (
+                  <div className="space-y-4 text-center animate-fadeIn">
+                    
+                    {/* 12간지 기질 태그 */}
+                    <div className="text-center">
+                      <span className="inline-block text-[11px] font-bold text-amber-300 px-3 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/20">
+                        12간지 기질 심볼 • {tarotSelectedCard.animal}
+                      </span>
+                    </div>
+
+                    {/* 🌟 21장 1픽셀 오차 없는 일체형 골드 타로 카드 액자 렌더링 🌟 */}
+                    <div className="relative w-48 mx-auto rounded-2xl p-[3px] bg-gradient-to-b from-[#F5E296] via-[#B8860B] to-[#E6CA65] shadow-[0_10px_30px_rgba(0,0,0,0.7)]">
+                      <div className="relative w-full rounded-[13px] bg-[#0A0E1A] p-2.5 flex flex-col items-center border border-[#FFE89E]/40 overflow-hidden">
+                        
+                        {/* 상단 타로 각인 헤더 */}
+                        <div className="w-full flex justify-between items-center px-1 pb-1 text-[#E6CA65] text-[9px] tracking-widest opacity-85 select-none font-serif">
+                          <span>✦ ☽</span>
+                          <span>BABY TAROT</span>
+                          <span>☾ ✦</span>
+                        </div>
+
+                        {/* AI 생성 순수 3D 클레이 캐릭터 이미지 */}
+                        <div className="w-full aspect-square rounded-lg overflow-hidden border border-[#D4AF37]/40 shadow-inner bg-[#05070D]">
+                          <img
+                            src={tarotSelectedCard.image}
+                            alt={tarotSelectedCard.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as any).style.display = 'none';
+                            }}
+                          />
+                        </div>
+
+                        {/* 하단 카드 타이틀 명패 */}
+                        <div className="w-full mt-2 pt-1.5 border-t border-[#D4AF37]/30 flex flex-col items-center">
+                          <span className="text-[12px] font-extrabold text-[#FFEAA7] tracking-wide">
+                            {tarotSelectedCard.name}
+                          </span>
+                          <span className="text-[10px] text-[#A6B2C8] mt-0.5 font-medium">
+                            {tarotSelectedCard.keyword}
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    {/* 아기 속마음 풀이 */}
+                    <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
+                      <span className="text-xs font-bold text-pink-300 block">💬 아기의 오늘 속마음</span>
+                      <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed break-keep">
+                        &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
+                      </p>
+                    </div>
+
+                    {/* 부모 육아 처방전 */}
+                    <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
+                      <span className="text-xs font-bold text-emerald-300 block">☕ 부모 육아 처방전</span>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed break-keep">
+                        {tarotSelectedCard.prescription}
+                      </p>
+                    </div>
+
+                    <div className="text-xs font-bold text-amber-200 bg-amber-950/60 py-2.5 rounded-xl border border-amber-500/30">
+                      🌙 오늘 밤 난이도: {tarotSelectedCard.nightDifficulty}
+                    </div>
+
+                    <button
+                      onClick={handleCloseTarotModal}
+                      className="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-110 text-slate-950 font-black text-xs sm:text-sm rounded-2xl transition-all shadow-md break-keep"
+                    >
+                      확인 완료 / 닫기
+                    </button>
+
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* AI 분석 미리보기 모달 */}
         {isAiReportModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
@@ -2121,6 +2686,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 🌟 부모-자녀 매칭 모달 (이미지 저장 기능 탑재) */}
         {isParentMatchModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
@@ -2213,15 +2779,16 @@ export default function Home() {
 
                   <button
                     type="submit"
-                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center break-keep"
+                    className="w-full py-4 bg-gradient-to-r from-[#FF5E3A] to-[#FF2A68] hover:opacity-90 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md transition-all flex items-center justify-center break-keep"
                   >
-                    START
+                    🔥 육아 난이도 측정 시작하기
                   </button>
                 </form>
               ) : (
                 <div className="space-y-4 text-left animate-fadeIn">
                   
-                  <div className="bg-slate-50 p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+                  {/* 🌟 캡처 타겟 영역 (Ref: parentMatchCardRef) */}
+                  <div ref={parentMatchCardRef} className="bg-slate-50 p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
                     
                     <div className="flex justify-between items-start">
                       <div className="flex items-center space-x-2.5">
@@ -2305,6 +2872,18 @@ export default function Home() {
                     </div>
                   </div>
 
+                  {/* 🌟 신규: 육아 난이도 진단 카드 이미지 저장 버튼 */}
+                  <button
+                    onClick={handleDownloadParentMatchCard}
+                    disabled={isDownloadingParentMatch}
+                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95 break-keep"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>{isDownloadingParentMatch ? '결과 카드 캡처 중...' : '🔥 육아 난이도 진단 결과 이미지로 저장하기'}</span>
+                  </button>
+
                   <button
                     onClick={handleShareResult}
                     className="w-full py-3.5 bg-[#FEE500] hover:bg-[#FADA0A] text-[#191919] font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 active:scale-[0.99]"
@@ -2315,9 +2894,9 @@ export default function Home() {
 
                   <button
                     onClick={() => setIsParentMatchModalOpen(false)}
-                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
+                    className="w-full py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
                   >
-                    진단 결과 확인 완료
+                    진단 결과 확인 완료 / 닫기
                   </button>
                 </div>
               )}
@@ -2325,6 +2904,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 오행 판결소 모달 */}
         {isChemiModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-gradient-to-b from-amber-950 via-slate-900 to-indigo-950 rounded-t-3xl sm:rounded-3xl border-2 border-amber-500/50 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
@@ -2498,6 +3078,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 패밀리 라운지 모달 */}
         {isLoungeOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
@@ -2615,6 +3196,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* iOS 이미지 저장 가이드 모달 */}
         {iosSavedImageUrl && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
             <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-center space-y-4 shadow-2xl">
