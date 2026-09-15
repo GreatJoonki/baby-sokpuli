@@ -87,12 +87,12 @@ const DONATION_CONFIG = {
   holderName: '김준기',
 };
 
-// 🔮 12간지 타로 데이터 (국문명과 영문 서브타이틀 명확히 분리)
 interface TarotCardItem {
   id: number;
   image: string;
   korTitle: string;
   engSub: string;
+  name?: string;
   animal: string;
   keyword: string;
   babyVoice: string;
@@ -1085,6 +1085,7 @@ export default function Home() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
 
+  // 🌟 타로 데이터 캐시 호환 로더 (이전 name 속성 파싱 지원)
   const handleOpenTarotModal = () => {
     const todayStr = getTodayDateString();
     const cachedTarot = localStorage.getItem(`daily_tarot_${todayStr}`);
@@ -1093,8 +1094,17 @@ export default function Home() {
     if (cachedTarot) {
       try {
         const parsed = JSON.parse(cachedTarot);
-        setTarotSelectedCard(parsed);
-        setIsTarotRevealed(true);
+        if (parsed) {
+          // 구버전 name 속성 호환 처리
+          if (!parsed.korTitle && parsed.name) {
+            const raw = parsed.name as string;
+            const parts = raw.split('(');
+            parsed.korTitle = parts[0]?.trim() || raw;
+            parsed.engSub = parts[1]?.replace(')', '').trim() || '';
+          }
+          setTarotSelectedCard(parsed);
+          setIsTarotRevealed(true);
+        }
       } catch (e) {
         setIsTarotRevealed(false);
       }
@@ -1745,17 +1755,20 @@ export default function Home() {
     );
   }
 
+  // 동적 아기 이름 파싱
+  const babyDisplayName = name.trim() ? `${name.trim()}의` : '우리 아이의';
+
   return (
     <main className="min-h-screen bg-[#E9ECEF] flex justify-center py-0 sm:py-8 font-sans antialiased text-slate-900">
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes ticker-marquee {
+        @keyframes tickerLoop {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
         .animate-ticker-marquee {
           display: inline-flex;
           width: max-content;
-          animation: ticker-marquee 18s linear infinite;
+          animation: tickerLoop 24s linear infinite;
         }
         .animate-ticker-marquee:hover {
           animation-play-state: paused;
@@ -1777,24 +1790,48 @@ export default function Home() {
           </p>
         </header>
 
-        {/* 무한 롤링 티커 배너 */}
+        {/* 🌟 1. 끊김 없는 완벽한 무한 롤링 티커 배너 (2벌 100% 미러링) */}
         <div className="mb-4 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
-          <div className="animate-ticker-marquee flex items-center space-x-8 text-xs sm:text-sm font-semibold text-slate-600">
-            <span className="flex items-center space-x-1.5">
-              <span>💌</span>
-              <span>{visitor.message}</span>
-            </span>
-            <span className="text-slate-300">✦</span>
-            <span className="flex items-center space-x-1.5">
-              <span>🍼</span>
-              <span>신생아부터 어린이까지 쏙 뽑아보는 60갑자 성향 분석</span>
-            </span>
-            <span className="text-slate-300">✦</span>
-            <span className="flex items-center space-x-1.5">
-              <span>🔮</span>
-              <span>오늘 밤 통잠 잘 수 있을까? 오늘의 육아 타로 오픈!</span>
-            </span>
-            <span className="text-slate-300">✦</span>
+          <div className="animate-ticker-marquee flex items-center text-xs sm:text-sm font-semibold text-slate-600 select-none">
+            
+            {/* 세트 1 */}
+            <div className="inline-flex items-center space-x-8 pr-8">
+              <span className="flex items-center space-x-1.5">
+                <span>💌</span>
+                <span>{visitor.message}</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+              <span className="flex items-center space-x-1.5">
+                <span>🍼</span>
+                <span>신생아부터 어린이까지 쏙 뽑아보는 60갑자 성향 분석</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+              <span className="flex items-center space-x-1.5">
+                <span>🔮</span>
+                <span>오늘 밤 통잠 잘 수 있을까? 오늘의 육아 타로 오픈!</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+            </div>
+
+            {/* 세트 2 (루프 연결용 완전 복제) */}
+            <div className="inline-flex items-center space-x-8 pr-8">
+              <span className="flex items-center space-x-1.5">
+                <span>💌</span>
+                <span>{visitor.message}</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+              <span className="flex items-center space-x-1.5">
+                <span>🍼</span>
+                <span>신생아부터 어린이까지 쏙 뽑아보는 60갑자 성향 분석</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+              <span className="flex items-center space-x-1.5">
+                <span>🔮</span>
+                <span>오늘 밤 통잠 잘 수 있을까? 오늘의 육아 타로 오픈!</span>
+              </span>
+              <span className="text-slate-300">✦</span>
+            </div>
+
           </div>
         </div>
 
@@ -1984,7 +2021,7 @@ export default function Home() {
 
             </div>
 
-            {/* 🌟 1. 메인 3종 배너 (디자인 시스템 완전 통일 & 선명도 개선) */}
+            {/* 🌟 2. 메인 3종 배너 (아이콘 위치 수정 & 버튼 너비/폰트 완전 일치) */}
             <div className="pt-3 pb-1 space-y-3">
               <button
                 type="submit"
@@ -1994,41 +2031,43 @@ export default function Home() {
                 <span>✨ 우리 아이 기질카드 뽑아보기</span>
               </button>
 
-              {/* [배너 1] 오늘의 육아 타로 배너 */}
+              {/* [배너 1] 오늘의 육아 타로 배너 (서브타이틀 앞으로 아이콘 이동 & 버튼명/규격 통일) */}
               <div
                 onClick={() => {
                   trackEvent('click_open_tarot', 'Engagement', '메인 오늘의 육아 타로 배너 클릭');
                   handleOpenTarotModal();
                 }}
-                className="w-full p-4 rounded-2xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-950 border border-purple-400/50 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
+                className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-950 border border-purple-400/50 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-1">
-                  <span className="text-[10px] font-extrabold text-purple-300 uppercase tracking-widest block">
-                    TODAY&apos;S BABY TAROT
+                  <span className="text-[10px] font-extrabold text-purple-300 uppercase tracking-widest flex items-center space-x-1">
+                    <span>🔮</span>
+                    <span>TODAY&apos;S BABY TAROT</span>
                   </span>
-                  <div className="text-sm font-black text-white flex items-center space-x-1">
-                    <span>🔮 오늘 밤 통잠 잘까? 아기 속마음 타로</span>
+                  <div className="text-sm font-black text-white">
+                    {babyDisplayName} 속마음 타로 확인
                   </div>
                 </div>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-xs whitespace-nowrap animate-pulse transition-all"
+                  className="w-20 sm:w-24 py-2 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs sm:text-sm rounded-xl shadow-xs text-center whitespace-nowrap animate-pulse transition-all flex-shrink-0"
                 >
-                  카드 뽑기
+                  타로뽑기
                 </button>
               </div>
 
-              {/* [배너 2] 육아 난이도 배너 (타이틀 단일화 및 버튼 통일) */}
+              {/* [배너 2] 육아 난이도 배너 (버튼 너비/폰트 일치) */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
                   setIsParentMatchModalOpen(true);
                 }}
-                className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#FF5E3A] via-[#FF3B30] to-[#FF2A68] border border-white/40 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
+                className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-[#FF5E3A] via-[#FF3B30] to-[#FF2A68] border border-white/40 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-1">
-                  <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest block">
-                    🔥 PARENT-CHILD MATCHING
+                  <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest flex items-center space-x-1">
+                    <span>🔥</span>
+                    <span>PARENT-CHILD MATCHING</span>
                   </span>
                   <div className="text-sm font-black text-white">
                     우리 아이 육아 난이도 측정
@@ -2036,23 +2075,24 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs whitespace-nowrap animate-pulse transition-all"
+                  className="w-20 sm:w-24 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs text-center whitespace-nowrap animate-pulse transition-all flex-shrink-0"
                 >
                   측정하기
                 </button>
               </div>
 
-              {/* [배너 3] 오행 판결소 배너 (버튼 통일) */}
+              {/* [배너 3] 오행 판결소 배너 (버튼 너비/폰트 일치) */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_court', 'Engagement', '오행판결소 모달 오픈');
                   handleOpenChemiModal();
                 }}
-                className="w-full p-4 rounded-2xl bg-slate-900 border border-slate-700 shadow-sm cursor-pointer hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-between text-white"
+                className="w-full p-4.5 rounded-2xl bg-slate-900 border border-slate-700 shadow-sm cursor-pointer hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-1">
-                  <span className="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest block">
-                    ⚖️ FIVE ELEMENTS COURT
+                  <span className="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center space-x-1">
+                    <span>⚖️</span>
+                    <span>FIVE ELEMENTS COURT</span>
                   </span>
                   <div className="text-sm font-black text-white">
                     오늘의 육아 당번 뽑기 (오행 판결소)
@@ -2060,7 +2100,7 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs whitespace-nowrap animate-pulse transition-all"
+                  className="w-20 sm:w-24 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs text-center whitespace-nowrap animate-pulse transition-all flex-shrink-0"
                 >
                   입장하기
                 </button>
@@ -2220,11 +2260,12 @@ export default function Home() {
                 className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-950 border border-purple-400/50 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-1">
-                  <span className="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest block">
-                    ✨ 매일 1회 무료 뽑기
+                  <span className="text-[10px] font-extrabold text-amber-300 uppercase tracking-widest flex items-center space-x-1">
+                    <span>🔮</span>
+                    <span>TODAY&apos;S BABY TAROT</span>
                   </span>
                   <div className="text-sm sm:text-base font-black text-white">
-                    🔮 {name || '아이'}의 오늘 밤 속마음 타로 확인하기
+                    {babyDisplayName} 속마음 타로 확인
                   </div>
                   <p className="text-xs text-purple-200 font-medium">
                     오늘 밤 통잠 잘 수 있을까? 카드로 미리 엿보기
@@ -2232,13 +2273,13 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs whitespace-nowrap animate-pulse transition-all"
+                  className="w-20 sm:w-24 py-2 bg-gradient-to-r from-amber-400 to-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs text-center whitespace-nowrap animate-pulse transition-all flex-shrink-0"
                 >
-                  지금 뽑기
+                  타로뽑기
                 </button>
               </div>
 
-              {/* 육아 난이도 배너 (타이틀 단일화 및 버튼 통일) */}
+              {/* 육아 난이도 배너 */}
               <div 
                 onClick={() => {
                   trackEvent('click_open_parent_match', 'Engagement', '부모-자녀 기질 비교 진단 모달 오픈');
@@ -2247,8 +2288,9 @@ export default function Home() {
                 className="w-full p-4.5 rounded-2xl bg-gradient-to-r from-[#FF5E3A] via-[#FF3B30] to-[#FF2A68] border border-white/40 shadow-sm cursor-pointer hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-between text-white"
               >
                 <div className="break-keep space-y-1">
-                  <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest block">
-                    🔥 PARENT-CHILD MATCHING
+                  <span className="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest flex items-center space-x-1">
+                    <span>🔥</span>
+                    <span>PARENT-CHILD MATCHING</span>
                   </span>
                   <div className="text-sm sm:text-base font-black text-white">
                     우리 아이 육아 난이도 측정
@@ -2259,7 +2301,7 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-amber-400 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs whitespace-nowrap animate-pulse transition-all"
+                  className="w-20 sm:w-24 py-2 bg-amber-400 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs text-center whitespace-nowrap animate-pulse transition-all flex-shrink-0"
                 >
                   측정하기
                 </button>
@@ -2499,7 +2541,7 @@ export default function Home() {
         )}
 
         {/* ======================================================= */}
-        {/* 🔮 2. 타로 카드 선택 및 결과 모달 (폰트 확대 & 와이드 액자 프레임) */}
+        {/* 🔮 3. 타로 카드 선택 및 결과 모달 (타이틀 100% 호환 보장 & 확인 완료 버튼) */}
         {/* ======================================================= */}
         {isTarotModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
@@ -2569,7 +2611,7 @@ export default function Home() {
                   </div>
                 </div>
               ) : !isTarotRevealed ? (
-                /* 🌟 [이미지 2 수정] 카드 선택 대기 화면 (폰트 크기 확대 및 명도 강화) */
+                /* 카드 선택 대기 화면 */
                 <div className="space-y-4 text-center">
                   <div className="p-4.5 bg-purple-950/70 rounded-2xl border border-purple-400/30 text-sm sm:text-base font-semibold text-purple-100 leading-relaxed break-keep shadow-inner">
                     💡 오늘 아이의 <span className="text-amber-300 font-extrabold">수면, 수유, 잠투정</span> 중 가장 궁금한 점을 마음속으로 3초간 떠올린 후, 마음에 와닿는 <span className="text-amber-300 font-extrabold">카드 한 장</span>을 터치해 보세요!
@@ -2592,91 +2634,100 @@ export default function Home() {
                   </p>
                 </div>
               ) : (
-                /* 🌟 [이미지 3 수정] 타로 결과 화면 (와이드 골드 프레임 + 2단 타이틀 + 에러 방지) */
-                tarotSelectedCard && (
-                  <div className="space-y-4 text-center animate-fadeIn">
-                    
-                    <div className="text-center">
-                      <span className="inline-block text-xs font-bold text-amber-300 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30">
-                        12간지 기질 심볼 • {tarotSelectedCard.animal}
-                      </span>
-                    </div>
+                /* 🌟 타로 결과 화면 (구버전 캐시 100% 방어 & 와이드 골드 베젤 프레임) */
+                tarotSelectedCard && (() => {
+                  // 구버전/신버전 타이틀 호환 추출
+                  const displayKorTitle = tarotSelectedCard.korTitle || tarotSelectedCard.name?.split('(')[0]?.trim() || '18. 돌고래 샤우팅';
+                  const displayEngSub = tarotSelectedCard.engSub || tarotSelectedCard.name?.split('(')[1]?.replace(')', '').trim() || 'The Judgment';
 
-                    {/* 🌟 럭셔리 와이드 골드 타로 카드 액자 (크기 확대 & 21장 완전 통일) 🌟 */}
-                    <div className="relative w-64 mx-auto rounded-2xl p-[3px] bg-gradient-to-b from-[#F7E5A9] via-[#AA7922] to-[#E3BE63] shadow-[0_12px_35px_rgba(0,0,0,0.85)]">
-                      <div className="relative w-full rounded-[13px] bg-[#070B16] p-3 flex flex-col items-center border border-[#FFE799]/40 overflow-hidden">
-                        
-                        {/* 상단 타로 각인 헤더 */}
-                        <div className="w-full flex justify-between items-center px-1 pb-1.5 text-[#E6CA65] text-[10px] tracking-widest opacity-90 select-none font-serif">
-                          <span>✦ ☽</span>
-                          <span className="font-extrabold tracking-widest">BABY TAROT</span>
-                          <span>☾ ✦</span>
-                        </div>
-
-                        {/* 캐릭터 이미지 영역 (로딩 에러 방지 처리 및 와이드 비율) */}
-                        <div className="w-full aspect-square rounded-xl overflow-hidden border border-[#D4AF37]/50 shadow-inner bg-[#03060E] relative flex items-center justify-center">
-                          {!tarotImgError ? (
-                            <img
-                              src={tarotSelectedCard.image}
-                              alt={tarotSelectedCard.korTitle}
-                              onError={() => setTarotImgError(true)}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="flex flex-col items-center justify-center text-center p-4">
-                              <span className="text-5xl animate-bounce">🔮</span>
-                              <span className="text-[11px] text-amber-200/80 mt-2 font-medium">
-                                {tarotSelectedCard.animal}의 신비로운 기운
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* 🌟 2단 분리 타이틀 (국문명 상단 / 영문명 하단) */}
-                        <div className="w-full mt-2.5 pt-2 border-t border-[#D4AF37]/30 flex flex-col items-center">
-                          <span className="text-sm sm:text-base font-extrabold text-[#FFEAA7] tracking-tight">
-                            {tarotSelectedCard.korTitle}
-                          </span>
-                          <span className="text-[11px] text-amber-300/80 font-serif uppercase tracking-widest mt-0.5">
-                            ({tarotSelectedCard.engSub})
-                          </span>
-                          <span className="text-[10px] text-slate-400 mt-1 font-medium bg-white/5 px-2 py-0.5 rounded">
-                            {tarotSelectedCard.keyword}
-                          </span>
-                        </div>
-
+                  return (
+                    <div className="space-y-4 text-center animate-fadeIn">
+                      
+                      <div className="text-center">
+                        <span className="inline-block text-xs font-bold text-amber-300 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30">
+                          12간지 기질 심볼 • {tarotSelectedCard.animal || '호랑이'}
+                        </span>
                       </div>
+
+                      {/* 🌟 럭셔리 와이드 골드 타로 카드 액자 🌟 */}
+                      <div className="relative w-64 mx-auto rounded-2xl p-[3px] bg-gradient-to-b from-[#F7E5A9] via-[#AA7922] to-[#E3BE63] shadow-[0_12px_35px_rgba(0,0,0,0.85)]">
+                        <div className="relative w-full rounded-[13px] bg-[#070B16] p-3 flex flex-col items-center border border-[#FFE799]/40 overflow-hidden">
+                          
+                          {/* 상단 타로 각인 헤더 */}
+                          <div className="w-full flex justify-between items-center px-1 pb-1.5 text-[#E6CA65] text-[10px] tracking-widest opacity-90 select-none font-serif">
+                            <span>✦ ☽</span>
+                            <span className="font-extrabold tracking-widest">BABY TAROT</span>
+                            <span>☾ ✦</span>
+                          </div>
+
+                          {/* 캐릭터 이미지 영역 */}
+                          <div className="w-full aspect-square rounded-xl overflow-hidden border border-[#D4AF37]/50 shadow-inner bg-[#03060E] relative flex items-center justify-center">
+                            {!tarotImgError ? (
+                              <img
+                                src={tarotSelectedCard.image}
+                                alt={displayKorTitle}
+                                onError={() => setTarotImgError(true)}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center justify-center text-center p-4">
+                                <span className="text-5xl animate-bounce">🔮</span>
+                                <span className="text-[11px] text-amber-200/80 mt-2 font-medium">
+                                  {tarotSelectedCard.animal || '호랑이'}의 신비로운 기운
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* 🌟 2단 분리 타이틀 (호환 처리 완료) */}
+                          <div className="w-full mt-2.5 pt-2 border-t border-[#D4AF37]/30 flex flex-col items-center">
+                            <span className="text-sm sm:text-base font-extrabold text-[#FFEAA7] tracking-tight">
+                              {displayKorTitle}
+                            </span>
+                            {displayEngSub && (
+                              <span className="text-[11px] text-amber-300/80 font-serif uppercase tracking-widest mt-0.5">
+                                ({displayEngSub})
+                              </span>
+                            )}
+                            <span className="text-[10px] text-slate-400 mt-1 font-medium bg-white/5 px-2 py-0.5 rounded">
+                              {tarotSelectedCard.keyword || '의사 표현'}
+                            </span>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      {/* 아기 속마음 풀이 */}
+                      <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
+                        <span className="text-xs font-bold text-pink-300 block">💬 아기의 오늘 속마음</span>
+                        <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed break-keep">
+                          &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
+                        </p>
+                      </div>
+
+                      {/* 부모 육아 처방전 */}
+                      <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
+                        <span className="text-xs font-bold text-emerald-300 block">☕ 부모 육아 처방전</span>
+                        <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed break-keep">
+                          {tarotSelectedCard.prescription}
+                        </p>
+                      </div>
+
+                      <div className="text-xs font-bold text-amber-200 bg-amber-950/60 py-2.5 rounded-xl border border-amber-500/30">
+                        🌙 오늘 밤 난이도: {tarotSelectedCard.nightDifficulty}
+                      </div>
+
+                      {/* 하단 확인 버튼 명칭 수정 */}
+                      <button
+                        onClick={handleCloseTarotModal}
+                        className="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-110 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-md break-keep"
+                      >
+                        확인 완료
+                      </button>
+
                     </div>
-
-                    {/* 아기 속마음 풀이 */}
-                    <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
-                      <span className="text-xs font-bold text-pink-300 block">💬 아기의 오늘 속마음</span>
-                      <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed break-keep">
-                        &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
-                      </p>
-                    </div>
-
-                    {/* 부모 육아 처방전 */}
-                    <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-left space-y-1">
-                      <span className="text-xs font-bold text-emerald-300 block">☕ 부모 육아 처방전</span>
-                      <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed break-keep">
-                        {tarotSelectedCard.prescription}
-                      </p>
-                    </div>
-
-                    <div className="text-xs font-bold text-amber-200 bg-amber-950/60 py-2.5 rounded-xl border border-amber-500/30">
-                      🌙 오늘 밤 난이도: {tarotSelectedCard.nightDifficulty}
-                    </div>
-
-                    <button
-                      onClick={handleCloseTarotModal}
-                      className="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-400 hover:brightness-110 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-md break-keep"
-                    >
-                      확인 완료 / 닫기
-                    </button>
-
-                  </div>
-                )
+                  );
+                })()
               )}
             </div>
           </div>
@@ -2721,14 +2772,14 @@ export default function Home() {
                 onClick={() => setIsAiReportModalOpen(false)}
                 className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all break-keep"
               >
-                확인 완료 / 닫기
+                확인 완료
               </button>
 
             </div>
           </div>
         )}
 
-        {/* 부모-자녀 매칭 모달 (이미지 저장 버튼 탑재) */}
+        {/* 부모-자녀 매칭 모달 */}
         {isParentMatchModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
@@ -2936,7 +2987,7 @@ export default function Home() {
                     onClick={() => setIsParentMatchModalOpen(false)}
                     className="w-full py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
                   >
-                    진단 결과 확인 완료 / 닫기
+                    확인 완료
                   </button>
                 </div>
               )}
@@ -3110,7 +3161,7 @@ export default function Home() {
                     onClick={handleCloseChemiModal}
                     className="w-full py-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm rounded-2xl transition-all shadow-md break-keep"
                   >
-                    판결 수용하고 닫기
+                    확인 완료
                   </button>
                 </div>
               )}
@@ -3230,7 +3281,7 @@ export default function Home() {
                 onClick={() => setIsLoungeOpen(false)}
                 className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all break-keep"
               >
-                닫기
+                확인 완료
               </button>
             </div>
           </div>
@@ -3262,7 +3313,7 @@ export default function Home() {
                 onClick={() => setIosSavedImageUrl(null)}
                 className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs active:scale-95 transition-all break-keep"
               >
-                저장 완료 / 닫기
+                확인 완료
               </button>
             </div>
           </div>
