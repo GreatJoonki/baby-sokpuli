@@ -898,6 +898,7 @@ export default function Home() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isLoungeOpen, setIsLoungeOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [iosSavedImageUrl, setIosSavedImageUrl] = useState<string | null>(null);
 
   const [isAiReportModalOpen, setIsAiReportModalOpen] = useState(false);
@@ -3385,7 +3386,82 @@ export default function Home() {
             </div>
           </div>
         )}
+      {/* 애드센스 승인 심사용 필수 푸터: 운영 정보 및 개인정보 처리방침 */}
+      <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-2.5 text-[11px] text-slate-500">
+          <div className="flex justify-center items-center space-x-3 text-xs font-semibold text-slate-600">
+            <button
+              type="button"
+              onClick={() => setIsPrivacyModalOpen(true)}
+              className="underline hover:text-slate-900 transition-colors"
+            >
+              개인정보처리방침
+            </button>
+            <span className="text-slate-300">|</span>
+            <button
+              type="button"
+              onClick={() => setIsLoungeOpen(true)}
+              className="underline hover:text-slate-900 transition-colors"
+            >
+              서비스 소개 및 문의
+            </button>
+          </div>
+          <p className="leading-relaxed break-keep">
+            아기속풀이 (Baby Sokpuli) · 비영리 토이 프로젝트<br />
+            문의: <a href="mailto:hamin.save.moment@gmail.com" className="underline font-medium text-slate-700">hamin.save.moment@gmail.com</a> (인스타 @hamin_hayoon_day)
+          </p>
+          <p className="text-[10px] text-slate-400">
+            © 2026 Baby Sokpuli. All rights reserved.
+          </p>
+        </footer>
 
+        {/* 개인정보처리방침 팝업 모달 */}
+        {isPrivacyModalOpen && (
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto text-slate-900 text-left">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                <h3 className="text-base font-black text-slate-900">개인정보처리방침</h3>
+                <button
+                  type="button"
+                  onClick={() => setIsPrivacyModalOpen(false)}
+                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 flex items-center justify-center hover:bg-slate-200"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="text-xs text-slate-600 space-y-3 leading-relaxed break-keep">
+                <p>
+                  &lsquo;아기속풀이&rsquo;는 이용자의 개인정보를 소중히 다루며, 관련 법령을 준수합니다.
+                </p>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-800 block">1. 수집하는 개인정보 항목 및 보관 방식</span>
+                  <p>
+                    이용자가 입력한 아이 이름, 생년월일, 태어난 시간, 부모 생년월일 정보는 <b>외부 서버로 전송되거나 데이터베이스에 저장되지 않습니다.</b> 모든 연산과 임시 저장은 이용자의 스마트폰/PC 웹 브라우저(localStorage) 내부에서만 안전하게 동작합니다.
+                  </p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-800 block">2. 제3자 제공 및 마케팅 활용</span>
+                  <p>
+                    수집된 데이터가 서버에 남지 않으므로 어떠한 제3자에게도 정보를 제공하거나 공유하지 않습니다.
+                  </p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+                  <span className="font-bold text-slate-800 block">3. 문의처</span>
+                  <p>
+                    개인정보 보호 관련 문의 및 서비스 피드백은 아래 이메일로 접수해 주시면 성실히 답변해 드리겠습니다.<br />
+                    이메일: <a href="mailto:hamin.save.moment@gmail.com" className="text-slate-900 font-bold underline">hamin.save.moment@gmail.com</a>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPrivacyModalOpen(false)}
+                className="w-full py-3.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-xs"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
