@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: '아기속풀이',
     images: [
       {
-        url: 'https://baby-sokpuli.vercel.app/og-image.png', // 👈 절대 경로로 수정,
+        url: 'https://baby-sokpuli.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: '우리 아이 기질카드 대표 썸네일',
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     type: 'website',
   },
-  // 🌟 [추가/수정] 트위터 카드 메타 태그 (절대 경로 적용)
   twitter: {
     card: 'summary_large_image',
     title: '우리 아이 기질카드 & 육아 난이도 측정 🍼',
@@ -40,18 +39,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const GA_ID = 'G-12207483QQ'; // 👈 발급받으신 GA4 측정 ID
+  const GA_ID = 'G-12207483QQ';
 
   return (
     <html lang="ko">
       <head>
-        {/* 구글 애드센스 심사 코드 */}
-        <Script
+        {/* 1. 구글 애드센스 크롤러가 첫 페이지 소스에서 바로 인식하도록 정적 script로 삽입 */}
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2413854196655476"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
+
+        {/* 2. GA4 스크립트 */}
         {GA_ID && (
           <>
             <Script
