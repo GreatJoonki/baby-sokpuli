@@ -45,6 +45,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        {/* 구글 애드센스 심사 코드 */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2413854196655476"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         {GA_ID && (
           <>
             <Script
