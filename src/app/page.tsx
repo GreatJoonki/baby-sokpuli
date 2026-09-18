@@ -711,6 +711,9 @@ export default function Home() {
   const [partner2Name, setPartner2Name] = useState('');
   const [partner2Birth, setPartner2Birth] = useState('');
   const [coupleResult, setCoupleResult] = useState<any>(null);
+  
+  // 🌟 [추가] 커플 모드 분기 상태 ('simulator' | 'daily' | null)
+  const [coupleModeType, setCoupleModeType] = useState<'simulator' | 'daily' | null>(null);
 
   const [isAnalyzingCouple, setIsAnalyzingCouple] = useState(false);
   const [coupleCountdown, setCoupleCountdown] = useState<number | null>(null);
