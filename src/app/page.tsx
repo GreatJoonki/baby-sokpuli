@@ -960,24 +960,28 @@ export default function Home() {
   };
 
   // 🌟 [추가] 인스타 스토리용 Canvas 이미지 다운로드 함수
+  // Canvas 기반 인스타 규격 이미지 저장 (무설치 네이티브 API)
   const handleDownloadCoupleCard = () => {
     if (!coupleResult) return;
+
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 1050;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const drawRoundRect = (x: number, y: number, w: number, h: number, r: number) => {
+    // 🌟 5번째 인자 r에 기본값(= 20)을 넣어 4개만 전달되어도 에러가 나지 않도록 방어
+    const drawRoundRect = (x: number, y: number, w: number, h: number, r: number = 20) => {
       ctx.beginPath();
       ctx.moveTo(x + r, y);
       ctx.arcTo(x + w, y, x + w, y + h, r);
       ctx.arcTo(x + w, y + h, x, y + h, r);
       ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y + x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
       ctx.closePath();
     };
 
+    // 1. 전체 배경 그라데이션
     const bgGrad = ctx.createLinearGradient(0, 0, 800, 1050);
     bgGrad.addColorStop(0, '#FFF1F2');
     bgGrad.addColorStop(0.5, '#FDF4FF');
@@ -985,6 +989,7 @@ export default function Home() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 800, 1050);
 
+    // 2. 메인 화이트 카드
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
     ctx.shadowBlur = 30;
@@ -993,6 +998,7 @@ export default function Home() {
     ctx.fill();
     ctx.shadowColor = 'transparent';
 
+    // 3. 상단 타이틀
     ctx.fillStyle = '#E11D48';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'center';
@@ -1002,26 +1008,28 @@ export default function Home() {
     ctx.font = '900 32px sans-serif';
     ctx.fillText('우리의 가상 2세 & 오행 궁합', 400, 145);
 
+    // 4. 커플 60갑자 수호신 페어링 박스
     ctx.fillStyle = '#F8FAFC';
     drawRoundRect(80, 185, 640, 180, 24);
     ctx.fill();
 
     ctx.font = '56px sans-serif';
-    ctx.fillText(coupleResult.p1AnimalIcon, 230, 275);
+    ctx.fillText(coupleResult.p1AnimalIcon || '🐯', 230, 275);
     ctx.fillText('❤️', 400, 275);
-    ctx.fillText(coupleResult.p2AnimalIcon, 570, 275);
+    ctx.fillText(coupleResult.p2AnimalIcon || '🐰', 570, 275);
 
     ctx.font = 'bold 20px sans-serif';
     ctx.fillStyle = '#1E293B';
-    ctx.fillText(`${partner1Name || '예비 신랑'} (${coupleResult.p1Animal}띠)`, 230, 325);
-    ctx.fillText(`${partner2Name || '예비 신부'} (${coupleResult.p2Animal}띠)`, 570, 325);
+    ctx.fillText(`${partner1Name || '예비 신랑'} (${coupleResult.p1Animal || '호랑이'}띠)`, 230, 325);
+    ctx.fillText(`${partner2Name || '예비 신부'} (${coupleResult.p2Animal || '토끼'}띠)`, 570, 325);
 
     ctx.font = 'bold 15px sans-serif';
     ctx.fillStyle = '#E11D48';
-    ctx.fillText(coupleResult.p1Elem, 230, 348);
+    ctx.fillText(coupleResult.p1Elem || '', 230, 348);
     ctx.fillStyle = '#4F46E5';
-    ctx.fillText(coupleResult.p2Elem, 570, 348);
+    ctx.fillText(coupleResult.p2Elem || '', 570, 348);
 
+    // 5. 가상 2세 시뮬레이션 결과 박스
     const babyGrad = ctx.createLinearGradient(80, 395, 720, 680);
     babyGrad.addColorStop(0, '#FFFBEB');
     babyGrad.addColorStop(1, '#FFF7ED');
@@ -1031,44 +1039,48 @@ export default function Home() {
 
     ctx.fillStyle = '#9A3412';
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`👶 FUTURE BABY · 난이도: ${coupleResult.baby.difficulty}`, 400, 440);
+    ctx.fillText(`👶 FUTURE BABY · 난이도: ${coupleResult.baby?.difficulty || '보통'}`, 400, 440);
 
     ctx.font = '54px sans-serif';
-    ctx.fillText(coupleResult.baby.icon, 400, 515);
+    ctx.fillText(coupleResult.baby?.icon || '🍼', 400, 515);
 
     ctx.fillStyle = '#0F172A';
     ctx.font = '900 24px sans-serif';
-    ctx.fillText(coupleResult.baby.title, 400, 565);
+    ctx.fillText(coupleResult.baby?.title || '', 400, 565);
 
     ctx.fillStyle = '#475569';
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby.dadPercent}%  |  ${partner2Name || '상대방'} 성향 ${coupleResult.baby.momPercent}%`, 400, 620);
+    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}%  |  ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 620);
 
+    // 6. 오늘의 분담 판결소
     ctx.fillStyle = '#F1F5F9';
     drawRoundRect(80, 685, 640, 195, 24);
     ctx.fill();
 
     ctx.fillStyle = '#4F46E5';
     ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(`⚖️ 오늘의 생활 주도권 (케미스트리 ${coupleResult.chemistryScore}점)`, 400, 730);
+    ctx.fillText(`⚖️ 오늘의 생활 주도권 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 730);
 
     ctx.fillStyle = '#0F172A';
     ctx.font = 'bold 20px sans-serif';
-    ctx.fillText(`👉 ${coupleResult.chore.leader}`, 400, 775);
+    ctx.fillText(`👉 ${coupleResult.chore?.leader || ''}`, 400, 775);
 
     ctx.fillStyle = '#E11D48';
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(coupleResult.chore.role, 400, 815);
+    ctx.fillText(coupleResult.chore?.role || '', 400, 815);
 
+    // 7. 워터마크 푸터
     ctx.fillStyle = '#94A3B8';
     ctx.font = '15px sans-serif';
     ctx.fillText('baby-sokpuli.vercel.app', 400, 955);
 
+    // 브라우저 파일 다운로드 실행
     const link = document.createElement('a');
     link.download = `아기속풀이_커플2세도감_${partner1Name || '커플'}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   };
+  
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<'form' | 'result'>('form');
 
