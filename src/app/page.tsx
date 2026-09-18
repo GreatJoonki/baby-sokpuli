@@ -799,6 +799,8 @@ export default function Home() {
   };
 
   // Canvas 기반 인스타 규격 이미지 저장 (무설치 네이티브 API)
+  // Canvas 기반 인스타 규격 이미지 저장 (TS2554 인자 에러 완벽 해결)
+  // Canvas 기반 인스타 규격 이미지 저장 (TS2554 에러 해결)
   const handleDownloadCoupleCard = () => {
     if (!coupleResult) return;
 
@@ -808,16 +810,23 @@ export default function Home() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const drawRoundRect = (x: number, y: number, w: number, h: number, r: number = 20) => {
+    // 인자 개수 에러가 없는 표준 둥근 사각형 렌더러
+    const drawBox = (x: number, y: number, w: number, h: number, r: number = 24) => {
+      const radius = Math.min(r, w / 2, h / 2);
       ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y + x, y, r);
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + w - radius, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+      ctx.lineTo(x + w, y + h - radius);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+      ctx.lineTo(x + radius, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
       ctx.closePath();
     };
 
+    // 1. 전체 배경 그라데이션
     const bgGrad = ctx.createLinearGradient(0, 0, 800, 1050);
     bgGrad.addColorStop(0, '#FFF1F2');
     bgGrad.addColorStop(0.5, '#FDF4FF');
@@ -825,25 +834,28 @@ export default function Home() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 800, 1050);
 
+    // 2. 메인 화이트 카드
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
     ctx.shadowBlur = 30;
     ctx.shadowOffsetY = 15;
-    drawRoundRect(40, 40, 720, 970, 32);
+    drawBox(40, 40, 720, 970, 32);
     ctx.fill();
     ctx.shadowColor = 'transparent';
 
+    // 3. 상단 헤더
     ctx.fillStyle = '#E11D48';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('✨ 아기속풀이 PRO · 60갑자 커플 & 가상 2세 도감', 400, 95);
+    ctx.fillText('아기속풀이 PRO · 60갑자 커플 & 가상 2세 도감', 400, 95);
 
     ctx.fillStyle = '#0F172A';
     ctx.font = '900 32px sans-serif';
     ctx.fillText('우리의 가상 2세 & 오행 궁합', 400, 145);
 
+    // 4. 커플 60갑자 수호신 페어링 박스
     ctx.fillStyle = '#F8FAFC';
-    drawRoundRect(80, 185, 640, 180, 24);
+    drawBox(80, 185, 640, 180, 24);
     ctx.fill();
 
     ctx.font = '56px sans-serif';
@@ -862,16 +874,17 @@ export default function Home() {
     ctx.fillStyle = '#4F46E5';
     ctx.fillText(coupleResult.p2Elem || '', 570, 348);
 
+    // 5. 가상 2세 시뮬레이션 결과 박스
     const babyGrad = ctx.createLinearGradient(80, 395, 720, 680);
     babyGrad.addColorStop(0, '#FFFBEB');
     babyGrad.addColorStop(1, '#FFF7ED');
     ctx.fillStyle = babyGrad;
-    drawRoundRect(80, 395, 640, 265, 24);
+    drawBox(80, 395, 640, 265, 24);
     ctx.fill();
 
     ctx.fillStyle = '#9A3412';
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`👶 FUTURE BABY · 난이도: ${coupleResult.baby?.difficulty || '보통'}`, 400, 440);
+    ctx.fillText(`FUTURE BABY · 난이도: ${coupleResult.baby?.difficulty || '보통'}`, 400, 440);
 
     ctx.font = '54px sans-serif';
     ctx.fillText(coupleResult.baby?.icon || '🍼', 400, 515);
@@ -882,24 +895,26 @@ export default function Home() {
 
     ctx.fillStyle = '#475569';
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}%  |  ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 620);
+    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}% | ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 620);
 
+    // 6. 오늘의 생활 분담 판결소
     ctx.fillStyle = '#F1F5F9';
-    drawRoundRect(80, 685, 640, 195, 24);
+    drawBox(80, 685, 640, 195, 24);
     ctx.fill();
 
     ctx.fillStyle = '#4F46E5';
     ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(`⚖️ 오늘의 생활 주도권 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 730);
+    ctx.fillText(`오늘의 생활 주도권 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 730);
 
     ctx.fillStyle = '#0F172A';
     ctx.font = 'bold 20px sans-serif';
-    ctx.fillText(`👉 ${coupleResult.chore?.leader || ''}`, 400, 775);
+    ctx.fillText(coupleResult.chore?.leader || '', 400, 775);
 
     ctx.fillStyle = '#E11D48';
     ctx.font = 'bold 18px sans-serif';
     ctx.fillText(coupleResult.chore?.role || '', 400, 815);
 
+    // 7. 워터마크 푸터
     ctx.fillStyle = '#94A3B8';
     ctx.font = '15px sans-serif';
     ctx.fillText('baby-sokpuli.vercel.app', 400, 955);
@@ -1853,58 +1868,58 @@ export default function Home() {
               <p className="text-xs text-slate-500 break-keep">원하시는 분석을 선택하시면 맞춤 도감이 펼쳐집니다.</p>
             </div>
 
-            {/* 세로형 2단 감성 선택 카드 */}
-            <div className="flex flex-col gap-3">
-              {/* [세트 C 육아] 아기 속마음 비밀 번역기 */}
+            {/* 감성 결합형 2단 선택 카드 (아이콘 군더더기 제거) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {/* 육아 모드 카드 */}
               <button
                 type="button"
                 onClick={() => setSelectedGateway('parenting')}
-                className={`w-full p-4.5 rounded-3xl border-2 text-left transition-all flex items-center justify-between active:scale-98 ${
+                className={`p-5 rounded-3xl border-2 text-left transition-all flex items-center justify-between active:scale-98 ${
                   selectedGateway === 'parenting'
-                    ? 'border-indigo-600 bg-white shadow-lg'
-                    : 'border-slate-200 bg-white/70 hover:bg-white text-slate-500'
+                    ? 'border-indigo-600 bg-white shadow-xl scale-[1.01]'
+                    : 'border-slate-200/90 bg-slate-50/60 hover:bg-white text-slate-500'
                 }`}
               >
-                <div className="space-y-1 pr-2">
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-black inline-block ${
-                    selectedGateway === 'parenting' ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-100 text-slate-500'
+                <div className="space-y-1.5 pr-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black inline-block ${
+                    selectedGateway === 'parenting' ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-200 text-slate-600'
                   }`}>
                     육퇴를 꿈꾸는 시간
                   </span>
                   <h3 className="text-base font-black text-slate-900 leading-tight">
-                    아기 속마음, 비밀 번역기 🔮
+                    아기 속마음, 비밀 번역기
                   </h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
-                    왜 우는지 모를 때 열어보는 60갑자 기질과 매일 밤 통잠 타로
+                    왜 우는지 모를 때 열어보는 60갑자 기질과 타로
                   </p>
                 </div>
-                <div className="text-3xl shrink-0">👶</div>
+                <div className="text-2xl font-bold text-indigo-600 shrink-0">🍼</div>
               </button>
 
-              {/* [세트 A 커플] 우리 둘을 닮은 아이는 어떨까? */}
+              {/* 커플 모드 카드 */}
               <button
                 type="button"
                 onClick={() => setSelectedGateway('couple')}
-                className={`w-full p-4.5 rounded-3xl border-2 text-left transition-all flex items-center justify-between active:scale-98 ${
+                className={`p-5 rounded-3xl border-2 text-left transition-all flex items-center justify-between active:scale-98 ${
                   selectedGateway === 'couple'
-                    ? 'border-rose-500 bg-white shadow-lg'
-                    : 'border-slate-200 bg-white/70 hover:bg-white text-slate-500'
+                    ? 'border-rose-500 bg-white shadow-xl scale-[1.01]'
+                    : 'border-slate-200/90 bg-slate-50/60 hover:bg-white text-slate-500'
                 }`}
               >
-                <div className="space-y-1 pr-2">
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-black inline-block ${
-                    selectedGateway === 'couple' ? 'bg-rose-50 text-rose-600' : 'bg-slate-100 text-slate-500'
+                <div className="space-y-1.5 pr-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black inline-block ${
+                    selectedGateway === 'couple' ? 'bg-rose-50 text-rose-600' : 'bg-slate-200 text-slate-600'
                   }`}>
                     둘이 함께 그리는 내일
                   </span>
                   <h3 className="text-base font-black text-slate-900 leading-tight">
-                    우리 둘을 닮은 아이는 어떨까? 💍
+                    우리 둘을 닮은 아이는 어떨까?
                   </h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
                     서로의 온도로 빚어낼 우리만의 미래 2세와 생활 케미스트리
                   </p>
                 </div>
-                <div className="text-3xl shrink-0">💑</div>
+                <div className="text-2xl font-bold text-rose-500 shrink-0">💍</div>
               </button>
             </div>
 
@@ -1938,7 +1953,7 @@ export default function Home() {
               <div className="bg-white rounded-3xl p-5 border border-rose-100 shadow-md space-y-3 animate-fadeIn">
                 <div className="border-b border-slate-100 pb-2">
                   <h4 className="text-xs font-black text-rose-950">💍 둘만의 미래 도감에서 미리 보는 2세와 궁합</h4>
-                  <p className="text-[11px] text-slate-500">두 사람의 오행 조화로 시뮬레이션하는 미래 2세와 생활 주도권</p>
+                  <p className="text-[11px] text-slate-500">두 사람의 오행 조화로 시뮬레이션하는 미래 2세와 케미스트리</p>
                 </div>
                 <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed break-keep">
                   <p>• <b>가상 2세 기질 시뮬레이터</b>: 아빠와 엄마 기운이 만났을 때 태어날 아기 성향과 닮을 확률(%)</p>
@@ -1990,7 +2005,7 @@ export default function Home() {
             VIEW 2: 육아 모드 본문 (isEntered && parenting)
            ======================================================== */}
         {isEntered && activeTabMode === 'parenting' && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {/* 무한 롤링 티커 배너 */}
             <div className="mb-2 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
               <div className="animate-ticker-marquee flex items-center text-xs sm:text-sm font-semibold text-slate-600 select-none">
@@ -2667,7 +2682,7 @@ export default function Home() {
             (육아 기질카드/아기 프로필 완벽 배제)
            ======================================================== */}
         {isEntered && activeTabMode === 'couple' && (
-          <div className="space-y-4 animate-fadeIn">
+          <div className="space-y-6 animate-fadeIn">
             {/* 15초 스폰서 분석 화면 (커플 모드 전용 인터스티셜) */}
             {isAnalyzingCouple ? (
               <div className="py-8 text-center space-y-5 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-rose-100 shadow-md">
