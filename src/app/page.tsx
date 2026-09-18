@@ -892,6 +892,10 @@ const calculate5StepDifficulty = (babyDateStr: string, parentDateStr: string): P
 };
 
 export default function Home() {
+  // 🌟 게이트웨이 화면 제어용 상태 2개
+  const [selectedGateway, setSelectedGateway] = useState<'parenting' | 'couple'>('parenting');
+  const [isEntered, setIsEntered] = useState<boolean>(false);
+ 
   // 🌟 [추가] 모드 전환: 'parenting' (기존 육아) | 'couple' (커플·예비부부)
   const [activeTabMode, setActiveTabMode] = useState<'parenting' | 'couple'>('parenting');
 
@@ -2023,34 +2027,175 @@ export default function Home() {
             가볍게 쏙 뽑아보는 우리 아이 속풀이
           </p>
         </header>
-{/* 🍼 육아 모드 / 💍 커플 모드 전환 탭 */}
-<div className="flex bg-slate-200/90 p-1.5 rounded-2xl shadow-inner my-4">
-  <button
-    type="button"
-    onClick={() => setActiveTabMode('parenting')}
-    className={`flex-1 py-2.5 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 ${
-      activeTabMode === 'parenting'
-        ? 'bg-white text-slate-900 shadow-md scale-[1.02]'
-        : 'text-slate-500 hover:text-slate-800'
-    }`}
-  >
-    <span>🍼</span> 육아 모드 (기질 & 타로)
-  </button>
-  <button
-    type="button"
-    onClick={() => setActiveTabMode('couple')}
-    className={`flex-1 py-2.5 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 ${
-      activeTabMode === 'couple'
-        ? 'bg-rose-500 text-white shadow-md scale-[1.02]'
-        : 'text-slate-500 hover:text-slate-800'
-    }`}
-  >
-    <span>💍</span> 커플·예비부부 모드
-  </button>
-</div>
+        {/* 🌟 1. 첫 진입 게이트웨이 (감성 멘트 선택 화면) */}
+        {!isEntered && (
+          <div className="space-y-5 py-2 animate-fadeIn">
+            <div className="text-center space-y-1 mb-4">
+              <span className="inline-block px-3 py-1 bg-white border border-slate-200 rounded-full text-[11px] font-bold text-slate-600 shadow-xs">
+                ✨ 60갑자 사주 기질 & 일상 속풀이
+              </span>
+              <h2 className="text-xl font-black text-slate-900">어떤 이야기를 열어볼까요?</h2>
+              <p className="text-xs text-slate-500">원하시는 분석을 선택하시면 맞춤 도감이 펼쳐집니다.</p>
+            </div>
+
+            {/* 감성 결합형 2단 선택 카드 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {/* [세트 C 육아] 아기 속마음 비밀 번역기 */}
+              <button
+                type="button"
+                onClick={() => setSelectedGateway('parenting')}
+                className={`p-5 rounded-3xl border-2 text-left transition-all flex items-center justify-between group active:scale-98 ${
+                  selectedGateway === 'parenting'
+                    ? 'border-indigo-600 bg-white shadow-xl scale-[1.01]'
+                    : 'border-slate-200/90 bg-slate-50/60 hover:bg-white text-slate-500'
+                }`}
+              >
+                <div className="space-y-1.5 pr-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black inline-block ${
+                    selectedGateway === 'parenting' ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-200 text-slate-600'
+                  }`}>
+                    육퇴를 꿈꾸는 시간
+                  </span>
+                  <h3 className="text-base font-black text-slate-900 leading-tight">
+                    아기 속마음, 비밀 번역기 🔮
+                  </h3>
+                  <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
+                    왜 우는지 모를 때 열어보는 60갑자 기질과 매일 밤 통잠 타로
+                  </p>
+                </div>
+                <div className="text-4xl group-hover:scale-110 transition-transform shrink-0">👶</div>
+              </button>
+
+              {/* [세트 A 커플] 우리 둘을 닮은 아이는 어떨까? */}
+              <button
+                type="button"
+                onClick={() => setSelectedGateway('couple')}
+                className={`p-5 rounded-3xl border-2 text-left transition-all flex items-center justify-between group active:scale-98 ${
+                  selectedGateway === 'couple'
+                    ? 'border-rose-500 bg-white shadow-xl scale-[1.01]'
+                    : 'border-slate-200/90 bg-slate-50/60 hover:bg-white text-slate-500'
+                }`}
+              >
+                <div className="space-y-1.5 pr-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black inline-block ${
+                    selectedGateway === 'couple' ? 'bg-rose-50 text-rose-600' : 'bg-slate-200 text-slate-600'
+                  }`}>
+                    둘이 함께 그리는 내일
+                  </span>
+                  <h3 className="text-base font-black text-slate-900 leading-tight">
+                    우리 둘을 닮은 아이는 어떨까? 💍
+                  </h3>
+                  <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
+                    서로의 온도로 빚어낼 우리만의 미래 2세와 생활 케미스트리
+                  </p>
+                </div>
+                <div className="text-4xl group-hover:scale-110 transition-transform shrink-0">💑</div>
+              </button>
+            </div>
+
+            {/* 육아 선택 시 상세 설명 */}
+            {selectedGateway === 'parenting' && (
+              <div className="bg-white rounded-3xl p-5 border border-indigo-100 shadow-md space-y-3.5 animate-fadeIn">
+                <div className="border-b border-slate-100 pb-2.5">
+                  <h4 className="text-xs font-black text-indigo-950">🔮 비밀 번역기에서 들려주는 우리 아이 속마음</h4>
+                  <p className="text-[11px] text-slate-500">생년월일시 기반 전통 60갑자 사주 명리와 현대 육아학의 결합</p>
+                </div>
+                <div className="space-y-2 text-xs text-slate-600 leading-relaxed break-keep">
+                  <p>• <b>60갑자 아기 기질 도감</b>: 아이가 타고난 오행(목·화·토·금·수) 본성과 12간지 수호 동물을 분석해 수면·수유·놀이 성향을 진단합니다.</p>
+                  <p>• <b>오늘 밤 육아 속마음 타로 (21종)</b>: 등센서, 이앓이, 분수토 등 매일 밤 지친 부모의 마음을 위로하고 합법적 휴식 처방전을 제안합니다.</p>
+                  <p>• <b>원더윅스 도약기 & 부모 난이도 측정</b>: 출산 예정일 기준 두뇌 급성장 주수 계산 및 부모-자녀 사주 상생 케미를 점수화합니다.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTabMode('parenting');
+                    setIsEntered(true);
+                  }}
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-2xl shadow-md transition-all transform active:scale-98 flex items-center justify-center gap-1.5"
+                >
+                  <span>👉</span> 우리 아이 속마음 들여다보기 (입장)
+                </button>
+              </div>
+            )}
+
+            {/* 커플 선택 시 상세 설명 */}
+            {selectedGateway === 'couple' && (
+              <div className="bg-white rounded-3xl p-5 border border-rose-100 shadow-md space-y-3.5 animate-fadeIn">
+                <div className="border-b border-slate-100 pb-2.5">
+                  <h4 className="text-xs font-black text-rose-950">💍 둘만의 미래 도감에서 미리 보는 2세와 궁합</h4>
+                  <p className="text-[11px] text-slate-500">두 사람의 오행 조화로 시뮬레이션하는 미래 2세와 생활 주도권</p>
+                </div>
+                <div className="space-y-2 text-xs text-slate-600 leading-relaxed break-keep">
+                  <p>• <b>가상 2세 기질 시뮬레이터</b>: 아빠와 엄마의 사주 기운이 만났을 때 태어날 아기의 성향, 외모/성격 닮을 확률(%), 예상 육아 난이도를 예측합니다.</p>
+                  <p>• <b>60갑자 수호신 캐릭터 페어링</b>: 연인 각자의 상징 동물과 오행 케미스트리 지수를 시각적 그래픽으로 구현합니다.</p>
+                  <p>• <b>오늘의 생활 분담 판결소 & 이미지 저장</b>: 오늘 데이트 코스 및 집안일 주도권을 선고하고 인스타 스토리용 고화질 카드로 저장합니다.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTabMode('couple');
+                    setIsEntered(true);
+                  }}
+                  className="w-full py-3.5 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-black text-xs rounded-2xl shadow-md transition-all transform active:scale-98 flex items-center justify-center gap-1.5"
+                >
+                  <span>👉</span> 우리 둘만의 미래 도감 열어보기 (입장)
+                </button>
+              </div>
+            )}
+
+            {/* 애드센스 심사 봇 크롤링용 안내 */}
+            <div className="bg-slate-100/80 rounded-2xl p-4 text-[11px] text-slate-500 space-y-2 leading-relaxed border border-slate-200/60">
+              <span className="font-extrabold text-slate-700 block">📖 아기속풀이(Baby Sokpuli) 서비스 안내</span>
+              <p className="break-keep">
+                본 서비스는 전통 명리학의 60갑자 간지 체계와 음양오행 이론을 현대 발달심리학 및 영유아 양육 환경에 맞추어 유쾌하게 재해석한 웹 애플리케이션입니다. 입력하신 모든 생년월일 데이터는 외부 데이터베이스로 전송되지 않으며, 브라우저 내부에서만 연산되어 개인정보가 안전하게 보호됩니다.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 🌟 2. 입장하기 누른 후 나타나는 상단 뒤로가기 버튼 */}
+        {isEntered && (
+          <div className="flex justify-between items-center bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-xs mb-3">
+            <button
+              type="button"
+              onClick={() => setIsEntered(false)}
+              className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors"
+            >
+              <span>←</span> 다른 모드 선택하기
+            </button>
+            <span className="text-[11px] font-black text-indigo-600">
+              {activeTabMode === 'parenting' ? '🍼 아기 속마음 번역기 진행 중' : '💍 가상 2세 미래 도감 진행 중'}
+            </span>
+          </div>
+        )}
+
+            {/* 🌟 구글 애드센스 심사 봇 크롤링용 고품질 정보 가이드 블록 */}
+            <div className="bg-slate-100/80 rounded-2xl p-4 text-[11px] text-slate-500 space-y-2 leading-relaxed border border-slate-200/60">
+              <span className="font-extrabold text-slate-700 block">📖 아기속풀이(Baby Sokpuli) 서비스 안내</span>
+              <p className="break-keep">
+                본 서비스는 전통 명리학의 60갑자(육십갑자) 간지 체계와 음양오행 이론을 현대 발달심리학 및 영유아 양육 환경에 맞추어 유쾌하게 재해석한 웹 애플리케이션입니다. 입력하신 모든 생년월일 데이터는 외부 데이터베이스로 전송되지 않으며, 사용자 단말기 브라우저 내부에서만 연산되어 개인정보가 안전하게 보호됩니다.
+              </p>
+            </div>
+          </div>
+        ) : (
+          /* 🌟 2. [입장하기] 클릭 후: 기존 육아 / 커플 작업 공간 노출 */
+          <div className="space-y-4">
+            {/* 상단 뒤로가기 바 */}
+            <div className="flex justify-between items-center bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-xs">
+              <button
+                type="button"
+                onClick={() => setIsEntered(false)}
+                className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors"
+              >
+                <span>←</span> 다른 모드 선택하기
+              </button>
+              <span className="text-[11px] font-black text-indigo-600">
+                {activeTabMode === 'parenting' ? '🍼 아기 속마음 번역기 진행 중' : '💍 가상 2세 미래 도감 진행 중'}
+              </span>
+            </div>
 
 {/* 기존 육아 콘텐츠 전체 래핑 시작 */}
-{activeTabMode === 'parenting' && (
+{isEntered && activeTabMode === 'couple' && (
   <div className="space-y-6">
         {/* 🌟 1. 끊김 없는 무한 롤링 티커 배너 (2벌 100% 미러링) */}
         <div className="mb-4 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
