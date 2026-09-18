@@ -2658,7 +2658,7 @@ export default function Home() {
                     </span>
                     <h4 className="text-base font-black text-slate-900">가상 2세 & 수호신 페어링 👶</h4>
                     <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
-                      두 사람의 60갑자 사주로 미리 보는 우리 아이 성향과 인스타 카드 저장
+                      두 사람의 60갑자 사주로 미리 보는 우리 아이 성향
                     </p>
                   </div>
                   <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">🍼</div>
