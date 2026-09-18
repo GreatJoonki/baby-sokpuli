@@ -903,11 +903,19 @@ export default function Home() {
   const [coupleResult, setCoupleResult] = useState<any>(null);
 
   // 🌟 [추가] 커플 가상 2세 및 생활 분담 계산 함수
+  // 커플 가상 2세 및 생활 분담 계산 함수
   const handleCalculateCouple = () => {
     if (!partner1Birth || !partner2Birth) {
       alert('두 분의 생년월일을 모두 입력해주세요!');
       return;
     }
+
+    // 🌟 [추가] 12간지 동물 및 아이콘 상수 자체 정의
+    const ANIMALS = ['쥐', '소', '호랑이', '토끼', '용', '뱀', '말', '양', '원숭이', '닭', '개', '돼지'];
+    const ANIMAL_ICONS: Record<string, string> = {
+      쥐: '🐭', 소: '🐮', 호랑이: '🐯', 토끼: '🐰', 용: '🐲', 뱀: '🐍',
+      말: '🐴', 양: '🐑', 원숭이: '🐵', 닭: '🐔', 개: '🐶', 돼지: '🐷',
+    };
 
     const p1Year = parseInt(partner1Birth.split('-')[0] || '2000', 10);
     const p2Year = parseInt(partner2Birth.split('-')[0] || '2000', 10);
