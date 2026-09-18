@@ -1854,7 +1854,7 @@ export default function Home() {
             아기속풀이 <span className="text-rose-500 text-xs font-extrabold uppercase px-2 py-0.5 bg-rose-50 rounded-md border border-rose-100">PRO</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium break-keep">
-            매일 밤 통잠을 기원하는 육아 타로와 커플 가상 2세 시뮬레이터
+          사주 오행으로 읽어보는 우리 아이 기질 도감과 커플 가상 2세 시뮬레이터"
           </p>
         </header>
 
@@ -1910,7 +1910,7 @@ export default function Home() {
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black inline-block ${
                     selectedGateway === 'couple' ? 'bg-rose-50 text-rose-600' : 'bg-slate-200 text-slate-600'
                   }`}>
-                    둘이 함께 그리는 내일
+                    함께 그리는 내일
                   </span>
                   <h3 className="text-base font-black text-slate-900 leading-tight">
                     우리 둘을 닮은 아이는 어떨까?
@@ -2792,89 +2792,106 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* 커플 결과 노출 영역 */}
-                {coupleResult && (
+            {/* 커플 결과 노출 영역 */}
+            {coupleResult && (
                   <div className="space-y-4 animate-fadeIn">
+                    
                     {/* 1. 커플 60갑자 수호신 캐릭터 페어링 카드 */}
-                    <div className="bg-white rounded-3xl p-5 border border-rose-200 shadow-md space-y-3.5 text-center">
-                      <span className="text-[11px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-full inline-block">
+                    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-rose-200 shadow-md space-y-4 text-center">
+                      <span className="text-[11px] font-black text-rose-600 bg-rose-50 px-3.5 py-1 rounded-full inline-block">
                         60갑자 커플 수호신 페어링
                       </span>
 
-                      <div className="flex items-center justify-around py-3.5 bg-gradient-to-r from-rose-50 via-purple-50 to-indigo-50 rounded-2xl border border-slate-100">
-                        <div className="space-y-0.5">
-                          <div className="text-4xl">{coupleResult.p1AnimalIcon}</div>
-                          <span className="text-xs font-black text-slate-800 block">{partner1Name || '예비 신랑'}</span>
-                          <span className="text-[10px] font-bold text-rose-600 block">{coupleResult.p1Animal}띠</span>
-                          <span className="text-[9px] text-slate-500 block">{coupleResult.p1Elem}</span>
+                      <div className="flex items-center justify-around py-4 bg-gradient-to-r from-rose-50 via-purple-50 to-indigo-50 rounded-2xl border border-slate-100">
+                        <div className="space-y-1">
+                          <div className="text-4xl sm:text-5xl">{coupleResult.p1AnimalIcon}</div>
+                          <span className="text-xs sm:text-sm font-black text-slate-900 block">{partner1Name || '예비 신랑'}</span>
+                          <span className="text-xs font-extrabold text-rose-600 block">{coupleResult.p1Animal}띠</span>
+                          <span className="text-[10px] text-slate-500 block font-semibold">{coupleResult.p1Elem}</span>
                         </div>
 
-                        <div className="text-2xl font-black text-rose-500">❤️</div>
+                        <div className="text-2xl sm:text-3xl font-black text-rose-500 animate-pulse">❤️</div>
 
-                        <div className="space-y-0.5">
-                          <div className="text-4xl">{coupleResult.p2AnimalIcon}</div>
-                          <span className="text-xs font-black text-slate-800 block">{partner2Name || '예비 신부'}</span>
-                          <span className="text-[10px] font-bold text-indigo-600 block">{coupleResult.p2Animal}띠</span>
-                          <span className="text-[9px] text-slate-500 block">{coupleResult.p2Elem}</span>
+                        <div className="space-y-1">
+                          <div className="text-4xl sm:text-5xl">{coupleResult.p2AnimalIcon}</div>
+                          <span className="text-xs sm:text-sm font-black text-slate-900 block">{partner2Name || '예비 신부'}</span>
+                          <span className="text-xs font-extrabold text-indigo-600 block">{coupleResult.p2Animal}띠</span>
+                          <span className="text-[10px] text-slate-500 block font-semibold">{coupleResult.p2Elem}</span>
                         </div>
+                      </div>
+
+                      {/* 사주 궁합 근거 이유 */}
+                      <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/60 text-left space-y-1">
+                        <span className="text-[11px] font-extrabold text-rose-600 block">🔮 60갑자 오행 페어링 분석 이유</span>
+                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
+                          두 분의 사주 기운인 <b>{coupleResult.p1Elem}</b>과 <b>{coupleResult.p2Elem}</b>이 만나 서로의 부족한 에너지를 유연하게 채워주며, 감정적 교감과 추진력이 이상적으로 조화되는 궁합입니다.
+                        </p>
                       </div>
 
                       {/* 인스타 스토리용 이미지 다운로드 버튼 */}
                       <button
                         type="button"
                         onClick={handleDownloadCoupleCard}
-                        className="w-full py-3.5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-black text-xs rounded-2xl shadow-md hover:from-slate-800 hover:to-indigo-900 transition-all flex items-center justify-center gap-2 transform active:scale-98"
+                        className="w-full py-4 bg-gradient-to-r from-slate-900 to-indigo-950 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md hover:from-slate-800 hover:to-indigo-900 transition-all flex items-center justify-center gap-2 transform active:scale-98"
                       >
                         <span>📸</span> 결과 카드 이미지 저장 (인스타 스토리용)
                       </button>
                     </div>
 
                     {/* 2. 가상 2세 시뮬레이터 카드 */}
-                    <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl p-5 border border-orange-200 shadow-md space-y-3.5">
+                    <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl p-5 sm:p-6 border border-orange-200 shadow-md space-y-4">
                       <div className="flex justify-between items-center pb-2 border-b border-orange-200/80">
-                        <span className="text-xs font-black text-orange-900">👶 FUTURE BABY SIMULATOR</span>
-                        <span className="px-2.5 py-0.5 bg-orange-200 text-orange-900 rounded-full text-[10px] font-extrabold">
+                        <span className="text-xs font-black text-orange-900">FUTURE BABY SIMULATOR</span>
+                        <span className="px-3 py-1 bg-orange-200 text-orange-900 rounded-full text-[11px] font-extrabold">
                           육아 난이도: {coupleResult.baby.difficulty}
                         </span>
                       </div>
 
-                      <div className="text-center space-y-1.5 py-1">
-                        <div className="text-4xl">{coupleResult.baby.icon}</div>
-                        <h3 className="text-base sm:text-lg font-black text-slate-900">{coupleResult.baby.title}</h3>
-                        <p className="text-xs text-slate-700 leading-relaxed break-keep px-1">
+                      <div className="text-center space-y-2 py-1">
+                        <div className="text-4xl sm:text-5xl">{coupleResult.baby.icon}</div>
+                        <h3 className="text-base sm:text-xl font-black text-slate-900 leading-tight">{coupleResult.baby.title}</h3>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed break-keep px-1 font-medium">
                           {coupleResult.baby.desc}
                         </p>
                       </div>
 
+                      {/* 가상 2세 도출 이유 */}
+                      <div className="p-3.5 bg-white/90 rounded-2xl border border-orange-100 text-left space-y-1">
+                        <span className="text-[11px] font-extrabold text-orange-800 block">💡 2세 성향 시뮬레이션 산출 근거</span>
+                        <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
+                          두 분의 탄생 연도 오행 에너지 해시값과 성향 조합을 분석한 결과, 부모의 장점인 왕성한 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형으로 판정되었습니다.
+                        </p>
+                      </div>
+
                       {/* 닮을 확률 게이지 */}
-                      <div className="bg-white/90 p-3.5 rounded-2xl border border-orange-100 space-y-2 text-xs">
-                        <div className="flex justify-between font-extrabold text-slate-700 text-[11px]">
+                      <div className="bg-white/95 p-4 rounded-2xl border border-orange-100 space-y-2.5 text-xs sm:text-sm">
+                        <div className="flex justify-between font-black text-slate-800">
                           <span>{partner1Name || '나'} 성향: {coupleResult.baby.dadPercent}%</span>
                           <span>{partner2Name || '상대방'} 성향: {coupleResult.baby.momPercent}%</span>
                         </div>
-                        <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden flex">
-                          <div style={{ width: `${coupleResult.baby.dadPercent}%` }} className="bg-rose-500 h-full" />
-                          <div style={{ width: `${coupleResult.baby.momPercent}%` }} className="bg-indigo-500 h-full" />
+                        <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden flex shadow-inner">
+                          <div style={{ width: `${coupleResult.baby.dadPercent}%` }} className="bg-rose-500 h-full transition-all duration-700" />
+                          <div style={{ width: `${coupleResult.baby.momPercent}%` }} className="bg-indigo-500 h-full transition-all duration-700" />
                         </div>
                       </div>
                     </div>
 
                     {/* 3. 오행 케미 & 생활 분담 판결소 */}
-                    <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md space-y-3.5">
+                    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-md space-y-4">
                       <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                         <div className="space-y-0.5">
-                          <span className="text-xs font-black text-slate-800">⚖️ 오늘의 커플 생활 판결소</span>
-                          <span className="text-[10px] text-indigo-600 block">연애 케미 지수: {coupleResult.chemistryScore}점</span>
+                          <span className="text-xs sm:text-sm font-black text-slate-900">오늘의 커플 생활 판결소</span>
+                          <span className="text-xs font-bold text-indigo-600 block">연애 케미 지수: {coupleResult.chemistryScore}점 / 100점</span>
                         </div>
-                        <span className="text-[10px] text-slate-400">자정 기준 갱신</span>
+                        <span className="text-[11px] text-slate-400 font-semibold">자정 갱신</span>
                       </div>
 
-                      <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
-                        <span className="text-[11px] font-black text-indigo-600 block">오늘의 사주 오행 선고 결과 📜</span>
-                        <p className="text-xs font-black text-slate-900">
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2 text-left">
+                        <span className="text-xs font-black text-indigo-700 block">사주 오행 법정 최종 선고 📜</span>
+                        <p className="text-xs sm:text-sm font-black text-slate-900">
                           👉 {coupleResult.chore.leader}: <span className="text-rose-600 font-extrabold">{coupleResult.chore.role}</span>
                         </p>
-                        <p className="text-[11px] text-slate-600 leading-relaxed break-keep">
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep pt-1">
                           {coupleResult.chore.desc}
                         </p>
                       </div>
@@ -2889,21 +2906,17 @@ export default function Home() {
                             });
                           } else {
                             navigator.clipboard.writeText(window.location.href);
-                            alert('결과 링크가 클립보드에 복사되었습니다! 카톡으로 공유해보세요 💌');
+                            alert('결과 링크가 클립보드에 복사되었습니다. 카톡으로 공유해보세요.');
                           }
                         }}
-                        className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all shadow-xs"
+                        className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-md"
                       >
                         💌 이 결과 링크로 복사하기
                       </button>
                     </div>
+
                   </div>
                 )}
-              </>
-            )}
-          </div>
-        )}
-
         {/* ========================================================
             하단 최하단 푸터 (단일 배치)
            ======================================================== */}
