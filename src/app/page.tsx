@@ -72,7 +72,7 @@ const BABY_POTION_LINKS: Record<'wood' | 'fire' | 'earth' | 'metal' | 'water', R
   metal: {
     infant: 'https://link.coupang.com/a/gZAF6nJOrk',
     toddler: 'https://link.coupang.com/a/gZAH1uI9zU',
-    child: 'https://link.coupang.com/a/gZADU7LZvw',
+    child: 'https://link.coupang.com/a/gZAJNeiG4q',
   },
   water: {
     infant: 'https://link.coupang.com/a/gZANoTDZEi',
@@ -686,9 +686,10 @@ export default function Home() {
   const [isEntered, setIsEntered] = useState<boolean>(false);
   const [activeTabMode, setActiveTabMode] = useState<'parenting' | 'couple'>('parenting');
 
-  // 커플 모드 분기 상태 제어 ('simulator': 가상 2세 | 'daily': 생활 판결소 | null: 메뉴 선택 화면)
+  // 커플 모드 서브 분기 상태 ('simulator': 가상 2세 | 'daily': 특권 판결소 | null: 메뉴 선택 화면)
   const [coupleModeType, setCoupleModeType] = useState<'simulator' | 'daily' | null>(null);
 
+  // 🌟 [개선] 호칭을 '나'와 '연인'으로 간소화
   const [partner1Name, setPartner1Name] = useState('');
   const [partner1Birth, setPartner1Birth] = useState('');
   const [partner2Name, setPartner2Name] = useState('');
@@ -710,7 +711,7 @@ export default function Home() {
       allowFuture: false,
       minYear: 1950,
       maxYear: new Date().getFullYear(),
-      fieldName: '나(예비 신랑)의 생년월일',
+      fieldName: '나의 생년월일',
     });
     if (!p1Check.isValid) {
       alert(p1Check.errorMsg);
@@ -721,7 +722,7 @@ export default function Home() {
       allowFuture: false,
       minYear: 1950,
       maxYear: new Date().getFullYear(),
-      fieldName: '연인(예비 신부)의 생년월일',
+      fieldName: '연인의 생년월일',
     });
     if (!p2Check.isValid) {
       alert(p2Check.errorMsg);
@@ -730,7 +731,7 @@ export default function Home() {
 
     setIsAnalyzingCouple(true);
     setCoupleCountdown(15);
-    trackEvent('click_couple_analyze', 'Engagement', '커플 가상 2세 분석 시작');
+    trackEvent('click_couple_analyze', 'Engagement', '커플 분석 시작');
 
     coupleIntervalRef.current = setInterval(() => {
       setCoupleCountdown((prev) => {
@@ -774,9 +775,17 @@ export default function Home() {
       const chemistryScore = 75 + ((p1Hash * 7 + p2Hash * 3) % 25);
 
       const isP1Turn = (todayHash + p1Hash) % 2 === 0;
-      const chore = isP1Turn
-        ? { leader: partner1Name || '첫 번째 분', role: '오늘의 데이트 코스 & 저녁 메뉴 결정권자 (설거지 면제권 획득!)', desc: '오늘 우주의 주도권 기운이 강합니다. 망설이지 말고 결단을 내려주세요!' }
-        : { leader: partner2Name || '두 번째 분', role: '오늘의 힐링 수혜자 (상대방의 풀케어를 누리는 날)', desc: '상대방이 이끄는 대로 편안하게 맛있는 음식과 휴식을 즐기시면 됩니다.' };
+
+      // 🌟 [개선] 승자와 서포터가 명확히 분리된 커플 특권 구조
+      const winnerName = isP1Turn ? (partner1Name.trim() || '나') : (partner2Name.trim() || '연인');
+      const supporterName = isP1Turn ? (partner2Name.trim() || '연인') : (partner1Name.trim() || '나');
+
+      const chore = {
+        winner: winnerName,
+        supporter: supporterName,
+        benefit: '오늘 저녁 메뉴 & 데이트 코스 전권 획득! (손 하나 까딱 안 할 권리 획득 🎟️)',
+        duty: `${supporterName}님은 오늘 ${winnerName}님을 모시는 특급 풀케어와 데이트 준비를 기분 좋게 전담하는 날입니다!`,
+      };
 
       setCoupleResult({
         p1Elem,
@@ -795,7 +804,7 @@ export default function Home() {
     }, 15000);
   };
 
-  // 🌟 인스타 규격 이미지 저장
+  // 🌟 인스타 규격 이미지 저장 (호칭 나/연인 및 특권 판결 반영)
   const handleDownloadCoupleCard = () => {
     if (!coupleResult) return;
 
@@ -859,8 +868,8 @@ export default function Home() {
 
     ctx.font = 'bold 22px sans-serif';
     ctx.fillStyle = '#0F172A';
-    ctx.fillText(`${partner1Name || '예비 신랑'} (${coupleResult.p1Animal || '호랑이'}띠)`, 230, 305);
-    ctx.fillText(`${partner2Name || '예비 신부'} (${coupleResult.p2Animal || '토끼'}띠)`, 570, 305);
+    ctx.fillText(`${partner1Name || '나'} (${coupleResult.p1Animal || '호랑이'}띠)`, 230, 305);
+    ctx.fillText(`${partner2Name || '연인'} (${coupleResult.p2Animal || '토끼'}띠)`, 570, 305);
 
     ctx.font = 'bold 16px sans-serif';
     ctx.fillStyle = '#E11D48';
@@ -897,32 +906,32 @@ export default function Home() {
 
     ctx.fillStyle = '#475569';
     ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}%  |  ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 622);
+    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}%  |  ${partner2Name || '연인'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 622);
 
     ctx.fillStyle = '#B45309';
     ctx.font = 'bold 14px sans-serif';
     ctx.fillText(`💡 산출 근거: 부모의 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형`, 400, 655);
 
-    // 6. 오늘의 생활 분담 판결소 박스
+    // 6. 오늘의 커플 특권 판결소 박스
     ctx.fillStyle = '#F1F5F9';
     drawBox(75, 690, 650, 205, 24);
     ctx.fill();
 
     ctx.fillStyle = '#4F46E5';
     ctx.font = 'bold 20px sans-serif';
-    ctx.fillText(`오늘의 생활 주도권 선고 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 735);
-
-    ctx.fillStyle = '#0F172A';
-    ctx.font = '900 23px sans-serif';
-    ctx.fillText(coupleResult.chore?.leader || '', 400, 782);
+    ctx.fillText(`오늘의 커플 특권 판결 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 735);
 
     ctx.fillStyle = '#E11D48';
-    ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(coupleResult.chore?.role || '', 400, 825);
+    ctx.font = '900 23px sans-serif';
+    ctx.fillText(`👑 오늘의 특권자: ${coupleResult.chore?.winner || '나'}`, 400, 782);
+
+    ctx.fillStyle = '#0F172A';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(coupleResult.chore?.benefit || '', 400, 825);
 
     ctx.fillStyle = '#64748B';
-    ctx.font = 'bold 15px sans-serif';
-    ctx.fillText('오늘 우주의 주도권 기운이 강하니 데이트 결단을 내려주세요!', 400, 862);
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText(`🫡 ${coupleResult.chore?.supporter || '연인'}님은 특급 풀케어로 모셔주세요!`, 400, 862);
 
     // 7. 워터마크 푸터
     ctx.fillStyle = '#94A3B8';
@@ -1940,7 +1949,7 @@ export default function Home() {
                 <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed break-keep">
                   <p>• <b>가상 2세 기질 시뮬레이터</b>: 아빠와 엄마 기운이 만났을 때 태어날 아기 성향과 닮을 확률(%)</p>
                   <p>• <b>60갑자 커플 수호신 페어링</b>: 각자의 상징 동물과 연애 케미스트리 점수 확인</p>
-                  <p>• <b>오늘의 생활 분담 판결소</b>: 데이트·집안일 주도권 선고 및 인스타 스토리용 카드 이미지 다운로드</p>
+                  <p>• <b>오늘의 커플 특권 판결소</b>: 데이트·집안일 주도권 선고 및 인스타 스토리용 카드 이미지 다운로드</p>
                 </div>
                 <button
                   type="button"
@@ -2634,12 +2643,12 @@ export default function Home() {
         )}
 
         {/* ========================================================
-            VIEW 3: 커플·예비부부 모드 본문 (분기 UX 결함 해결 완료)
+            VIEW 3: 커플 모드 본문
            ======================================================== */}
         {isEntered && activeTabMode === 'couple' && (
           <div className="space-y-4 animate-fadeIn">
             
-            {/* 🌟 [개선] 서브 분기 전환 바: simulator 또는 daily 화면에 들어왔을 때만 깔끔하게 노출 */}
+            {/* 서브 분기 전환 바 (simulator 또는 daily 화면에 들어왔을 때만 노출) */}
             {coupleModeType && (
               <div className="flex justify-between items-center bg-rose-50/80 px-4 py-2.5 rounded-2xl border border-rose-100 mb-2 animate-fadeIn">
                 <button
@@ -2653,12 +2662,12 @@ export default function Home() {
                   <span>←</span> 다른 커플 기능 선택
                 </button>
                 <span className="text-[11px] font-black text-rose-600">
-                  {coupleModeType === 'simulator' ? '💍 가상 2세 시뮬레이터' : '⚖️ 오늘의 커플 생활 판결소'}
+                  {coupleModeType === 'simulator' ? '💍 가상 2세 시뮬레이터' : '⚖️ 오늘의 커플 특권 판결소'}
                 </span>
               </div>
             )}
 
-            {/* 🌟 분기점 선택 화면: 메뉴를 고를 때는 서브 전환 바 없이 직관적인 2종 선택 카드만 노출 */}
+            {/* 분기점 선택 화면 */}
             {!coupleModeType && (
               <div className="space-y-3.5 animate-fadeIn">
                 <div className="text-center space-y-1 mb-2">
@@ -2684,7 +2693,7 @@ export default function Home() {
                   <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">🍼</div>
                 </button>
 
-                {/* 분기 카드 2: 오늘의 생활 판결소 (데일리) */}
+                {/* 분기 카드 2: 오늘의 커플 특권 판결소 (데일리) */}
                 <button
                   type="button"
                   onClick={() => setCoupleModeType('daily')}
@@ -2694,17 +2703,17 @@ export default function Home() {
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-indigo-50 text-indigo-600 inline-block">
                       매일 자정 갱신 데일리
                     </span>
-                    <h4 className="text-base font-black text-slate-900">오늘의 커플 생활 판결소 ⚖️</h4>
+                    <h4 className="text-base font-black text-slate-900">오늘의 커플 특권 판결소 ⚖️</h4>
                     <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
-                      오늘 데이트 코스, 저녁 메뉴, 집안일 주도권을 선고받는 오행 법정
+                      오늘 데이트 코스, 저녁 메뉴, 손 하나 까딱 안 할 권리를 선고받는 오행 법정
                     </p>
                   </div>
-                  <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">⚖️</div>
+                  <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">👑</div>
                 </button>
               </div>
             )}
 
-            {/* 🌟 [분기 1] 가상 2세 시뮬레이터 화면 */}
+            {/* [분기 1] 가상 2세 시뮬레이터 화면 */}
             {coupleModeType === 'simulator' && (
               <div className="space-y-4 animate-fadeIn">
                 {isAnalyzingCouple ? (
@@ -2763,7 +2772,7 @@ export default function Home() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                         <div className="space-y-1.5 p-3.5 bg-rose-50/60 rounded-2xl border border-rose-100">
-                          <span className="text-[11px] font-bold text-rose-700 block">👤 나 (또는 예비 신랑)</span>
+                          <span className="text-[11px] font-bold text-rose-700 block">👤 나</span>
                           <input
                             type="text"
                             placeholder="이름/별명 (선택)"
@@ -2782,7 +2791,7 @@ export default function Home() {
                         </div>
 
                         <div className="space-y-1.5 p-3.5 bg-indigo-50/60 rounded-2xl border border-indigo-100">
-                          <span className="text-[11px] font-bold text-indigo-700 block">👤 연인 (또는 예비 신부)</span>
+                          <span className="text-[11px] font-bold text-indigo-700 block">👤 연인</span>
                           <input
                             type="text"
                             placeholder="이름/별명 (선택)"
@@ -2820,7 +2829,7 @@ export default function Home() {
                           <div className="flex items-center justify-around py-4 bg-gradient-to-r from-rose-50 via-purple-50 to-indigo-50 rounded-2xl border border-slate-100">
                             <div className="space-y-1">
                               <div className="text-4xl sm:text-5xl">{coupleResult.p1AnimalIcon}</div>
-                              <span className="text-sm font-black text-slate-900 block">{partner1Name || '예비 신랑'}</span>
+                              <span className="text-sm font-black text-slate-900 block">{partner1Name || '나'}</span>
                               <span className="text-xs font-extrabold text-rose-600 block">{coupleResult.p1Animal}띠</span>
                               <span className="text-xs text-slate-500 block font-semibold">{coupleResult.p1Elem}</span>
                             </div>
@@ -2829,7 +2838,7 @@ export default function Home() {
 
                             <div className="space-y-1">
                               <div className="text-4xl sm:text-5xl">{coupleResult.p2AnimalIcon}</div>
-                              <span className="text-sm font-black text-slate-900 block">{partner2Name || '예비 신부'}</span>
+                              <span className="text-sm font-black text-slate-900 block">{partner2Name || '연인'}</span>
                               <span className="text-xs font-extrabold text-indigo-600 block">{coupleResult.p2Animal}띠</span>
                               <span className="text-xs text-slate-500 block font-semibold">{coupleResult.p2Elem}</span>
                             </div>
@@ -2877,7 +2886,7 @@ export default function Home() {
                           <div className="bg-white/95 p-4 rounded-2xl border border-orange-100 space-y-2.5 text-xs sm:text-sm">
                             <div className="flex justify-between font-black text-slate-800">
                               <span>{partner1Name || '나'} 성향: {coupleResult.baby.dadPercent}%</span>
-                              <span>{partner2Name || '상대방'} 성향: {coupleResult.baby.momPercent}%</span>
+                              <span>{partner2Name || '연인'} 성향: {coupleResult.baby.momPercent}%</span>
                             </div>
                             <div className="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden flex shadow-inner">
                               <div style={{ width: `${coupleResult.baby.dadPercent}%` }} className="bg-rose-500 h-full transition-all duration-700" />
@@ -2892,25 +2901,25 @@ export default function Home() {
               </div>
             )}
 
-            {/* 🌟 [분기 2] 오늘의 커플 생활 판결소 화면 (데일리) */}
+            {/* [분기 2] 오늘의 커플 특권 판결소 화면 (데일리) */}
             {coupleModeType === 'daily' && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 border border-indigo-100 shadow-md space-y-4">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                     <div className="space-y-0.5">
-                      <span className="text-xs sm:text-sm font-black text-slate-900">⚖️ 오늘의 커플 생활 판결소</span>
+                      <span className="text-xs sm:text-sm font-black text-slate-900">👑 오늘의 커플 특권 판결소</span>
                       <span className="text-xs font-bold text-indigo-600 block">매일 자정 갱신되는 데일리 오행 법정</span>
                     </div>
                     <span className="text-[11px] text-slate-400 font-semibold">하루 1회</span>
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium break-keep">
-                    오늘 날짜의 오행 기운과 두 분의 사주를 대조해, 오늘 데이트 주도권과 가위바위보 역할을 판정해 드립니다.
+                    오늘 날짜의 오행 기운과 두 분의 사주를 대조해, 오늘 데이트 주도권과 손 하나 까딱 안 할 권리를 누릴 특권자를 판정합니다.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                      <span className="text-[11px] font-bold text-slate-600 block">👤 내 정보</span>
+                      <span className="text-[11px] font-bold text-slate-600 block">👤 나</span>
                       <input
                         type="text"
                         placeholder="이름/별명"
@@ -2929,7 +2938,7 @@ export default function Home() {
                     </div>
 
                     <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                      <span className="text-[11px] font-bold text-slate-600 block">👤 상대방 정보</span>
+                      <span className="text-[11px] font-bold text-slate-600 block">👤 연인</span>
                       <input
                         type="text"
                         placeholder="이름/별명"
@@ -2953,38 +2962,51 @@ export default function Home() {
                     onClick={handleCalculateCouple}
                     className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md transition-all active:scale-98"
                   >
-                    ⚖️ 오늘의 커플 판결 받기 (데일리)
+                    👑 오늘의 커플 특권 판결 받기 (데일리)
                   </button>
 
                   {coupleResult && (
-                    <div className="p-4.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-left animate-fadeIn">
-                      <div className="flex justify-between items-center pb-1 border-b border-slate-200">
-                        <span className="text-xs font-black text-indigo-700 block">사주 오행 법정 최종 선고 📜</span>
+                    <div className="p-4.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-left animate-fadeIn">
+                      <div className="flex justify-between items-center pb-1.5 border-b border-slate-200">
+                        <span className="text-xs font-black text-indigo-700 block">오행 법정 오늘의 판결 📜</span>
                         <span className="text-xs font-bold text-slate-500">케미 지수: {coupleResult.chemistryScore}점</span>
                       </div>
-                      <p className="text-sm sm:text-base font-black text-slate-900 pt-1">
-                        👉 {coupleResult.chore.leader}: <span className="text-rose-600 font-extrabold">{coupleResult.chore.role}</span>
-                      </p>
-                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep">
-                        {coupleResult.chore.desc}
-                      </p>
+                      
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-extrabold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-100 inline-block">
+                          👑 오늘의 특권 당첨자 (절대 권력자)
+                        </span>
+                        <p className="text-base sm:text-lg font-black text-slate-900">
+                          {coupleResult.chore.winner}
+                        </p>
+                        <p className="text-xs sm:text-sm text-slate-800 font-bold leading-relaxed break-keep">
+                          👉 {coupleResult.chore.benefit}
+                        </p>
+                      </div>
+
+                      <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
+                        <span className="text-[11px] font-bold text-slate-500 block">🫡 오늘의 풀케어 담당: {coupleResult.chore.supporter}</span>
+                        <p className="text-xs text-slate-600 leading-relaxed font-medium break-keep">
+                          {coupleResult.chore.duty}
+                        </p>
+                      </div>
 
                       <button
                         type="button"
                         onClick={() => {
                           if (navigator.share) {
                             navigator.share({
-                              title: '오늘의 우리 커플 생활 판결 결과!',
+                              title: `오늘 우리 커플의 특권자는 바로 ${coupleResult.chore.winner}!`,
                               url: window.location.href,
                             });
                           } else {
                             navigator.clipboard.writeText(window.location.href);
-                            alert('결과 링크가 클립보드에 복사되었습니다! 카톡으로 공유해보세요 💌');
+                            alert('결과 링크가 클립보드에 복사되었습니다! 카톡으로 자랑해보세요 💌');
                           }
                         }}
-                        className="w-full mt-2 py-3 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md"
+                        className="w-full mt-2 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md"
                       >
-                        💌 이 결과 링크로 복사하기
+                        💌 이 판결 결과 복사해서 카톡 보내기
                       </button>
                     </div>
                   )}
@@ -3282,7 +3304,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
                       >
-                        🛒 부모 힐링템 구경
+                        🛒 커플 힐링템 구경
                       </a>
                     </div>
                   </div>
