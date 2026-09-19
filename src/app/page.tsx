@@ -52,26 +52,6 @@ const PARENT_HEALING_PRODUCTS = {
     link: 'https://link.coupang.com/a/gZzLYIshOK',
   },
 };
-const COUPLE_HEALING_PRODUCTS = {
-  anniversary: {
-    title: '프리미엄 커플 실버 무드등 시계',
-    subTitle: '침실 분위기를 은은하게 밝혀줄 로맨틱 인테리어',
-    icon: '🕯️',
-    link: 'https://link.coupang.com/a/g9y8UhnQqW',
-  },
-  massage: {
-    title: '휴대용 마사지건 & 풋스파 세트',
-    subTitle: '데이트 후 피로한 두 사람의 다리와 어깨를 시원하게',
-    icon: '💆',
-    link: 'https://link.coupang.com/a/g9zay7qYsS',
-  },
-  homeDate: {
-    title: '홈카페 에스프레소 머신 & 원두 세트',
-    subTitle: '주말 아침, 집에서 즐기는 카페 퀄리티의 여유',
-    icon: '☕',
-    link: 'https://link.coupang.com/a/g9zcDGAhjM',
-  },
-};
 
 const BABY_POTION_LINKS: Record<'wood' | 'fire' | 'earth' | 'metal' | 'water', Record<'infant' | 'toddler' | 'child', string>> = {
   wood: {
@@ -92,7 +72,7 @@ const BABY_POTION_LINKS: Record<'wood' | 'fire' | 'earth' | 'metal' | 'water', R
   metal: {
     infant: 'https://link.coupang.com/a/gZAF6nJOrk',
     toddler: 'https://link.coupang.com/a/gZAH1uI9zU',
-    child: 'https://link.coupang.com/a/gZAJNeiG4q',
+    child: 'https://link.coupang.com/a/gZADU7LZvw',
   },
   water: {
     infant: 'https://link.coupang.com/a/gZANoTDZEi',
@@ -706,14 +686,14 @@ export default function Home() {
   const [isEntered, setIsEntered] = useState<boolean>(false);
   const [activeTabMode, setActiveTabMode] = useState<'parenting' | 'couple'>('parenting');
 
+  // 커플 모드 분기 상태 제어 ('simulator': 가상 2세 | 'daily': 생활 판결소 | null: 메뉴 선택 화면)
+  const [coupleModeType, setCoupleModeType] = useState<'simulator' | 'daily' | null>(null);
+
   const [partner1Name, setPartner1Name] = useState('');
   const [partner1Birth, setPartner1Birth] = useState('');
   const [partner2Name, setPartner2Name] = useState('');
   const [partner2Birth, setPartner2Birth] = useState('');
   const [coupleResult, setCoupleResult] = useState<any>(null);
-  
-  // 🌟 [추가] 커플 모드 분기 상태 ('simulator' | 'daily' | null)
-  const [coupleModeType, setCoupleModeType] = useState<'simulator' | 'daily' | null>(null);
 
   const [isAnalyzingCouple, setIsAnalyzingCouple] = useState(false);
   const [coupleCountdown, setCoupleCountdown] = useState<number | null>(null);
@@ -815,12 +795,13 @@ export default function Home() {
     }, 15000);
   };
 
+  // 🌟 인스타 규격 이미지 저장
   const handleDownloadCoupleCard = () => {
     if (!coupleResult) return;
 
     const canvas = document.createElement('canvas');
     canvas.width = 800;
-    canvas.height = 1050;
+    canvas.height = 1120;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -839,91 +820,114 @@ export default function Home() {
       ctx.closePath();
     };
 
-    const bgGrad = ctx.createLinearGradient(0, 0, 800, 1050);
+    // 1. 전체 배경 그라데이션
+    const bgGrad = ctx.createLinearGradient(0, 0, 800, 1120);
     bgGrad.addColorStop(0, '#FFF1F2');
     bgGrad.addColorStop(0.5, '#FDF4FF');
     bgGrad.addColorStop(1, '#EEF2FF');
     ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 800, 1050);
+    ctx.fillRect(0, 0, 800, 1120);
 
+    // 2. 메인 화이트 카드
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
     ctx.shadowBlur = 30;
     ctx.shadowOffsetY = 15;
-    drawBox(40, 40, 720, 970, 32);
+    drawBox(40, 40, 720, 1040, 32);
     ctx.fill();
     ctx.shadowColor = 'transparent';
 
+    // 3. 상단 헤더
     ctx.fillStyle = '#E11D48';
-    ctx.font = 'bold 20px sans-serif';
+    ctx.font = 'bold 22px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('아기속풀이 PRO · 60갑자 커플 & 가상 2세 도감', 400, 95);
 
     ctx.fillStyle = '#0F172A';
-    ctx.font = '900 32px sans-serif';
+    ctx.font = '900 34px sans-serif';
     ctx.fillText('우리의 가상 2세 & 오행 궁합', 400, 145);
 
+    // 4. 커플 60갑자 수호신 페어링 박스
     ctx.fillStyle = '#F8FAFC';
-    drawBox(80, 185, 640, 180, 24);
+    drawBox(75, 175, 650, 210, 24);
     ctx.fill();
 
-    ctx.font = '56px sans-serif';
-    ctx.fillText(coupleResult.p1AnimalIcon || '🐯', 230, 275);
-    ctx.fillText('❤️', 400, 275);
-    ctx.fillText(coupleResult.p2AnimalIcon || '🐰', 570, 275);
+    ctx.font = '58px sans-serif';
+    ctx.fillText(coupleResult.p1AnimalIcon || '🐯', 230, 260);
+    ctx.fillText('❤️', 400, 260);
+    ctx.fillText(coupleResult.p2AnimalIcon || '🐰', 570, 260);
 
-    ctx.font = 'bold 20px sans-serif';
-    ctx.fillStyle = '#1E293B';
-    ctx.fillText(`${partner1Name || '예비 신랑'} (${coupleResult.p1Animal || '호랑이'}띠)`, 230, 325);
-    ctx.fillText(`${partner2Name || '예비 신부'} (${coupleResult.p2Animal || '토끼'}띠)`, 570, 325);
+    ctx.font = 'bold 22px sans-serif';
+    ctx.fillStyle = '#0F172A';
+    ctx.fillText(`${partner1Name || '예비 신랑'} (${coupleResult.p1Animal || '호랑이'}띠)`, 230, 305);
+    ctx.fillText(`${partner2Name || '예비 신부'} (${coupleResult.p2Animal || '토끼'}띠)`, 570, 305);
 
-    ctx.font = 'bold 15px sans-serif';
+    ctx.font = 'bold 16px sans-serif';
     ctx.fillStyle = '#E11D48';
-    ctx.fillText(coupleResult.p1Elem || '', 230, 348);
+    ctx.fillText(coupleResult.p1Elem || '', 230, 332);
     ctx.fillStyle = '#4F46E5';
-    ctx.fillText(coupleResult.p2Elem || '', 570, 348);
+    ctx.fillText(coupleResult.p2Elem || '', 570, 332);
 
-    const babyGrad = ctx.createLinearGradient(80, 395, 720, 680);
+    // 1줄 사주 케미 근거 태그
+    ctx.fillStyle = '#FFF1F2';
+    drawBox(110, 345, 580, 30, 15);
+    ctx.fill();
+    ctx.fillStyle = '#BE123C';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.fillText(`💡 60갑자 상생: 서로의 기운을 채워주며 교감이 통하는 천생연분 궁합`, 400, 366);
+
+    // 5. 가상 2세 시뮬레이션 결과 박스
+    const babyGrad = ctx.createLinearGradient(75, 400, 725, 685);
     babyGrad.addColorStop(0, '#FFFBEB');
     babyGrad.addColorStop(1, '#FFF7ED');
     ctx.fillStyle = babyGrad;
-    drawBox(80, 395, 640, 265, 24);
+    drawBox(75, 400, 650, 275, 24);
     ctx.fill();
 
     ctx.fillStyle = '#9A3412';
-    ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`FUTURE BABY · 난이도: ${coupleResult.baby?.difficulty || '보통'}`, 400, 440);
+    ctx.font = 'bold 19px sans-serif';
+    ctx.fillText(`FUTURE BABY · 육아 난이도: ${coupleResult.baby?.difficulty || '보통'}`, 400, 445);
 
-    ctx.font = '54px sans-serif';
-    ctx.fillText(coupleResult.baby?.icon || '🍼', 400, 515);
+    ctx.font = '58px sans-serif';
+    ctx.fillText(coupleResult.baby?.icon || '🍼', 400, 520);
 
     ctx.fillStyle = '#0F172A';
-    ctx.font = '900 24px sans-serif';
-    ctx.fillText(coupleResult.baby?.title || '', 400, 565);
+    ctx.font = '900 26px sans-serif';
+    ctx.fillText(coupleResult.baby?.title || '', 400, 570);
 
     ctx.fillStyle = '#475569';
-    ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}% | ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 620);
+    ctx.font = 'bold 19px sans-serif';
+    ctx.fillText(`${partner1Name || '나'} 성향 ${coupleResult.baby?.dadPercent || 50}%  |  ${partner2Name || '상대방'} 성향 ${coupleResult.baby?.momPercent || 50}%`, 400, 622);
 
+    ctx.fillStyle = '#B45309';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText(`💡 산출 근거: 부모의 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형`, 400, 655);
+
+    // 6. 오늘의 생활 분담 판결소 박스
     ctx.fillStyle = '#F1F5F9';
-    drawBox(80, 685, 640, 195, 24);
+    drawBox(75, 690, 650, 205, 24);
     ctx.fill();
 
     ctx.fillStyle = '#4F46E5';
-    ctx.font = 'bold 19px sans-serif';
-    ctx.fillText(`오늘의 생활 주도권 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 730);
+    ctx.font = 'bold 20px sans-serif';
+    ctx.fillText(`오늘의 생활 주도권 선고 (케미스트리 ${coupleResult.chemistryScore || 85}점)`, 400, 735);
 
     ctx.fillStyle = '#0F172A';
-    ctx.font = 'bold 20px sans-serif';
-    ctx.fillText(coupleResult.chore?.leader || '', 400, 775);
+    ctx.font = '900 23px sans-serif';
+    ctx.fillText(coupleResult.chore?.leader || '', 400, 782);
 
     ctx.fillStyle = '#E11D48';
-    ctx.font = 'bold 18px sans-serif';
-    ctx.fillText(coupleResult.chore?.role || '', 400, 815);
+    ctx.font = 'bold 19px sans-serif';
+    ctx.fillText(coupleResult.chore?.role || '', 400, 825);
 
+    ctx.fillStyle = '#64748B';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.fillText('오늘 우주의 주도권 기운이 강하니 데이트 결단을 내려주세요!', 400, 862);
+
+    // 7. 워터마크 푸터
     ctx.fillStyle = '#94A3B8';
-    ctx.font = '15px sans-serif';
-    ctx.fillText('baby-sokpuli.vercel.app', 400, 955);
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText('baby-sokpuli.vercel.app', 400, 990);
 
     const link = document.createElement('a');
     link.download = `아기속풀이_커플2세도감_${partner1Name || '커플'}.png`;
@@ -1831,6 +1835,7 @@ export default function Home() {
 
       <div className="w-full max-w-md bg-[#FFFFFF] min-h-screen sm:min-h-0 sm:rounded-[36px] shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col p-5 sm:p-6 relative border border-slate-100">
         
+        {/* 상단 단일 로고 헤더 */}
         <header className="pt-2 pb-3 text-center">
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
             아기속풀이 <span className="text-rose-500 text-xs font-extrabold uppercase px-2 py-0.5 bg-rose-50 rounded-md border border-rose-100">PRO</span>
@@ -1840,6 +1845,9 @@ export default function Home() {
           </p>
         </header>
 
+        {/* ========================================================
+            VIEW 1: 첫 진입 게이트웨이 화면
+           ======================================================== */}
         {!isEntered && (
           <div className="space-y-4 py-2 animate-fadeIn">
             <div className="text-center space-y-1 mb-2">
@@ -1956,21 +1964,31 @@ export default function Home() {
           </div>
         )}
 
+        {/* ========================================================
+            상단 내비게이션 바 (입장 후 상단 고정)
+           ======================================================== */}
         {isEntered && (
           <div className="flex justify-between items-center bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200 shadow-2xs mb-3">
             <button
               type="button"
-              onClick={() => setIsEntered(false)}
+              onClick={() => {
+                setIsEntered(false);
+                setCoupleModeType(null);
+                setCoupleResult(null);
+              }}
               className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors"
             >
               <span>←</span> 다른 모드 선택하기
             </button>
             <span className="text-[11px] font-black text-indigo-600">
-              {activeTabMode === 'parenting' ? '🍼 아기 속마음 번역기 진행 중' : '💍 가상 2세 미래 도감 진행 중'}
+              {activeTabMode === 'parenting' ? '🍼 아기 속마음 번역기 진행 중' : '💍 커플 도감 진행 중'}
             </span>
           </div>
         )}
 
+        {/* ========================================================
+            VIEW 2: 육아 모드 본문
+           ======================================================== */}
         {isEntered && activeTabMode === 'parenting' && (
           <div className="space-y-6">
             <div className="mb-2 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
@@ -2436,7 +2454,7 @@ export default function Home() {
                         <span>🔥</span>
                         <span>PARENT-CHILD MATCHING</span>
                       </span>
-                      <div className="text-sm sm:text-base font-black text-white">
+                      <div className="text-sm font-black text-white">
                         우리 아이 육아 난이도 측정
                       </div>
                       <p className="text-xs text-rose-100 font-medium">
@@ -2616,29 +2634,31 @@ export default function Home() {
         )}
 
         {/* ========================================================
-            VIEW 3: 커플·예비부부 모드 본문 (isEntered && couple)
+            VIEW 3: 커플·예비부부 모드 본문 (분기 UX 결함 해결 완료)
            ======================================================== */}
         {isEntered && activeTabMode === 'couple' && (
           <div className="space-y-4 animate-fadeIn">
             
-            {/* 커플 모드 내 상단 서브 분기 전환 바 (데일리 vs 단발성) */}
-            <div className="flex justify-between items-center bg-rose-50/80 px-4 py-2.5 rounded-2xl border border-rose-100 mb-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setCoupleModeType(null);
-                  setCoupleResult(null);
-                }}
-                className="text-xs font-bold text-rose-700 hover:text-rose-900 flex items-center gap-1 transition-colors"
-              >
-                <span>←</span> 커플 메뉴 다시 선택
-              </button>
-              <span className="text-[11px] font-black text-rose-600">
-                {coupleModeType === 'simulator' ? '💍 가상 2세 시뮬레이터' : coupleModeType === 'daily' ? '⚖️ 오늘의 커플 판결소' : '💍 커플 메뉴 선택'}
-              </span>
-            </div>
+            {/* 🌟 [개선] 서브 분기 전환 바: simulator 또는 daily 화면에 들어왔을 때만 깔끔하게 노출 */}
+            {coupleModeType && (
+              <div className="flex justify-between items-center bg-rose-50/80 px-4 py-2.5 rounded-2xl border border-rose-100 mb-2 animate-fadeIn">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCoupleModeType(null);
+                    setCoupleResult(null);
+                  }}
+                  className="text-xs font-bold text-rose-700 hover:text-rose-900 flex items-center gap-1 transition-colors"
+                >
+                  <span>←</span> 다른 커플 기능 선택
+                </button>
+                <span className="text-[11px] font-black text-rose-600">
+                  {coupleModeType === 'simulator' ? '💍 가상 2세 시뮬레이터' : '⚖️ 오늘의 커플 생활 판결소'}
+                </span>
+              </div>
+            )}
 
-            {/* 🌟 분기점 선택 전: 어떤 커플 콘텐츠를 볼지 선택하는 화면 */}
+            {/* 🌟 분기점 선택 화면: 메뉴를 고를 때는 서브 전환 바 없이 직관적인 2종 선택 카드만 노출 */}
             {!coupleModeType && (
               <div className="space-y-3.5 animate-fadeIn">
                 <div className="text-center space-y-1 mb-2">
@@ -2654,11 +2674,11 @@ export default function Home() {
                 >
                   <div className="space-y-1 pr-2">
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-50 text-rose-600 inline-block">
-                      설렘 가득 단발성 도감
+                      설렘 가득 도감
                     </span>
                     <h4 className="text-base font-black text-slate-900">가상 2세 & 수호신 페어링 👶</h4>
                     <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
-                      두 사람의 60갑자 사주로 미리 보는 우리 아이 성향
+                      두 사람의 60갑자 사주로 미리 보는 우리 아이 성향과 인스타 카드 저장
                     </p>
                   </div>
                   <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">🍼</div>
@@ -2800,25 +2820,25 @@ export default function Home() {
                           <div className="flex items-center justify-around py-4 bg-gradient-to-r from-rose-50 via-purple-50 to-indigo-50 rounded-2xl border border-slate-100">
                             <div className="space-y-1">
                               <div className="text-4xl sm:text-5xl">{coupleResult.p1AnimalIcon}</div>
-                              <span className="text-xs sm:text-sm font-black text-slate-900 block">{partner1Name || '예비 신랑'}</span>
+                              <span className="text-sm font-black text-slate-900 block">{partner1Name || '예비 신랑'}</span>
                               <span className="text-xs font-extrabold text-rose-600 block">{coupleResult.p1Animal}띠</span>
-                              <span className="text-[10px] text-slate-500 block font-semibold">{coupleResult.p1Elem}</span>
+                              <span className="text-xs text-slate-500 block font-semibold">{coupleResult.p1Elem}</span>
                             </div>
 
-                            <div className="text-2xl sm:text-3xl font-black text-rose-500 animate-pulse">❤️</div>
+                            <div className="text-3xl font-black text-rose-500 animate-pulse">❤️</div>
 
                             <div className="space-y-1">
                               <div className="text-4xl sm:text-5xl">{coupleResult.p2AnimalIcon}</div>
-                              <span className="text-xs sm:text-sm font-black text-slate-900 block">{partner2Name || '예비 신부'}</span>
+                              <span className="text-sm font-black text-slate-900 block">{partner2Name || '예비 신부'}</span>
                               <span className="text-xs font-extrabold text-indigo-600 block">{coupleResult.p2Animal}띠</span>
-                              <span className="text-[10px] text-slate-500 block font-semibold">{coupleResult.p2Elem}</span>
+                              <span className="text-xs text-slate-500 block font-semibold">{coupleResult.p2Elem}</span>
                             </div>
                           </div>
 
-                          <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/60 text-left space-y-1">
-                            <span className="text-[11px] font-extrabold text-rose-600 block">🔮 60갑자 오행 페어링 분석 이유</span>
+                          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-1.5">
+                            <span className="text-xs font-extrabold text-rose-600 block">🔮 60갑자 오행 페어링 분석 이유</span>
                             <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
-                              두 분의 사주 기운인 <b>{coupleResult.p1Elem}</b>과 <b>{coupleResult.p2Elem}</b>이 만나 서로의 부족한 에너지를 유연하게 채워주며, 감정적 교감과 추진력이 이상적으로 조화되는 궁합입니다.
+                              두 분의 사주 기운인 <b>{coupleResult.p1Elem}</b>과 <b>{coupleResult.p2Elem}</b>이 만나 서로의 부족한 에너지를 유연하게 채워주며, 감정적 교감과 추진력이 이상적으로 조화되는 상생 궁합입니다.
                             </p>
                           </div>
 
@@ -2859,7 +2879,7 @@ export default function Home() {
                               <span>{partner1Name || '나'} 성향: {coupleResult.baby.dadPercent}%</span>
                               <span>{partner2Name || '상대방'} 성향: {coupleResult.baby.momPercent}%</span>
                             </div>
-                            <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden flex shadow-inner">
+                            <div className="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden flex shadow-inner">
                               <div style={{ width: `${coupleResult.baby.dadPercent}%` }} className="bg-rose-500 h-full transition-all duration-700" />
                               <div style={{ width: `${coupleResult.baby.momPercent}%` }} className="bg-indigo-500 h-full transition-all duration-700" />
                             </div>
@@ -2872,7 +2892,7 @@ export default function Home() {
               </div>
             )}
 
-            {/* 🌟 [분기 2] 오늘의 커플 생활 판결소 (데일리 서비스) */}
+            {/* 🌟 [분기 2] 오늘의 커플 생활 판결소 화면 (데일리) */}
             {coupleModeType === 'daily' && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 border border-indigo-100 shadow-md space-y-4">
@@ -2889,40 +2909,83 @@ export default function Home() {
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                    <input
-                      type="text"
-                      placeholder="내 이름/별명"
-                      value={partner1Name}
-                      onChange={(e) => setPartner1Name(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900"
-                    />
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="내 생년월일 8자리"
-                      value={partner1Birth}
-                      onChange={(e) => handleDateChange(e.target.value, setPartner1Birth, 'partner1Birth')}
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900"
-                    />
+                    <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                      <span className="text-[11px] font-bold text-slate-600 block">👤 내 정보</span>
+                      <input
+                        type="text"
+                        placeholder="이름/별명"
+                        value={partner1Name}
+                        onChange={(e) => setPartner1Name(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 mb-1.5"
+                      />
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="생년월일 8자리 (예: 1993.08.15)"
+                        value={partner1Birth}
+                        onChange={(e) => handleDateChange(e.target.value, setPartner1Birth, 'partner1Birth')}
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900"
+                      />
+                    </div>
+
+                    <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                      <span className="text-[11px] font-bold text-slate-600 block">👤 상대방 정보</span>
+                      <input
+                        type="text"
+                        placeholder="이름/별명"
+                        value={partner2Name}
+                        onChange={(e) => setPartner2Name(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 mb-1.5"
+                      />
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="생년월일 8자리 (예: 1995.04.22)"
+                        value={partner2Birth}
+                        onChange={(e) => handleDateChange(e.target.value, setPartner2Birth, 'partner2Birth')}
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900"
+                      />
+                    </div>
                   </div>
 
                   <button
                     type="button"
                     onClick={handleCalculateCouple}
-                    className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md transition-all"
+                    className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md transition-all active:scale-98"
                   >
                     ⚖️ 오늘의 커플 판결 받기 (데일리)
                   </button>
 
                   {coupleResult && (
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2 text-left animate-fadeIn">
-                      <span className="text-xs font-black text-indigo-700 block">사주 오행 법정 최종 선고 📜</span>
-                      <p className="text-xs sm:text-sm font-black text-slate-900">
+                    <div className="p-4.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-left animate-fadeIn">
+                      <div className="flex justify-between items-center pb-1 border-b border-slate-200">
+                        <span className="text-xs font-black text-indigo-700 block">사주 오행 법정 최종 선고 📜</span>
+                        <span className="text-xs font-bold text-slate-500">케미 지수: {coupleResult.chemistryScore}점</span>
+                      </div>
+                      <p className="text-sm sm:text-base font-black text-slate-900 pt-1">
                         👉 {coupleResult.chore.leader}: <span className="text-rose-600 font-extrabold">{coupleResult.chore.role}</span>
                       </p>
-                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep pt-1">
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep">
                         {coupleResult.chore.desc}
                       </p>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (navigator.share) {
+                            navigator.share({
+                              title: '오늘의 우리 커플 생활 판결 결과!',
+                              url: window.location.href,
+                            });
+                          } else {
+                            navigator.clipboard.writeText(window.location.href);
+                            alert('결과 링크가 클립보드에 복사되었습니다! 카톡으로 공유해보세요 💌');
+                          }
+                        }}
+                        className="w-full mt-2 py-3 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl transition-all shadow-md"
+                      >
+                        💌 이 결과 링크로 복사하기
+                      </button>
                     </div>
                   )}
                 </div>
@@ -2932,6 +2995,9 @@ export default function Home() {
           </div>
         )}
 
+        {/* ========================================================
+            하단 최하단 푸터
+           ======================================================== */}
         <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-2 text-[11px] text-slate-500">
           <div className="flex justify-center items-center space-x-3 text-xs font-semibold text-slate-600">
             <button
@@ -2959,6 +3025,7 @@ export default function Home() {
           </p>
         </footer>
 
+        {/* 모달 1: 타로 모달 */}
         {isTarotModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-gradient-to-b from-[#110D23] via-[#0A0D17] to-[#120B24] rounded-t-3xl sm:rounded-3xl border border-amber-400/40 p-6 shadow-2xl space-y-4 max-h-[94vh] overflow-y-auto text-white">
@@ -3155,6 +3222,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 모달 2: 부모-자녀 매칭 모달 */}
         {isParentMatchModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
@@ -3366,6 +3434,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 모달 3: 오행 판결소 모달 */}
         {isChemiModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-gradient-to-b from-amber-950 via-slate-900 to-indigo-950 rounded-t-3xl sm:rounded-3xl border-2 border-amber-500/50 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
@@ -3457,7 +3526,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
                       >
-                        🛒 부모 힐링템 구경
+                        🛒 커플 힐링템 구경
                       </a>
                     </div>
                   </div>
@@ -3538,6 +3607,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* 모달 4: 패밀리 라운지 모달 */}
         {isLoungeOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
@@ -3654,6 +3724,83 @@ export default function Home() {
           </div>
         )}
 
+        {/* 모달 5: AI 분석 미리보기 모달 */}
+        {isAiReportModalOpen && (
+          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
+                <div className="text-left">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
+                    AI ANALYSIS PREVIEW
+                  </span>
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
+                    우리 아이 10년 성장 가이드 미리보기
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setIsAiReportModalOpen(false)}
+                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-700 flex items-center justify-center hover:bg-slate-200"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="p-4.5 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-3 break-keep">
+                <div className="inline-block bg-slate-900 text-white px-2.5 py-1 rounded text-xs font-extrabold">
+                  정식 런칭 예정 목차
+                </div>
+                <ul className="text-xs sm:text-sm text-slate-800 space-y-2.5 font-medium">
+                  <li>• <b>제1장:</b> {name || '아이'}의 타고난 5대 오행 본성과 감각 레이더 분석</li>
+                  <li>• <b>제2장:</b> 고집부리고 드러누울 때 통하는 맞춤형 대화법</li>
+                  <li>• <b>제3장:</b> 초등학교 입학 전 자기주도성 & 집중력 케어</li>
+                  <li>• <b>제4장:</b> 엄마·아빠와의 오행 궁합 및 부부 역할 분담</li>
+                  <li>• <b>제5장:</b> 지친 육아 동지들을 위한 멘탈 케어 응원 편지</li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => setIsAiReportModalOpen(false)}
+                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all break-keep"
+              >
+                확인 완료
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 모달 6: iOS 이미지 저장 가이드 모달 */}
+        {iosSavedImageUrl && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+            <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+              <div className="space-y-1.5 break-keep">
+                <span className="text-3xl">📸</span>
+                <h4 className="text-base sm:text-lg font-black text-slate-900">
+                  카드를 사진첩에 저장하기
+                </h4>
+                <p className="text-xs sm:text-sm text-amber-800 font-bold bg-amber-50 py-2 px-3 rounded-xl border border-amber-200">
+                  👉 아래 이미지를 <b>길게 꾹 눌러서</b> [사진에 추가]를 선택해주세요!
+                </p>
+              </div>
+
+              <div className="max-h-[60vh] overflow-y-auto rounded-2xl border border-slate-200 p-1 shadow-inner">
+                <img
+                  src={iosSavedImageUrl}
+                  alt="우리 아이 기질 카드"
+                  className="w-full h-auto rounded-xl object-contain"
+                />
+              </div>
+
+              <button
+                onClick={() => setIosSavedImageUrl(null)}
+                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs active:scale-95 transition-all break-keep"
+              >
+                확인 완료
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 모달 7: 개인정보처리방침 팝업 모달 */}
         {isPrivacyModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto text-slate-900 text-left">
@@ -3697,37 +3844,6 @@ export default function Home() {
                 className="w-full py-3.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-xs"
               >
                 닫기
-              </button>
-            </div>
-          </div>
-        )}
-
-        {iosSavedImageUrl && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-            <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-              <div className="space-y-1.5 break-keep">
-                <span className="text-3xl">📸</span>
-                <h4 className="text-base sm:text-lg font-black text-slate-900">
-                  카드를 사진첩에 저장하기
-                </h4>
-                <p className="text-xs sm:text-sm text-amber-800 font-bold bg-amber-50 py-2 px-3 rounded-xl border border-amber-200">
-                  👉 아래 이미지를 <b>길게 꾹 눌러서</b> [사진에 추가]를 선택해주세요!
-                </p>
-              </div>
-
-              <div className="max-h-[60vh] overflow-y-auto rounded-2xl border border-slate-200 p-1 shadow-inner">
-                <img
-                  src={iosSavedImageUrl}
-                  alt="우리 아이 기질 카드"
-                  className="w-full h-auto rounded-xl object-contain"
-                />
-              </div>
-
-              <button
-                onClick={() => setIosSavedImageUrl(null)}
-                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs active:scale-95 transition-all break-keep"
-              >
-                확인 완료
               </button>
             </div>
           </div>
