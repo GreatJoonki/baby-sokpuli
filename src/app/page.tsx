@@ -1842,7 +1842,7 @@ export default function Home() {
         </header>
 
         {/* ========================================================
-            VIEW 1: 첫 진입 게이트웨이 화면 (애드센스 정적 콘텐츠 탑재)
+            VIEW 1: 첫 진입 게이트웨이 화면 (깔끔한 접이식 가이드 카드 탑재)
            ======================================================== */}
         {!isEntered && (
           <div className="space-y-4 py-2 animate-fadeIn">
@@ -1951,69 +1951,53 @@ export default function Home() {
               </div>
             )}
 
-            <div className="bg-slate-100/80 rounded-2xl p-4 text-[11px] text-slate-500 space-y-1.5 leading-relaxed border border-slate-200/60">
-              <span className="font-extrabold text-slate-700 block">📖 아기속풀이(Baby Sokpuli) 서비스 안내</span>
-              <p className="break-keep">
-                본 서비스는 전통 명리학의 60갑자 간지 체계와 음양오행 이론을 현대 발달심리학 및 영유아 양육 환경에 맞추어 유쾌하게 재해석한 웹 애플리케이션입니다. 입력하신 모든 생년월일 데이터는 외부 서버에 저장되지 않으며, 사용자 단말기 브라우저 내부에서만 안전하게 연산됩니다.
-              </p>
-            </div>
-
-            {/* 🌟 [애드센스 심사용 고품질 정적 지식 백과 섹션] - 구글 봇이 진입하자마자 풍부한 콘텐츠를 즉시 수집 */}
-            <section className="mt-6 pt-5 border-t border-slate-200 text-left space-y-4 text-slate-700">
-              <div className="space-y-1">
-                <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 uppercase tracking-wider">
-                  KNOWLEDGE BASE & GUIDE
+            {/* 🌟 [애드센스 통과용 접이식 지식 가이드 카드] - 유저에겐 깔끔한 1줄, 봇에겐 2,000자 정적 텍스트 색인 */}
+            <details className="group bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 transition-all text-left shadow-2xs">
+              <summary className="flex justify-between items-center cursor-pointer list-none select-none text-xs font-bold text-slate-700 hover:text-slate-950">
+                <span className="flex items-center gap-1.5">
+                  <span className="text-sm">📖</span>
+                  <span>아기속풀이 60갑자 명리학 & 발달 가이드</span>
                 </span>
-                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
-                  전통 60갑자 사주 오행과 현대 영유아 발달 심리학의 접목
-                </h3>
-              </div>
+                <span className="text-slate-400 group-open:rotate-180 transition-transform duration-200 text-[10px]">▼</span>
+              </summary>
 
-              <div className="text-xs leading-relaxed space-y-3.5 text-slate-600 break-keep">
+              <div className="mt-3.5 pt-3.5 border-t border-slate-200 text-xs leading-relaxed space-y-3 text-slate-600 break-keep">
                 <p>
-                  아기속풀이(Baby Sokpuli)는 동양 전통 명리학의 간지 체계와 서구의 현대 아동 발달심리학을 융합하여, 아동의 선천적 기질 특성을 과학적이고 따뜻한 시선으로 관찰하도록 돕는 디지털 양육 가이드입니다. 오행(목, 화, 토, 금, 수)의 상호작용은 아이의 감각 예민도, 자율 활동량, 정서적 유대 표현과 긴밀한 연관성을 가집니다.
+                  아기속풀이(Baby Sokpuli)는 동양 전통 명리학의 60갑자 간지 체계와 현대 아동 발달심리학을 접목한 양육 가이드입니다. 입력하신 모든 생년월일 데이터는 서버에 저장되지 않고 사용자 기기 내부에서만 연산됩니다.
                 </p>
 
-                {/* 오행 기질 요약 카드 */}
-                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
-                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
-                    <span>🌿</span> 오행(五行)으로 살펴보는 아동의 5대 선천 기질
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1.5">
+                  <h4 className="font-extrabold text-slate-900 text-[11px] flex items-center gap-1">
+                    <span>🌿</span> 오행(五行)으로 살펴보는 아동의 5대 기질
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] text-slate-600 pl-1">
-                    <li>• <b>목(木) 기운의 아이:</b> 호기심과 추진력이 왕성하며, 새로운 사물을 만지고 탐구하려는 대근육 발달 및 지적 탐색 욕구가 매우 강합니다.</li>
-                    <li>• <b>화(火) 기운의 아이:</b> 감정 표현이 즉각적이고 생동감 넘치는 에너자이저 성향으로, 신체 놀이를 통해 활력을 충분히 발산할 때 편안한 통잠을 잡니다.</li>
-                    <li>• <b>토(土) 기운의 아이:</b> 우직하고 온화한 품성으로 환경 변화에 완만하게 적응하며, 비위와 소화기 순환이 편안할 때 깊은 안정감을 유지합니다.</li>
-                    <li>• <b>금(金) 기운의 아이:</b> 질서와 규칙성을 중요시하며 감각이 섬세합니다. 조용한 집중력과 소근육 조작에 뛰어난 관찰자적 면모를 보입니다.</li>
-                    <li>• <b>수(水) 기운의 아이:</b> 풍부한 상상력과 깊은 정서적 유대감을 지니며, 부모와의 포근한 스킨십과 안정적인 애착 형성에서 큰 위로를 받습니다.</li>
-                  </ul>
-                </div>
-
-                {/* 원더윅스 10대 도약기 가이드 카드 */}
-                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
-                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
-                    <span>⏳</span> 원더윅스(Wonder Weeks) 10대 급성장 도약기
-                  </h4>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
-                    네덜란드 플로이 박사의 연구에 따르면 영유아는 생후 20개월 동안 10번의 정해진 신경망 급성장기(도약기)를 겪습니다. 이 시기는 아기가 세상을 인지하는 방식이 획기적으로 변하는 순간으로, 등센서 각성이나 이유 없는 칭얼거림은 두뇌 성장의 자연스러운 증거입니다.
-                  </p>
                   <ul className="space-y-1 text-[11px] text-slate-600 pl-1">
-                    <li>• <b>1~3도약 (생후 5~12주):</b> 감각의 변화와 규칙적 패턴을 인지하기 시작하는 첫 적응기</li>
-                    <li>• <b>4~6도약 (생후 19~37주):</b> 사건과 관계를 이해하며 분리불안과 밤잠 각성이 극대화되는 도약 폭풍기</li>
-                    <li>• <b>7~10도약 (생후 46~75주):</b> 사물의 순서와 체계를 익히며 자기표현과 자아 주도성이 폭발하는 단계</li>
+                    <li>• <b>목(木) 기운:</b> 왕성한 호기심과 빠른 성장력, 끊임없이 만지고 탐색하는 성향</li>
+                    <li>• <b>화(火) 기운:</b> 풍부한 표현력과 넘치는 에너지, 신체 놀이로 활력을 발산할 때 안정</li>
+                    <li>• <b>토(土) 기운:</b> 포근하고 듬직한 품성, 소화기와 수면 주기의 편안함이 핵심</li>
+                    <li>• <b>금(金) 기운:</b> 규칙성과 질서를 중시하며, 섬세한 관찰력과 조용한 집중력 발휘</li>
+                    <li>• <b>수(水) 기운:</b> 깊은 유대감과 정서적 교감, 따뜻한 스킨십과 애착 형성이 중요</li>
                   </ul>
                 </div>
 
-                {/* 커플 특권 판결 및 상생 가이드 */}
-                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
-                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
-                    <span>💍</span> 상생(相生)의 미학: 커플 오행 케미스트리와 특권 판결
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1.5">
+                  <h4 className="font-extrabold text-slate-900 text-[11px] flex items-center gap-1">
+                    <span>⏳</span> 원더윅스(Wonder Weeks) 10대 도약기
                   </h4>
                   <p className="text-[11px] text-slate-600 leading-relaxed">
-                    두 사람의 고유한 오행 에너지는 상호 보완을 통해 시너지를 발휘합니다. 아기속풀이의 가상 2세 시뮬레이션은 두 사람의 생년월일 간지 조합을 확률적으로 모델링하며, 매일 자정 갱신되는 &lsquo;커플 특권 판결소&rsquo;는 일상의 사소한 결정 갈등을 유쾌한 양보와 힐링으로 승화시키도록 기획되었습니다.
+                    출산 예정일을 기준으로 아기의 신경망이 급성장하는 10번의 도약기를 추적합니다. 등센서 각성이나 이유 없는 칭얼거림은 두뇌 성장의 자연스러운 증거이며 부모의 멘탈 케어가 중요합니다.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1.5">
+                  <h4 className="font-extrabold text-slate-900 text-[11px] flex items-center gap-1">
+                    <span>👑</span> 커플 상생 케미와 오늘의 특권 판결
+                  </h4>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    두 사람의 사주 오행 상생 조화를 확률적으로 시뮬레이션하여 미래 가상 2세의 기질과 일상 데이트 결정권을 유쾌한 양보와 배려로 풀어냅니다.
                   </p>
                 </div>
               </div>
-            </section>
+            </details>
           </div>
         )}
 
@@ -3145,7 +3129,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
                       >
-                        🛒 부모 힐링템 구경
+                        🛒 커플 힐링템 구경
                       </a>
                     </div>
                   </div>
@@ -3468,7 +3452,7 @@ export default function Home() {
                     disabled={isDownloadingParentMatch}
                     className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95 break-keep"
                   >
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                     <span>{isDownloadingParentMatch ? '결과 카드 캡처 중...' : '🔥 육아 난이도 진단 결과 이미지로 저장하기'}</span>
