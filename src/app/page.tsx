@@ -686,10 +686,8 @@ export default function Home() {
   const [isEntered, setIsEntered] = useState<boolean>(false);
   const [activeTabMode, setActiveTabMode] = useState<'parenting' | 'couple'>('parenting');
 
-  // 커플 모드 서브 분기 상태 ('simulator': 가상 2세 | 'daily': 특권 판결소 | null: 메뉴 선택 화면)
   const [coupleModeType, setCoupleModeType] = useState<'simulator' | 'daily' | null>(null);
 
-  // 🌟 [개선] 호칭을 '나'와 '연인'으로 간소화
   const [partner1Name, setPartner1Name] = useState('');
   const [partner1Birth, setPartner1Birth] = useState('');
   const [partner2Name, setPartner2Name] = useState('');
@@ -775,8 +773,6 @@ export default function Home() {
       const chemistryScore = 75 + ((p1Hash * 7 + p2Hash * 3) % 25);
 
       const isP1Turn = (todayHash + p1Hash) % 2 === 0;
-
-      // 🌟 [개선] 승자와 서포터가 명확히 분리된 커플 특권 구조
       const winnerName = isP1Turn ? (partner1Name.trim() || '나') : (partner2Name.trim() || '연인');
       const supporterName = isP1Turn ? (partner2Name.trim() || '연인') : (partner1Name.trim() || '나');
 
@@ -804,7 +800,6 @@ export default function Home() {
     }, 15000);
   };
 
-  // 🌟 인스타 규격 이미지 저장 (호칭 나/연인 및 특권 판결 반영)
   const handleDownloadCoupleCard = () => {
     if (!coupleResult) return;
 
@@ -829,7 +824,6 @@ export default function Home() {
       ctx.closePath();
     };
 
-    // 1. 전체 배경 그라데이션
     const bgGrad = ctx.createLinearGradient(0, 0, 800, 1120);
     bgGrad.addColorStop(0, '#FFF1F2');
     bgGrad.addColorStop(0.5, '#FDF4FF');
@@ -837,7 +831,6 @@ export default function Home() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 800, 1120);
 
-    // 2. 메인 화이트 카드
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
     ctx.shadowBlur = 30;
@@ -846,7 +839,6 @@ export default function Home() {
     ctx.fill();
     ctx.shadowColor = 'transparent';
 
-    // 3. 상단 헤더
     ctx.fillStyle = '#E11D48';
     ctx.font = 'bold 22px sans-serif';
     ctx.textAlign = 'center';
@@ -856,7 +848,6 @@ export default function Home() {
     ctx.font = '900 34px sans-serif';
     ctx.fillText('우리의 가상 2세 & 오행 궁합', 400, 145);
 
-    // 4. 커플 60갑자 수호신 페어링 박스
     ctx.fillStyle = '#F8FAFC';
     drawBox(75, 175, 650, 210, 24);
     ctx.fill();
@@ -877,7 +868,6 @@ export default function Home() {
     ctx.fillStyle = '#4F46E5';
     ctx.fillText(coupleResult.p2Elem || '', 570, 332);
 
-    // 1줄 사주 케미 근거 태그
     ctx.fillStyle = '#FFF1F2';
     drawBox(110, 345, 580, 30, 15);
     ctx.fill();
@@ -885,7 +875,6 @@ export default function Home() {
     ctx.font = 'bold 15px sans-serif';
     ctx.fillText(`💡 60갑자 상생: 서로의 기운을 채워주며 교감이 통하는 천생연분 궁합`, 400, 366);
 
-    // 5. 가상 2세 시뮬레이션 결과 박스
     const babyGrad = ctx.createLinearGradient(75, 400, 725, 685);
     babyGrad.addColorStop(0, '#FFFBEB');
     babyGrad.addColorStop(1, '#FFF7ED');
@@ -912,7 +901,6 @@ export default function Home() {
     ctx.font = 'bold 14px sans-serif';
     ctx.fillText(`💡 산출 근거: 부모의 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형`, 400, 655);
 
-    // 6. 오늘의 커플 특권 판결소 박스
     ctx.fillStyle = '#F1F5F9';
     drawBox(75, 690, 650, 205, 24);
     ctx.fill();
@@ -933,7 +921,6 @@ export default function Home() {
     ctx.font = 'bold 14px sans-serif';
     ctx.fillText(`🫡 ${coupleResult.chore?.supporter || '연인'}님은 특급 풀케어로 모셔주세요!`, 400, 862);
 
-    // 7. 워터마크 푸터
     ctx.fillStyle = '#94A3B8';
     ctx.font = 'bold 16px sans-serif';
     ctx.fillText('baby-sokpuli.vercel.app', 400, 990);
@@ -1855,7 +1842,7 @@ export default function Home() {
         </header>
 
         {/* ========================================================
-            VIEW 1: 첫 진입 게이트웨이 화면
+            VIEW 1: 첫 진입 게이트웨이 화면 (애드센스 정적 콘텐츠 탑재)
            ======================================================== */}
         {!isEntered && (
           <div className="space-y-4 py-2 animate-fadeIn">
@@ -1947,7 +1934,7 @@ export default function Home() {
                   <p className="text-[11px] text-slate-500">두 사람의 오행 조화로 시뮬레이션하는 미래 2세와 케미스트리</p>
                 </div>
                 <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed break-keep">
-                  <p>• <b>가상 2세 기질 시뮬레이터</b>: 아빠와 엄마 기운이 만났을 때 태어날 아기 성향과 닮을 확률(%)</p>
+                  <p>• <b>가상 2세 기질 시뮬레이터</b>: 나와 연인의 기운이 만났을 때 태어날 아기 성향과 닮을 확률(%)</p>
                   <p>• <b>60갑자 커플 수호신 페어링</b>: 각자의 상징 동물과 연애 케미스트리 점수 확인</p>
                   <p>• <b>오늘의 커플 특권 판결소</b>: 데이트·집안일 주도권 선고 및 인스타 스토리용 카드 이미지 다운로드</p>
                 </div>
@@ -1970,6 +1957,63 @@ export default function Home() {
                 본 서비스는 전통 명리학의 60갑자 간지 체계와 음양오행 이론을 현대 발달심리학 및 영유아 양육 환경에 맞추어 유쾌하게 재해석한 웹 애플리케이션입니다. 입력하신 모든 생년월일 데이터는 외부 서버에 저장되지 않으며, 사용자 단말기 브라우저 내부에서만 안전하게 연산됩니다.
               </p>
             </div>
+
+            {/* 🌟 [애드센스 심사용 고품질 정적 지식 백과 섹션] - 구글 봇이 진입하자마자 풍부한 콘텐츠를 즉시 수집 */}
+            <section className="mt-6 pt-5 border-t border-slate-200 text-left space-y-4 text-slate-700">
+              <div className="space-y-1">
+                <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 uppercase tracking-wider">
+                  KNOWLEDGE BASE & GUIDE
+                </span>
+                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
+                  전통 60갑자 사주 오행과 현대 영유아 발달 심리학의 접목
+                </h3>
+              </div>
+
+              <div className="text-xs leading-relaxed space-y-3.5 text-slate-600 break-keep">
+                <p>
+                  아기속풀이(Baby Sokpuli)는 동양 전통 명리학의 간지 체계와 서구의 현대 아동 발달심리학을 융합하여, 아동의 선천적 기질 특성을 과학적이고 따뜻한 시선으로 관찰하도록 돕는 디지털 양육 가이드입니다. 오행(목, 화, 토, 금, 수)의 상호작용은 아이의 감각 예민도, 자율 활동량, 정서적 유대 표현과 긴밀한 연관성을 가집니다.
+                </p>
+
+                {/* 오행 기질 요약 카드 */}
+                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
+                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
+                    <span>🌿</span> 오행(五行)으로 살펴보는 아동의 5대 선천 기질
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] text-slate-600 pl-1">
+                    <li>• <b>목(木) 기운의 아이:</b> 호기심과 추진력이 왕성하며, 새로운 사물을 만지고 탐구하려는 대근육 발달 및 지적 탐색 욕구가 매우 강합니다.</li>
+                    <li>• <b>화(火) 기운의 아이:</b> 감정 표현이 즉각적이고 생동감 넘치는 에너자이저 성향으로, 신체 놀이를 통해 활력을 충분히 발산할 때 편안한 통잠을 잡니다.</li>
+                    <li>• <b>토(土) 기운의 아이:</b> 우직하고 온화한 품성으로 환경 변화에 완만하게 적응하며, 비위와 소화기 순환이 편안할 때 깊은 안정감을 유지합니다.</li>
+                    <li>• <b>금(金) 기운의 아이:</b> 질서와 규칙성을 중요시하며 감각이 섬세합니다. 조용한 집중력과 소근육 조작에 뛰어난 관찰자적 면모를 보입니다.</li>
+                    <li>• <b>수(水) 기운의 아이:</b> 풍부한 상상력과 깊은 정서적 유대감을 지니며, 부모와의 포근한 스킨십과 안정적인 애착 형성에서 큰 위로를 받습니다.</li>
+                  </ul>
+                </div>
+
+                {/* 원더윅스 10대 도약기 가이드 카드 */}
+                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
+                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
+                    <span>⏳</span> 원더윅스(Wonder Weeks) 10대 급성장 도약기
+                  </h4>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    네덜란드 플로이 박사의 연구에 따르면 영유아는 생후 20개월 동안 10번의 정해진 신경망 급성장기(도약기)를 겪습니다. 이 시기는 아기가 세상을 인지하는 방식이 획기적으로 변하는 순간으로, 등센서 각성이나 이유 없는 칭얼거림은 두뇌 성장의 자연스러운 증거입니다.
+                  </p>
+                  <ul className="space-y-1 text-[11px] text-slate-600 pl-1">
+                    <li>• <b>1~3도약 (생후 5~12주):</b> 감각의 변화와 규칙적 패턴을 인지하기 시작하는 첫 적응기</li>
+                    <li>• <b>4~6도약 (생후 19~37주):</b> 사건과 관계를 이해하며 분리불안과 밤잠 각성이 극대화되는 도약 폭풍기</li>
+                    <li>• <b>7~10도약 (생후 46~75주):</b> 사물의 순서와 체계를 익히며 자기표현과 자아 주도성이 폭발하는 단계</li>
+                  </ul>
+                </div>
+
+                {/* 커플 특권 판결 및 상생 가이드 */}
+                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-2">
+                  <h4 className="font-black text-slate-900 text-xs flex items-center gap-1">
+                    <span>💍</span> 상생(相生)의 미학: 커플 오행 케미스트리와 특권 판결
+                  </h4>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    두 사람의 고유한 오행 에너지는 상호 보완을 통해 시너지를 발휘합니다. 아기속풀이의 가상 2세 시뮬레이션은 두 사람의 생년월일 간지 조합을 확률적으로 모델링하며, 매일 자정 갱신되는 &lsquo;커플 특권 판결소&rsquo;는 일상의 사소한 결정 갈등을 유쾌한 양보와 힐링으로 승화시키도록 기획되었습니다.
+                  </p>
+                </div>
+              </div>
+            </section>
           </div>
         )}
 
@@ -2648,7 +2692,6 @@ export default function Home() {
         {isEntered && activeTabMode === 'couple' && (
           <div className="space-y-4 animate-fadeIn">
             
-            {/* 서브 분기 전환 바 (simulator 또는 daily 화면에 들어왔을 때만 노출) */}
             {coupleModeType && (
               <div className="flex justify-between items-center bg-rose-50/80 px-4 py-2.5 rounded-2xl border border-rose-100 mb-2 animate-fadeIn">
                 <button
@@ -2667,7 +2710,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* 분기점 선택 화면 */}
             {!coupleModeType && (
               <div className="space-y-3.5 animate-fadeIn">
                 <div className="text-center space-y-1 mb-2">
@@ -2675,7 +2717,6 @@ export default function Home() {
                   <p className="text-xs text-slate-500 break-keep">매일 즐기는 데일리 콘텐츠와 설레는 미래 시뮬레이션을 골라보세요.</p>
                 </div>
 
-                {/* 분기 카드 1: 가상 2세 (단발성) */}
                 <button
                   type="button"
                   onClick={() => setCoupleModeType('simulator')}
@@ -2693,7 +2734,6 @@ export default function Home() {
                   <div className="text-3xl shrink-0 group-hover:scale-110 transition-transform">🍼</div>
                 </button>
 
-                {/* 분기 카드 2: 오늘의 커플 특권 판결소 (데일리) */}
                 <button
                   type="button"
                   onClick={() => setCoupleModeType('daily')}
@@ -2713,7 +2753,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* [분기 1] 가상 2세 시뮬레이터 화면 */}
             {coupleModeType === 'simulator' && (
               <div className="space-y-4 animate-fadeIn">
                 {isAnalyzingCouple ? (
@@ -2901,7 +2940,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* [분기 2] 오늘의 커플 특권 판결소 화면 (데일리) */}
             {coupleModeType === 'daily' && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="bg-white rounded-3xl p-5 sm:p-6 border border-indigo-100 shadow-md space-y-4">
