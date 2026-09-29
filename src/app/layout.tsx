@@ -3,18 +3,22 @@ import Script from 'next/script';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '아기속풀이 | 60갑자 아기 기질 도감 & 육아 날씨',
-  description: '신생아부터 어린이까지 쏙 뽑아보는 60갑자 아기 성향 분석 및 사주 오행 기반 육아 난이도 측정',
+  title: '아기속풀이 PRO - 기질 분석 & 커플 가상 2세 시뮬레이터',
+  description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
   keywords: ['아기기질', '원더윅스', '육아난이도', '사주오행', '기질카드', '육아팁'],
+  verification: {
+    // 💡 방금 구글 서치 콘솔에서 복사한 content 따옴표 안의 난수 값을 여기에 넣습니다.
+    google: 'G5xoksso8MHsl4pEhoJ7eg_Tu2nzQ7PSYg3JUfwMxNk',
+  },
   metadataBase: new URL('https://baby-sokpuli.vercel.app'),
   icons: {
     icon: '/favicon.ico',
   },
   openGraph: {
-    title: '우리 아이 기질카드 & 육아 난이도 측정 🍼',
-    description: '생년월일로 쏙 뽑아보는 60갑자 기질 분석과 부모-자녀 육아 난이도 진단! 오늘의 육아 날씨를 확인해보세요.',
+    title: '아기속풀이 PRO - 기질 분석 & 커플 가상 2세 시뮬레이터',
+    description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
     url: 'https://baby-sokpuli.vercel.app',
-    siteName: '아기속풀이',
+    siteName: '아기속풀이 PRO',
     images: [
       {
         url: 'https://baby-sokpuli.vercel.app/og-image.png',
