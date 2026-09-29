@@ -11,8 +11,6 @@ export const metadata: Metadata = {
     google: 'G5xoksso8MHsl4pEhoJ7eg_Tu2nzQ7PSYg3JUfwMxNk',
   },
   metadataBase: new URL('https://baby-sokpuli.vercel.app'),
-  icons: {
-    icon: '/favicon.ico',
   },
   openGraph: {
     title: '아기속풀이 PRO - 기질 분석 & 커플 가상 2세 시뮬레이터',
