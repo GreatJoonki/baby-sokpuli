@@ -7,11 +7,9 @@ export const metadata: Metadata = {
   description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
   keywords: ['아기기질', '원더윅스', '육아난이도', '사주오행', '기질카드', '육아팁'],
   verification: {
-    // 💡 방금 구글 서치 콘솔에서 복사한 content 따옴표 안의 난수 값을 여기에 넣습니다.
     google: 'G5xoksso8MHsl4pEhoJ7eg_Tu2nzQ7PSYg3JUfwMxNk',
   },
   metadataBase: new URL('https://baby-sokpuli.vercel.app'),
-  },
   openGraph: {
     title: '아기속풀이 PRO - 기질 분석 & 커플 가상 2세 시뮬레이터',
     description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
@@ -35,6 +33,7 @@ export const metadata: Metadata = {
     images: ['https://baby-sokpuli.vercel.app/og-image.png'],
   },
 };
+
 
 export default function RootLayout({
   children,
