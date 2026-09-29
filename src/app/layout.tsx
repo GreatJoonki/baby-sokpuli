@@ -7,7 +7,12 @@ export const metadata: Metadata = {
   description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
   keywords: ['아기기질', '원더윅스', '육아난이도', '사주오행', '기질카드', '육아팁'],
   verification: {
+    // 💡 구글 서치 콘솔 인증 난수
     google: 'G5xoksso8MHsl4pEhoJ7eg_Tu2nzQ7PSYg3JUfwMxNk',
+    // 💡 네이버 서치어드바이저 인증 메타태그 자동 렌더링
+    other: {
+      'naver-site-verification': '5a932e7eb776e30b3294fe301fb7288bfd49d7bd',
+    },
   },
   metadataBase: new URL('https://baby-sokpuli.vercel.app'),
   openGraph: {
