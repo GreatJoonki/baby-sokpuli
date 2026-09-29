@@ -1018,6 +1018,8 @@ export default function Home() {
 
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<'form' | 'result'>('form');
+  // 💡 아래 한 줄 추가: 초기 진입 시 5대 허브만 띄우는 상태
+  const [viewMode, setViewMode] = useState<'hub' | 'form'>('hub');
 
   const cardRef = useRef<HTMLDivElement>(null);
   const formSectionRef = useRef<HTMLDivElement>(null);
@@ -1353,6 +1355,7 @@ export default function Home() {
     setTarotSelectedCard(null);
     setIsTarotRevealed(false);
     setIsTarotAnalyzing(false);
+    setViewMode('form'); // 💡 폼 단독 노출
     setStep('form');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1917,7 +1920,7 @@ export default function Home() {
         {/* ========================================================
             VIEW 1: 다이렉트 터치 카드 랜딩 허브 (5대 핵심 기능)
            ======================================================== */}
-        {!isEntered && step === 'form' && (
+        {!isEntered && step === 'form' && viewMode === 'hub' && (
           <div className="space-y-3 py-2 animate-fadeIn" data-gateway={selectedGateway}>
             <div className="text-center mb-1">
               <h2 className="text-[15px] sm:text-base font-black text-slate-900 leading-snug break-keep px-1">
@@ -1930,6 +1933,7 @@ export default function Home() {
                 type="button"
                 onClick={() => {
                   trackEvent('click_landing_temperament', 'Engagement', '랜딩 기질분석 카드');
+                  setViewMode('form'); // 💡 허브를 닫고 입력 폼 단독 노출
                   handleScrollToForm();
                 }}
                 className="w-full p-4 rounded-3xl text-left border border-white/80 bg-gradient-to-br from-orange-50 via-rose-50 to-amber-100/80 shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-transform"
@@ -2126,8 +2130,24 @@ export default function Home() {
               </div>
             )}
 
-            {step === 'form' && (
+{step === 'form' && viewMode === 'form' && (
               <div ref={formSectionRef} id="baby-birth-form" className="space-y-3.5">
+                {/* 💡 상단 뒤로가기 헤더 (5대 허브로 복귀) */}
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setViewMode('hub');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 py-1"
+                  >
+                    <span>←</span> 전체 메뉴로 돌아가기
+                  </button>
+                  <span className="text-xs font-extrabold text-slate-800">아이 정보 입력</span>
+                </div>
+
+                {/* 🌟 기존 검은색 오늘의 기운 카드 100% 보존 */}
                 <div className="mb-3 bg-slate-900 text-white p-4.5 rounded-2xl shadow-sm relative overflow-hidden flex items-center justify-between">
                   <div className="space-y-1 relative z-10 break-keep">
                     <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block">
