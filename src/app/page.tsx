@@ -1938,25 +1938,11 @@ export default function Home() {
           </p>
         </header>
 
-        {/* 롤링 공지 티커: 헤더 바로 밑 최상단 배치 */}
-        <div className="my-2.5 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-xl py-2 flex items-center shadow-2xs">
-          <div className="animate-ticker-marquee flex items-center text-xs font-semibold text-slate-600 select-none">
-            <div className="inline-flex items-center space-x-6 pr-6">
-              <span className="flex items-center space-x-1.5">
-                <span>💌</span>
-                <span>{visitor.message}</span>
-              </span>
-              <span className="text-slate-300">✦</span>
-              <span className="flex items-center space-x-1.5">
-                <span>🍼</span>
-                <span>신생아부터 어린이까지 60갑자 기질 도감</span>
-              </span>
-              <span className="text-slate-300">✦</span>
-              <span className="flex items-center space-x-1.5">
-                <span>🔮</span>
-                <span>오늘 밤 통잠 잘 수 있을까? 육아 타로 오픈</span>
-              </span>
-            </div>
+        {/* B안: 차분하고 고급스러운 정적 웰컴 칩 (움직임 없음) */}
+        <div className="flex justify-center my-2 animate-fadeIn">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-[11px] font-semibold text-slate-600 shadow-2xs">
+            <span>💌</span>
+            <span>{visitor.message}</span>
           </div>
         </div>
 
@@ -2133,70 +2119,7 @@ export default function Home() {
            ======================================================== */}
         {!(isEntered && activeTabMode === 'couple') && (
           <div className="space-y-6">
-            <div className="mb-2 overflow-hidden whitespace-nowrap bg-slate-50 border border-slate-100 rounded-2xl py-2 flex items-center shadow-2xs">
-              <div className="animate-ticker-marquee flex items-center text-xs sm:text-sm font-semibold text-slate-600 select-none">
-                <div className="inline-flex items-center space-x-8 pr-8">
-                  <span className="flex items-center space-x-1.5">
-                    <span>💌</span>
-                    <span>{visitor.message}</span>
-                  </span>
-                  <span className="text-slate-300">✦</span>
-                  <span className="flex items-center space-x-1.5">
-                    <span>🍼</span>
-                    <span>신생아부터 어린이까지 쏙 뽑아보는 60갑자 성향 분석</span>
-                  </span>
-                  <span className="text-slate-300">✦</span>
-                  <span className="flex items-center space-x-1.5">
-                    <span>🔮</span>
-                    <span>오늘 밤 통잠 잘 수 있을까? 오늘의 육아 타로 오픈!</span>
-                  </span>
-                  <span className="text-slate-300">✦</span>
-                </div>
-              </div>
-            </div>
-
-            {profiles.length > 0 && (
-              <div className="mb-2 pb-1 flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
-                <span className="text-xs font-bold text-slate-400 whitespace-nowrap mr-1">
-                  등록된 아이:
-                </span>
-                {profiles.map((p) => {
-                  const isActive = activeProfileId === p.id && step === 'result';
-                  return (
-                    <div
-                      key={p.id}
-                      onClick={() => handleSelectChild(p)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold flex items-center space-x-1.5 cursor-pointer transition-all ${
-                        isActive
-                          ? 'bg-slate-900 text-white shadow-xs'
-                          : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100'
-                      }`}
-                    >
-                      <span className="break-keep">{p.name}</span>
-                      <button
-                        onClick={(e) => handleDeleteChild(p.id, e)}
-                        className="text-xs opacity-60 hover:opacity-100 ml-0.5"
-                        aria-label={`${p.name} 삭제`}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  );
-                })}
-                <button
-                  onClick={handleAddNewChild}
-                  className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold border border-dashed transition-all flex items-center space-x-1 whitespace-nowrap ${
-                    step === 'form' && activeProfileId === null
-                      ? 'border-slate-800 bg-slate-50 text-slate-900 font-extrabold'
-                      : 'border-slate-300 text-slate-500 hover:border-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  <span>+ 다른 아이 추가</span>
-                </button>
-              </div>
-            )}
-
-{step === 'form' && viewMode === 'form' && (
+              {step === 'form' && viewMode === 'form' && (
               <div ref={formSectionRef} id="baby-birth-form" className="space-y-3.5">
                 {/* 💡 상단 뒤로가기 헤더 (5대 허브로 복귀) */}
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100">
