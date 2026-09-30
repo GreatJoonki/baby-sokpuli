@@ -2290,7 +2290,63 @@ export default function Home() {
             )}
 
             {step === 'result' && (
-              <div className="space-y-5 pb-4 pt-1 animate-fadeIn">
+              <div className="space-y-4 pb-4 pt-1 animate-fadeIn">
+                
+                {/* 💡 [복원] 상단 내비게이션 & 등록된 아이들 전환 스위처 */}
+                <div className="space-y-2 pb-1 border-b border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setViewMode('hub');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 py-1"
+                    >
+                      <span>←</span> 전체 메뉴
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleAddNewChild}
+                      className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5"
+                    >
+                      <span>+</span> 다른 아이 추가
+                    </button>
+                  </div>
+
+                  {/* 등록된 아이 목록 탭 (클릭 시 즉시 전환 / ✕ 클릭 시 삭제) */}
+                  {profiles.length > 0 && (
+                    <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                      <span className="text-xs font-bold text-slate-400 whitespace-nowrap mr-1">
+                        등록된 아이:
+                      </span>
+                      {profiles.map((p) => {
+                        const isActive = activeProfileId === p.id;
+                        return (
+                          <div
+                            key={p.id}
+                            onClick={() => handleSelectChild(p)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-all shrink-0 ${
+                              isActive
+                                ? 'bg-slate-900 text-white shadow-xs'
+                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            <span className="break-keep">{p.name}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => handleDeleteChild(p.id, e)}
+                              className="text-[11px] opacity-60 hover:opacity-100 ml-0.5"
+                              aria-label={`${p.name} 삭제`}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
                 <div
                   ref={cardRef}
                   className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden border border-slate-200 space-y-4"
