@@ -1896,7 +1896,7 @@ export default function Home() {
           100% { transform: translateX(-50%); }
         }
         @keyframes slideUpFade {
-          from { opacity: 0; transform: translateY(10px); }
+          from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes softFloat {
@@ -1912,16 +1912,17 @@ export default function Home() {
           animation-play-state: paused;
         }
         .animate-slide-up {
-          animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .animate-soft-float {
           animation: softFloat 2.6s ease-in-out infinite;
         }
         .interactive-card {
           transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.15s ease;
+          will-change: transform;
         }
         .interactive-card:active {
-          transform: scale(0.98);
+          transform: scale(0.975);
         }
       `}} /> 
 
@@ -2096,20 +2097,31 @@ export default function Home() {
             상단 내비게이션 바 (입장 후 상단 고정)
            ======================================================== */}
         {isEntered && (
-          <div className="flex justify-between items-center bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200 shadow-2xs mb-3">
+          <div className="flex justify-between items-center bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200/90 shadow-2xs mb-3 animate-fadeIn">
             <button
               type="button"
               onClick={() => {
-                setIsEntered(false);
-                setCoupleModeType(null);
-                setCoupleResult(null);
+                if (coupleModeType) {
+                  // 💡 가상 2세 진행 중이면 -> 커플 메뉴 홈으로 복귀
+                  setCoupleModeType(null);
+                  setCoupleResult(null);
+                } else {
+                  // 💡 커플 홈이면 -> 메인 5대 허브로 복귀
+                  setIsEntered(false);
+                  setStep('form');
+                  setViewMode('hub');
+                }
               }}
-              className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors"
+              className="text-xs font-extrabold text-slate-600 hover:text-slate-900 flex items-center gap-1 transition-colors"
             >
-              <span>←</span> 다른 모드 선택하기
+              <span>←</span> {coupleModeType ? '커플 메뉴로' : '전체 메뉴'}
             </button>
-            <span className="text-[11px] font-black text-indigo-600">
-              {activeTabMode === 'parenting' ? '🍼 아기 속마음 번역기 진행 중' : '💍 커플 도감 진행 중'}
+            <span className="text-[11px] font-extrabold text-rose-600 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-md">
+              {coupleModeType === 'simulator'
+                ? '🧬 가상 2세 시뮬레이터'
+                : coupleModeType === 'daily'
+                ? '👑 커플 특권 판결소'
+                : '💍 커플 도감'}
             </span>
           </div>
         )}
@@ -2298,7 +2310,9 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => {
-                        setViewMode('hub');
+                        setStep('form');        // 💡 1. 폼/허브 단계로 복귀
+                        setViewMode('hub');     // 💡 2. 5대 허브 화면 지정
+                        setIsEntered(false);    // 💡 3. 초기 허브 상태 확정
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 py-1"
@@ -2761,23 +2775,7 @@ export default function Home() {
         {isEntered && activeTabMode === 'couple' && (
           <div className="space-y-4 animate-fadeIn">
             
-            {coupleModeType && (
-              <div className="flex justify-between items-center bg-rose-50/80 px-4 py-2.5 rounded-2xl border border-rose-100 mb-2 animate-fadeIn">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCoupleModeType(null);
-                    setCoupleResult(null);
-                  }}
-                  className="text-xs font-bold text-rose-700 hover:text-rose-900 flex items-center gap-1 transition-colors"
-                >
-                  <span>←</span> 다른 커플 기능 선택
-                </button>
-                <span className="text-[11px] font-black text-rose-600">
-                  {coupleModeType === 'simulator' ? '💍 가상 2세 시뮬레이터' : '👑 오늘의 커플 특권 판결소'}
-                </span>
-              </div>
-            )}
+            
 
             {!coupleModeType && (
               <div className="space-y-3.5 animate-fadeIn">
