@@ -3337,8 +3337,9 @@ export default function Home() {
 
                   return (
                     <div className="space-y-3.5 text-left animate-slide-up">
-                      <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex items-center gap-4 shadow-2xs">
-                        <div className="w-20 h-24 rounded-xl overflow-hidden bg-white border border-slate-200 shadow-2xs shrink-0 flex items-center justify-center">
+                      {/* 중앙 대형 히어로 카드 & 소프트 플로팅 모션 */}
+                      <div className="bg-gradient-to-b from-indigo-50/50 via-slate-50 to-slate-50 border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col items-center text-center shadow-2xs space-y-2.5">
+                        <div className="w-36 h-48 sm:w-40 sm:h-52 rounded-2xl overflow-hidden bg-white border-2 border-indigo-100 shadow-md shrink-0 flex items-center justify-center relative animate-soft-float">
                           {!tarotImgError ? (
                             <img
                               src={tarotSelectedCard.image}
@@ -3347,17 +3348,18 @@ export default function Home() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-3xl">🔮</span>
+                            <span className="text-5xl">🔮</span>
                           )}
                         </div>
-                        <div className="min-w-0 space-y-1">
-                          <span className="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full inline-block">
+
+                        <div className="space-y-1 pt-1">
+                          <span className="text-[10px] font-extrabold text-indigo-600 bg-white border border-indigo-200/80 px-2.5 py-0.5 rounded-full inline-block shadow-2xs">
                             {tarotSelectedCard.animal || '수호동물'} · {tarotSelectedCard.keyword || '속마음'}
                           </span>
-                          <h4 className="text-sm sm:text-base font-black text-slate-900 truncate">
+                          <h4 className="text-base sm:text-lg font-black text-slate-900 pt-0.5">
                             {displayKorTitle}
                           </h4>
-                          <p className="text-[11px] text-slate-400 font-mono tracking-tight">
+                          <p className="text-xs text-slate-400 font-mono tracking-tight">
                             {displayEngSub}
                           </p>
                         </div>
