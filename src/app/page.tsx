@@ -1082,7 +1082,36 @@ export default function Home() {
   const [isTarotRevealed, setIsTarotRevealed] = useState(false);
   const [tarotImgError, setTarotImgError] = useState(false);
   const tarotIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const tarotTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tarotCardCaptureRef = useRef<HTMLDivElement>(null);
+  const [isDownloadingTarot, setIsDownloadingTarot] = useState(false);
+
+  const handleDownloadTarotCard = async () => {
+    if (!tarotCardCaptureRef.current) return;
+    setIsDownloadingTarot(true);
+    trackEvent('click_download_tarot', 'Engagement', '타로 카드 이미지 저장');
+
+    try {
+      const dataUrl = await toPng(tarotCardCaptureRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: '#FFFFFF',
+      });
+
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS) {
+        setIosSavedImageUrl(dataUrl);
+      } else {
+        const link = document.createElement('a');
+        link.download = `아기속풀이_육아타로_${tarotSelectedCard?.korTitle || '카드'}.png`;
+        link.href = dataUrl;
+        link.click();
+      }
+    } catch (error) {
+      alert('이미지 저장 중 일시적인 오류가 발생했습니다. 화면을 직접 캡처해 주세요!');
+    } finally {
+      setIsDownloadingTarot(false);
+    }
+  };
 
   const [activeTooltip, setActiveTooltip] = useState<'curiosity' | 'energy' | 'fussy' | null>(null);
 
@@ -3336,10 +3365,14 @@ export default function Home() {
                   const displayEngSub = tarotSelectedCard.engSub || tarotSelectedCard.name?.split('(')[1]?.replace(')', '').trim() || 'The Slumber';
 
                   return (
-                    <div className="space-y-3.5 text-left animate-slide-up">
-                      {/* 중앙 대형 히어로 카드 & 소프트 플로팅 모션 */}
-                      <div className="bg-gradient-to-b from-indigo-50/50 via-slate-50 to-slate-50 border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col items-center text-center shadow-2xs space-y-2.5">
-                        <div className="w-36 h-48 sm:w-40 sm:h-52 rounded-2xl overflow-hidden bg-white border-2 border-indigo-100 shadow-md shrink-0 flex items-center justify-center relative animate-soft-float">
+                    <div className="space-y-4 text-left animate-slide-up">
+                      {/* 📸 인스타 스토리 캡처 다운로드 영역 */}
+                      <div
+                        ref={tarotCardCaptureRef}
+                        className="bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 border border-slate-200/90 rounded-3xl p-5 flex flex-col items-center text-center shadow-xs space-y-4"
+                      >
+                        {/* 🌟 210px x 290px 대형 실물 타로 카드 규격 */}
+                        <div className="w-52 h-72 sm:w-56 sm:h-80 rounded-2xl overflow-hidden bg-white border-2 border-indigo-200/80 shadow-lg shrink-0 flex items-center justify-center relative animate-soft-float">
                           {!tarotImgError ? (
                             <img
                               src={tarotSelectedCard.image}
@@ -3348,50 +3381,73 @@ export default function Home() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-5xl">🔮</span>
+                            <span className="text-6xl">🔮</span>
                           )}
                         </div>
 
-                        <div className="space-y-1 pt-1">
-                          <span className="text-[10px] font-extrabold text-indigo-600 bg-white border border-indigo-200/80 px-2.5 py-0.5 rounded-full inline-block shadow-2xs">
+                        {/* 카드 타이틀 & 뱃지 */}
+                        <div className="space-y-1">
+                          <span className="text-[11px] font-extrabold text-indigo-600 bg-white border border-indigo-200 px-3 py-1 rounded-full inline-block shadow-2xs">
                             {tarotSelectedCard.animal || '수호동물'} · {tarotSelectedCard.keyword || '속마음'}
                           </span>
-                          <h4 className="text-base sm:text-lg font-black text-slate-900 pt-0.5">
+                          <h4 className="text-lg sm:text-xl font-black text-slate-900 pt-1 tracking-tight">
                             {displayKorTitle}
                           </h4>
-                          <p className="text-xs text-slate-400 font-mono tracking-tight">
+                          <p className="text-xs text-slate-400 font-mono tracking-wider uppercase">
                             {displayEngSub}
                           </p>
                         </div>
+
+                        {/* 아기의 속마음 말풍선 */}
+                        <div className="w-full p-3.5 bg-rose-50/80 rounded-2xl border border-rose-100 text-left space-y-1">
+                          <span className="text-[11px] font-extrabold text-rose-600 flex items-center gap-1">
+                            <span>💬</span> 아기의 오늘 밤 속마음
+                          </span>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed break-keep">
+                            &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
+                          </p>
+                        </div>
+
+                        {/* 야간 통잠 난이도 바 */}
+                        <div className="w-full p-3 rounded-xl bg-white border border-slate-200/80 text-xs font-bold flex justify-between items-center shadow-2xs">
+                          <span className="text-slate-600">🌙 오늘 밤 통잠 난이도</span>
+                          <span className="text-indigo-600 font-black">{tarotSelectedCard.nightDifficulty}</span>
+                        </div>
+
+                        <div className="w-full pt-1 flex justify-between items-center text-[10px] text-slate-400 font-mono">
+                          <span>아기속풀이 PRO · 심야 타로</span>
+                          <span>baby-sokpuli</span>
+                        </div>
                       </div>
 
-                      <div className="p-3.5 bg-rose-50/60 rounded-2xl border border-rose-100 space-y-1">
-                        <span className="text-[11px] font-extrabold text-rose-600 flex items-center gap-1">
-                          <span>💬</span> 아기의 진짜 속마음
-                        </span>
-                        <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
-                          &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
-                        </p>
-                      </div>
-
+                      {/* 부모 안심 처방전 (모달 내 안내용) */}
                       <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
                         <span className="text-[11px] font-extrabold text-slate-700 flex items-center gap-1">
                           <span>☕</span> 부모 안심 처방전
                         </span>
-                        <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
                           {tarotSelectedCard.prescription}
                         </p>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold flex justify-between items-center">
-                        <span>🌙 오늘 밤 통잠 난이도</span>
-                        <span className="text-indigo-600 font-black">{tarotSelectedCard.nightDifficulty}</span>
-                      </div>
+                      {/* 💡 [복원] 타로 카드 이미지 다운로드 버튼 */}
+                      <button
+                        type="button"
+                        onClick={handleDownloadTarotCard}
+                        disabled={isDownloadingTarot}
+                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                      >
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>{isDownloadingTarot ? '타로 카드 생성 중...' : '📸 타로 카드 이미지로 저장하기'}</span>
+                      </button>
 
+                      {/* 모달 닫기 버튼 */}
                       <button
                         type="button"
                         onClick={handleCloseTarotModal}
-                        className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-2xs transition-all active:scale-[0.98]"
+                        className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm rounded-xl transition-all"
                       >
                         확인 완료
                       </button>
