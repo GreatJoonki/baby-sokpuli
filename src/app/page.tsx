@@ -823,7 +823,7 @@ export default function Home() {
 
       setIsAnalyzingCouple(false);
       setCoupleCountdown(null);
-    }, 15000);
+    }, 2500);
   };
 
   const handleCalculateDailyVerdict = () => {
@@ -2112,8 +2112,8 @@ export default function Home() {
                     🌙
                   </div>
                   <div>
-                    <h3 className="text-sm font-extrabold text-slate-900 leading-tight">심야 잠투정 속마음 타로</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">등센서·이앓이·급성장기 아기 속마음 21종</p>
+                    <h3 className="text-sm font-extrabold text-slate-900 leading-tight">오늘의 아기 속마음 타로</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">낮 놀이부터 밤 통잠까지 · 아기 속마음 21종</p>
                   </div>
                 </div>
                 <span className="text-slate-300 text-sm font-bold pr-1">→</span>
@@ -2583,8 +2583,8 @@ export default function Home() {
                         🌙
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">오늘 밤 왜 안 잘까? 아기 속마음 타로</h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">등센서·이앓이·급성장기 속마음 21종</p>
+                        <h4 className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">오늘 아이의 기분은? 아기 속마음 타로</h4>
+                        <p className="text-[11px] text-slate-500 mt-0.5">이유식·놀이·잠투정 속마음 21종</p>
                       </div>
                     </div>
                     <span className="text-slate-300 text-sm font-bold pr-1">→</span>
@@ -3344,9 +3344,9 @@ export default function Home() {
                   </span>
                   <div>
                     <h3 className="text-sm sm:text-base font-extrabold text-slate-900">
-                      심야 아기 속마음 타로
+                      오늘의 아기 속마음 타로
                     </h3>
-                    <p className="text-[11px] text-slate-500 font-medium">오늘 밤 우리 아이는 왜 안 잘까요?</p>
+                    <p className="text-[11px] text-slate-500 font-medium">오늘 우리 아이는 어떤 하루를 보내고 있을까요?</p>
                   </div>
                 </div>
                 <button
@@ -3487,7 +3487,7 @@ export default function Home() {
                         </div>
 
                         <div className="w-full pt-1 flex justify-between items-center text-[10px] text-slate-400 font-mono">
-                          <span>아기속풀이 PRO · 심야 타로</span>
+                          <span>아기속풀이 PRO · 데일리 타로</span>
                           <span>baby-sokpuli</span>
                         </div>
                       </div>
