@@ -1306,7 +1306,7 @@ export default function Home() {
 
       const storageKey = getTarotStorageKey(activeProfileId);
       localStorage.setItem(storageKey, JSON.stringify(chosen));
-    }, 15000);
+    }, 2500);
   };
 
   const handleCloseTarotModal = () => {
@@ -1824,7 +1824,7 @@ export default function Home() {
 
       const todayStr = getTodayDateString();
       localStorage.setItem(`duty_verdict_${todayStr}`, JSON.stringify(finalResult));
-    }, 15000);
+    }, 2500);
   };
 
   const handleCalculateParentMatchModal = (e: React.FormEvent) => {
@@ -1866,7 +1866,7 @@ export default function Home() {
       setParentingDifficulty(result);
       setIsAnalyzingParentMatch(false);
       setParentMatchCountdown(null);
-    }, 15000);
+    }, 2500);
   };
 
   const handleCopyAccount = async () => {
@@ -2854,50 +2854,24 @@ export default function Home() {
             {coupleModeType === 'simulator' && (
               <div className="space-y-4 animate-fadeIn">
                 {isAnalyzingCouple ? (
-                  <div className="py-8 text-center space-y-5 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-rose-100 shadow-md">
-                    <div className="space-y-1.5">
-                      <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-rose-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-xl font-black shadow-md border-2 border-white animate-pulse">
-                        {coupleCountdown !== null ? coupleCountdown : '✨'}초
-                      </div>
-                      <h4 className="text-base font-black text-slate-900 mt-2 break-keep">
-                        두 사람의 60갑자 사주 기운과 가상 2세 유전자 대조 중...
-                      </h4>
-                      <p className="text-xs text-slate-500 break-keep">
-                        두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 있습니다!
-                      </p>
-                    </div>
-
-                    <div className="w-full p-4.5 bg-white border border-rose-200 rounded-2xl text-left text-slate-900 space-y-2.5 shadow-sm">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-extrabold text-rose-600 uppercase tracking-widest">
-                          SPONSORED · 커플 충전소
-                        </span>
-                        <span className="text-[10px] text-slate-400">15초 후 도감 공개</span>
-                      </div>
-                      <p className="text-xs sm:text-sm font-bold leading-snug break-keep text-slate-800">
-                        분석 기다리는 동안 남매 유튜브 숏폼 구경 & 커플 힐링템 충전 ☕
-                      </p>
-                      <div className="flex space-x-2 pt-1">
-                        <a
-                          href={SERVICE_LINKS.youtube}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
-                        >
-                          ▶ 유튜브 숏폼
-                        </a>
-                        <a
-                          href={SERVICE_LINKS.parentHealing}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
-                        >
-                          🛒 커플 힐링템 구경
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
+                 <div className="py-10 text-center space-y-4 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-rose-100 shadow-md">
+                  <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-rose-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-black shadow-md border-2 border-white animate-pulse">
+                   🧬
+                </div>
+    <div className="space-y-1.5">
+      <h4 className="text-base font-black text-slate-900 break-keep">
+        두 사람의 60갑자 사주 기운과 가상 2세 유전자 대조 중...
+      </h4>
+      <p className="text-xs text-slate-500 break-keep">
+        두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 있습니다 ✨
+      </p>
+    </div>
+    {/* 부드러운 진행 바 */}
+    <div className="w-44 mx-auto bg-slate-200 h-2 rounded-full overflow-hidden">
+      <div className="bg-gradient-to-r from-rose-500 to-indigo-600 h-full rounded-full animate-pulse" style={{ width: '75%' }} />
+    </div>
+  </div>
+) : (
                   <>
                     <div className="bg-white rounded-3xl p-5 border border-rose-100 shadow-md space-y-3.5">
                       <div className="text-center space-y-1 pb-1">
@@ -3016,7 +2990,7 @@ export default function Home() {
                           <div className="p-3.5 bg-white/90 rounded-2xl border border-orange-100 text-left space-y-1">
                             <span className="text-[11px] font-extrabold text-orange-800 block">💡 2세 성향 시뮬레이션 산출 근거</span>
                             <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
-                              두 분의 탄생 연도 오행 에너지 해시값과 성향 조합을 분석한 결과, 부모의 장점인 왕성한 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형으로 판정되었습니다.
+                              두 분의 탄생 연도 오행 에너지 값과 성향 조합을 분석한 결과, 부모의 장점인 왕성한 추진력과 감각적 재능을 가장 조화롭게 이어받을 유형으로 판정되었습니다.
                             </p>
                           </div>
 
@@ -3028,6 +3002,39 @@ export default function Home() {
                             <div className="w-full bg-slate-200 h-3.5 rounded-full overflow-hidden flex shadow-inner">
                               <div style={{ width: `${coupleResult.baby.dadPercent}%` }} className="bg-rose-500 h-full transition-all duration-700" />
                               <div style={{ width: `${coupleResult.baby.momPercent}%` }} className="bg-indigo-500 h-full transition-all duration-700" />
+                            </div>
+                          </div>
+
+                          {/* ☕ 힐링템 & 🎬 만든 아빠의 숏폼 (퍼센트 바 바로 밑에 안전 배치) */}
+                          <div className="pt-2 space-y-2.5">
+                            <div className="p-3.5 bg-white/90 border border-rose-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
+                              <div className="flex justify-between items-center">
+                                <span className="text-[11px] font-extrabold text-rose-600 flex items-center gap-1">
+                                  <span>☕</span> 커플 & 부모 힐링 라운지
+                                </span>
+                                <span className="text-[9px] text-slate-400 font-mono">추천 콘텐츠</span>
+                              </div>
+                              <p className="text-xs font-bold text-slate-800 leading-snug break-keep">
+                                결과 확인 후 만든 아빠의 리얼 육아 숏폼 구경 & 커플 힐링템 둘러보기
+                              </p>
+                              <div className="flex space-x-2 pt-1">
+                                <a
+                                  href={SERVICE_LINKS.youtube}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                                >
+                                  <span>▶ 만든 아빠의 숏폼</span>
+                                </a>
+                                <a
+                                  href={SERVICE_LINKS.parentHealing}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                                >
+                                  <span>🛒 커플 힐링템 구경</span>
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -3359,47 +3366,20 @@ export default function Home() {
               </div>
 
               {isTarotAnalyzing ? (
-                <div className="py-6 text-center space-y-4 animate-fadeIn">
+                <div className="py-10 text-center space-y-4 animate-fadeIn">
+                  <div className="w-16 h-16 mx-auto bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-2xl font-black shadow-2xs border border-indigo-100 animate-pulse">
+                    🔮
+                  </div>
                   <div className="space-y-1.5">
-                    <div className="w-14 h-14 mx-auto bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-lg font-black shadow-2xs border border-indigo-100 animate-soft-float">
-                      {tarotCountdown !== null ? `${tarotCountdown}s` : '✨'}
-                    </div>
-                    <h4 className="text-sm font-extrabold text-slate-900 mt-2">
-                      오늘 밤 아기의 주파수와 카드를 조율 중...
+                    <h4 className="text-base font-black text-slate-900">
+                      오늘 우리 아이의 주파수와 카드를 조율 중...
                     </h4>
-                    <p className="text-xs text-slate-500">
-                      매일 자정 바뀌는 우주의 기운과 성장 상태를 대조하고 있어요!
+                    <p className="text-xs text-slate-500 font-medium">
+                      오늘 날짜의 우주 기운과 아이의 기질을 대조하고 있어요 ✨
                     </p>
                   </div>
-
-                  <div className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-left space-y-2.5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider">
-                        SPONSORED · 육아 힐링 라운지
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-medium">15초 후 카드 오픈</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-800 leading-snug">
-                      분석 기다리는 동안 남매 성장 숏폼 구경 & 부모 멘탈 힐링템 충전 ☕
-                    </p>
-                    <div className="flex gap-2 pt-0.5">
-                      <a
-                        href={SERVICE_LINKS.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-2xs"
-                      >
-                        ▶ 유튜브 숏폼
-                      </a>
-                      <a
-                        href={SERVICE_LINKS.parentHealing}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold text-center transition-all shadow-2xs"
-                      >
-                        🛒 부모 힐링템
-                      </a>
-                    </div>
+                  <div className="w-40 mx-auto bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div className="bg-indigo-600 h-full rounded-full animate-pulse" style={{ width: '70%' }} />
                   </div>
                 </div>
               ) : !isTarotRevealed ? (
@@ -3514,6 +3494,36 @@ export default function Home() {
                         </svg>
                         <span>{isDownloadingTarot ? '타로 카드 생성 중...' : '📸 타로 카드 이미지로 저장하기'}</span>
                       </button>
+                      {/* ☕ 힐링템 & 🎬 만든 아빠의 숏폼 */}
+                      <div className="p-3.5 bg-white/90 border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[11px] font-extrabold text-indigo-600 flex items-center gap-1">
+                            <span>☕</span> 부모 힐링 라운지
+                          </span>
+                          <span className="text-[9px] text-slate-400 font-mono">추천 콘텐츠</span>
+                        </div>
+                        <p className="text-xs font-bold text-slate-800 leading-snug break-keep">
+                          타로 확인 후 만든 아빠의 리얼 육아 숏폼 구경 & 육퇴 힐링템 둘러보기
+                        </p>
+                        <div className="flex space-x-2 pt-1">
+                          <a
+                            href={SERVICE_LINKS.youtube}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                          >
+                            <span>▶ 만든 아빠의 숏폼</span>
+                          </a>
+                          <a
+                            href={SERVICE_LINKS.parentHealing}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                          >
+                            <span>🛒 육퇴 힐링템 구경</span>
+                          </a>
+                        </div>
+                      </div>
 
                       {/* 모달 닫기 버튼 */}
                       <button
@@ -3554,47 +3564,20 @@ export default function Home() {
               </div>
 
               {isAnalyzingParentMatch ? (
-                <div className="py-8 text-center space-y-5 animate-fadeIn">
+                <div className="py-10 text-center space-y-4 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-amber-100 shadow-md">
+                  <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-black shadow-md border-2 border-white animate-pulse">
+                    🔥
+                  </div>
                   <div className="space-y-1.5">
-                    <div className="w-16 h-16 mx-auto bg-slate-900 text-amber-300 rounded-full flex items-center justify-center text-xl font-black shadow-md border border-slate-800 animate-pulse">
-                      {parentMatchCountdown !== null ? parentMatchCountdown : '✨'}초
-                    </div>
-                    <h4 className="text-sm sm:text-base font-black text-slate-900 mt-2 break-keep">
+                    <h4 className="text-sm sm:text-base font-black text-slate-900 break-keep">
                       아이와 부모의 기질 에너지 대조 중...
                     </h4>
                     <p className="text-xs sm:text-sm text-slate-500 break-keep">
-                      부모님의 오행 기운과 아이의 본성을 비교해 육아 난이도를 산정하고 있습니다!
+                      부모님의 오행 기운과 아이의 본성을 비교해 육아 난이도를 정밀 연산하고 있습니다 ✨
                     </p>
                   </div>
-
-                  <div className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-left text-slate-900 space-y-2.5 shadow-xs">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        SPONSORED · 부모 충전소
-                      </span>
-                      <span className="text-[10px] text-slate-400">15초 후 결과 공개</span>
-                    </div>
-                    <p className="text-xs sm:text-sm font-bold leading-snug break-keep text-slate-800">
-                      진단 기다리는 동안 남매 유튜브 숏폼 구경 & 부모 힐링템 충전 ☕
-                    </p>
-                    <div className="flex space-x-2 pt-1">
-                      <a
-                        href={SERVICE_LINKS.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
-                      >
-                        ▶ 유튜브 숏폼
-                      </a>
-                      <a
-                        href={SERVICE_LINKS.parentHealing}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
-                      >
-                        🛒 커플 힐링템 구경
-                      </a>
-                    </div>
+                  <div className="w-44 mx-auto bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 h-full rounded-full animate-pulse" style={{ width: '75%' }} />
                   </div>
                 </div>
               ) : !parentingDifficulty ? (
@@ -3710,6 +3693,25 @@ export default function Home() {
                           추천 보기
                         </a>
                       </div>
+                      {/* 🎬 만든 아빠의 숏폼 (기존 힐링템 바로 밑에 추가) */}
+                      <div className="p-3.5 bg-rose-50/70 rounded-2xl border border-rose-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                        <div className="flex items-center space-x-2.5">
+                          <span className="text-2xl flex-shrink-0">👶</span>
+                          <div className="break-keep">
+                            <div className="text-[11px] font-bold text-rose-700">만든 아빠의 현실 육아 숏폼</div>
+                            <div className="text-xs sm:text-sm font-black text-slate-900 mt-0.5">우당탕탕 리얼 일상 구경하기</div>
+                            <div className="text-[10px] text-slate-500">실제 두 아이 키우며 밤새우는 생존기</div>
+                          </div>
+                        </div>
+                        <a
+                          href={SERVICE_LINKS.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center whitespace-nowrap shadow-xs flex items-center justify-center gap-1"
+                        >
+                          <span>▶ 숏폼 구경</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
 
@@ -3773,8 +3775,8 @@ export default function Home() {
               {isAnalyzingChemi ? (
                 <div className="py-6 text-center space-y-4 animate-fadeIn">
                   <div className="space-y-1.5">
-                    <div className="w-14 h-14 mx-auto bg-slate-100 text-slate-900 rounded-2xl flex items-center justify-center text-lg font-black shadow-2xs border border-slate-200 animate-soft-float">
-                      {countdown !== null ? `${countdown}s` : '✨'}
+                    <div className="w-14 h-14 mx-auto bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-black shadow-2xs border border-indigo-100 animate-pulse">
+                      ⚖️
                     </div>
                     <h4 className="text-sm font-extrabold text-slate-900 mt-2">
                       부모의 오늘 오행 파워 실시간 심리 중...
@@ -3784,6 +3786,7 @@ export default function Home() {
                     </p>
                   </div>
 
+                  {/* 💡 살려둔 실시간 기운 게이지 연출 */}
                   <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
                     <div className="space-y-1.5 text-left">
                       <div className="flex justify-between text-xs font-bold">
@@ -3805,36 +3808,6 @@ export default function Home() {
                       <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                         <div className="bg-blue-500 h-full rounded-full transition-all duration-200" style={{ width: `${dynamicDadBar}%` }} />
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-left space-y-2.5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">
-                        SPONSORED · 부모 충전소
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-medium">15초 후 판결 선고</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-800 leading-snug">
-                      판결 기다리는 동안 남매 숏폼 구경 & 부모 힐링템 충전 ☕
-                    </p>
-                    <div className="flex gap-2 pt-0.5">
-                      <a
-                        href={SERVICE_LINKS.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-2xs"
-                      >
-                        ▶ 유튜브 숏폼
-                      </a>
-                      <a
-                        href={SERVICE_LINKS.parentHealing}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold text-center transition-all shadow-2xs"
-                      >
-                        🛒 부모 힐링템
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -3899,6 +3872,36 @@ export default function Home() {
                     </p>
                     <div className="p-3 bg-white rounded-xl border border-slate-200/80 text-[11px] text-slate-500 text-left leading-relaxed mt-2">
                       💡 <b>판결 사유:</b> {chemiResult.reason}
+                    </div>
+                  </div>
+                  {/* ☕ 야간 힐링템 & 🎬 만든 아빠의 숏폼 (결과창 하단 안전 배치) */}
+                  <div className="p-3.5 bg-white border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] font-extrabold text-indigo-600 flex items-center gap-1">
+                        <span>☕</span> 당번 판결 라운지
+                      </span>
+                      <span className="text-[9px] text-slate-400 font-mono">추천 콘텐츠</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-800 leading-snug break-keep">
+                      판결 확인 후 만든 아빠의 리얼 육아 숏폼 구경 & 야간 힐링템 둘러보기
+                    </p>
+                    <div className="flex space-x-2 pt-1">
+                      <a
+                        href={SERVICE_LINKS.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                      >
+                        <span>▶ 만든 아빠의 숏폼</span>
+                      </a>
+                      <a
+                        href={SERVICE_LINKS.parentHealing}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
+                      >
+                        <span>🛒 야간 힐링템 구경</span>
+                      </a>
                     </div>
                   </div>
 
