@@ -3166,45 +3166,7 @@ export default function Home() {
 
           </div>
         )}
-
-        {/* ========================================================
-            하단 최하단 푸터 (독립 가이드 페이지 영구 연결)
-           ======================================================== */}
-        <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-3 text-[11px] text-slate-500">
-          <div className="flex flex-wrap justify-center items-center gap-2.5 text-xs font-semibold text-slate-600">
-            <Link href="/guide" className="hover:text-indigo-600 underline transition-colors">
-              사주 기질 백서
-            </Link>
-            <span className="text-slate-300">·</span>
-            <Link href="/wonder-weeks" className="hover:text-rose-600 underline transition-colors">
-              원더윅스 10대 도약기
-            </Link>
-            <span className="text-slate-300">·</span>
-            <button
-              type="button"
-              onClick={() => setIsPrivacyModalOpen(true)}
-              className="hover:text-slate-900 underline transition-colors"
-            >
-              개인정보처리방침
-            </button>
-            <span className="text-slate-300">·</span>
-            <button
-              type="button"
-              onClick={() => setIsLoungeOpen(true)}
-              className="hover:text-slate-900 underline transition-colors"
-            >
-              문의하기
-            </button>
-          </div>
-
-          <p className="leading-relaxed break-keep text-slate-400">
-            아기속풀이 PRO · 영유아 기질 분석 및 커플 가상 2세 시뮬레이터<br />
-            문의: <a href="mailto:hamin.save.moment@gmail.com" className="underline font-medium text-slate-600">hamin.save.moment@gmail.com</a> (인스타 @hamin_hayoon_day)
-          </p>
-          <p className="text-[10px] text-slate-400">
-            © 2026 Baby Sokpuli. All rights reserved.
-          </p>
-          {/* 📘 구글 애드센스 승인 전용: 아기속풀이 육아 백과 & FAQ (정적 텍스트 보강) */}
+        {/* 📘 구글 애드센스 승인 전용: 아기속풀이 육아 백과 & FAQ (정적 텍스트 보강) */}
       <section className="mt-12 max-w-md mx-auto px-4 mb-8">
         <div className="bg-slate-50/80 border border-slate-200/95 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
           
@@ -3274,6 +3236,44 @@ export default function Home() {
 
         </div>
       </section>
+        {/* ========================================================
+            하단 최하단 푸터 (독립 가이드 페이지 영구 연결)
+           ======================================================== */}
+        <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-3 text-[11px] text-slate-500">
+          <div className="flex flex-wrap justify-center items-center gap-2.5 text-xs font-semibold text-slate-600">
+            <Link href="/guide" className="hover:text-indigo-600 underline transition-colors">
+              사주 기질 백서
+            </Link>
+            <span className="text-slate-300">·</span>
+            <Link href="/wonder-weeks" className="hover:text-rose-600 underline transition-colors">
+              원더윅스 10대 도약기
+            </Link>
+            <span className="text-slate-300">·</span>
+            <button
+              type="button"
+              onClick={() => setIsPrivacyModalOpen(true)}
+              className="hover:text-slate-900 underline transition-colors"
+            >
+              개인정보처리방침
+            </button>
+            <span className="text-slate-300">·</span>
+            <button
+              type="button"
+              onClick={() => setIsLoungeOpen(true)}
+              className="hover:text-slate-900 underline transition-colors"
+            >
+              문의하기
+            </button>
+          </div>
+
+          <p className="leading-relaxed break-keep text-slate-400">
+            아기속풀이 PRO · 영유아 기질 분석 및 커플 가상 2세 시뮬레이터<br />
+            문의: <a href="mailto:hamin.save.moment@gmail.com" className="underline font-medium text-slate-600">hamin.save.moment@gmail.com</a> (인스타 @hamin_hayoon_day)
+          </p>
+          <p className="text-[10px] text-slate-400">
+            © 2026 Baby Sokpuli. All rights reserved.
+          </p>
+          
         </footer>
 
         {/* 🌟 10대 도약기 전체 타임라인 가이드 모달 */}
