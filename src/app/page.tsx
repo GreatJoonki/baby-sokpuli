@@ -1082,8 +1082,10 @@ export default function Home() {
   const [isTarotRevealed, setIsTarotRevealed] = useState(false);
   const [tarotImgError, setTarotImgError] = useState(false);
   const tarotIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const tarotTimeoutRef = useRef<NodeJS.Timeout | null>(null); // 💡 이 줄이 누락되어 있었습니다!
   const tarotCardCaptureRef = useRef<HTMLDivElement>(null);
   const [isDownloadingTarot, setIsDownloadingTarot] = useState(false);
+  
 
   const handleDownloadTarotCard = async () => {
     if (!tarotCardCaptureRef.current) return;
@@ -3202,6 +3204,76 @@ export default function Home() {
           <p className="text-[10px] text-slate-400">
             © 2026 Baby Sokpuli. All rights reserved.
           </p>
+          {/* 📘 구글 애드센스 승인 전용: 아기속풀이 육아 백과 & FAQ (정적 텍스트 보강) */}
+      <section className="mt-12 max-w-md mx-auto px-4 mb-8">
+        <div className="bg-slate-50/80 border border-slate-200/95 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
+          
+          <div className="space-y-1">
+            <h3 className="text-base sm:text-lg font-black text-slate-800 flex items-center gap-2">
+              <span>📘</span> 아기속풀이 육아 백과 & FAQ
+            </h3>
+            <p className="text-xs text-slate-500 font-medium tracking-tight">
+              아기 기질과 원더윅스, 심야 타로에 대한 모든 것
+            </p>
+          </div>
+
+          <div className="space-y-3.5 pt-1 text-left">
+            {/* Q1 */}
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                <span className="text-indigo-600 shrink-0">Q.</span>
+                <span>아기속풀이 분석은 어떤 원리로 제공되나요?</span>
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                전통 기질 분석(사주 오행)과 소아청소년 성장 발달 주기를 바탕으로 아기 고유의 성향을 진단합니다. 타고난 기질과 도약기(원더윅스) 변화를 함께 분석하여 신뢰도 높은 육아 솔루션을 제공합니다.
+              </p>
+            </div>
+
+            {/* Q2 */}
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                <span className="text-indigo-600 shrink-0">Q.</span>
+                <span>원더윅스(도약기)란 무엇이고 어떻게 대처하나요?</span>
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                원더윅스는 아기의 뇌와 신체가 급성장하면서 불안을 느끼는 '마의 구간'입니다. 특히 제4도약기(19주 폭풍 등)에는 잠투정과 등센서가 심해지는데, 안아주기 대신 아기띠로 진정시키거나 일정한 수면 의식을 반복하는 것이 중요합니다.
+              </p>
+            </div>
+
+            {/* Q3 */}
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                <span className="text-indigo-600 shrink-0">Q.</span>
+                <span>밤에 자주 깰 때(수면 퇴행) 꿀팁이 있나요?</span>
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                아기가 밤중에 깰 때는 조명을 최소화하고, 눈을 맞추거나 자극을 주지 않는 '무반응 침묵 육아'가 가장 효과적입니다. 백소음이나 따뜻한 마사지로 안정을 유도하세요.
+              </p>
+            </div>
+
+            {/* Q4 */}
+            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                <span className="text-indigo-600 shrink-0">Q.</span>
+                <span>심야 아기 타로는 과학적인가요?</span>
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                부모가 아기의 행동 신호를 세심히 관찰하고 감정에 공감할 수 있도록 돕는 심리적 가이드입니다. 불안을 낮추고 오늘 밤 행동에 맞춘 맞춤형 조언을 참고용으로 활용해 보세요.
+              </p>
+            </div>
+          </div>
+
+          {/* 🏷️ 하단 태그 */}
+          <div className="pt-1 flex flex-wrap gap-1.5 justify-center">
+            {['#아기기질분석', '#원더윅스계산', '#등센서원인', '#수면퇴행', '#심야타로', '#부모성향'].map((tag) => (
+              <span key={tag} className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+        </div>
+      </section>
         </footer>
 
         {/* 🌟 10대 도약기 전체 타임라인 가이드 모달 */}
