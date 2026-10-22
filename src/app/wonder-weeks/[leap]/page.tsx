@@ -8,12 +8,10 @@ interface Props {
   params: Promise<{ leap: string }>;
 }
 
-// 빌드 시 1일부터 10일까지의 정적 경로 사전 생성 (SSG)
 export async function generateStaticParams() {
   return Object.keys(WONDER_WEEKS_GUIDES).map((leap) => ({ leap }));
 }
 
-// 메타데이터 동적 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { leap } = await params;
   const guide = WONDER_WEEKS_GUIDES[leap];
@@ -35,82 +33,81 @@ export default async function WonderWeekDetailPage({ params }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6">
-      <div className="max-w-xl mx-auto space-y-5">
+    <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6">
+      <div className="max-w-xl mx-auto space-y-6">
         
         {/* 상단 네비게이션 */}
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs"
+            className="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs transition-colors"
           >
-            <span>←</span> 아기속풀이 홈으로
+            <span>←</span> 홈으로 돌아가기
           </Link>
-          <span className="text-[11px] font-mono text-indigo-600 font-bold bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">
-            Leap {guide.leapNumber} 도약기 백서
+          <span className="text-xs font-semibold text-slate-700 bg-white px-3 py-1.5 rounded-xl border border-slate-200">
+            Leap {guide.leapNumber} 도약기
           </span>
         </div>
 
         {/* 메인 콘텐츠 아티클 */}
-        <article className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xs space-y-6 text-left">
+        <article className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-7 text-left">
           
-          <header className="space-y-2 border-b border-slate-100 pb-5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 rounded-full text-xs font-black">
-              <span>{guide.icon}</span>
+          <header className="space-y-3 border-b border-slate-100 pb-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-800 rounded-lg text-xs font-bold">
               <span>{guide.timing}</span>
             </div>
-            <h1 className="text-lg sm:text-xl font-black text-slate-900 leading-snug break-keep">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight break-keep">
               {guide.title}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium break-keep">
+            <p className="text-sm sm:text-base text-slate-600 font-medium break-keep leading-relaxed">
               {guide.subTitle}
             </p>
           </header>
 
           {/* 섹션 1: 아기의 신체 및 인지 변화 */}
-          <section className="space-y-2">
-            <h2 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-1.5">
-              <span>🧠</span> 1. 아기의 뇌와 신체 발달 변화
+          <section className="space-y-2.5">
+            <h2 className="text-base sm:text-lg font-black text-slate-900">
+              1. 아기의 뇌와 신체 발달 변화
             </h2>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal break-keep bg-slate-50/80 p-5 rounded-2xl border border-slate-100">
               {guide.babyChange}
             </p>
           </section>
 
           {/* 섹션 2: 주요 증상 및 수면 퇴행 */}
-          <section className="space-y-2">
-            <h2 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-1.5">
-              <span>🌙</span> 2. 주요 수면 퇴행 및 까다로운 행동 징후
+          <section className="space-y-2.5">
+            <h2 className="text-base sm:text-lg font-black text-slate-900">
+              2. 주요 수면 퇴행 및 까다로운 행동 징후
             </h2>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal break-keep bg-slate-50/80 p-5 rounded-2xl border border-slate-100">
               {guide.signAndSymptom}
             </p>
           </section>
 
           {/* 섹션 3: 양육 및 대처 솔루션 */}
-          <section className="space-y-2">
-            <h2 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-1.5">
-              <span>💡</span> 3. 부모를 위한 현명한 대처 솔루션
+          <section className="space-y-2.5">
+            <h2 className="text-base sm:text-lg font-black text-slate-900">
+              3. 부모를 위한 현명한 대처 솔루션
             </h2>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium break-keep bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal break-keep bg-slate-50/80 p-5 rounded-2xl border border-slate-100">
               {guide.parentingSolution}
             </p>
           </section>
 
-          {/* 섹션 4: 아빠 엄마 멘탈 케어 팁 */}
-          <section className="space-y-2">
-            <h2 className="text-sm sm:text-base font-black text-indigo-700 flex items-center gap-1.5">
-              <span>☕</span> 4. 육아 동지를 위한 멘탈 케어 팁
+          {/* 섹션 4: 멘탈 케어 팁 */}
+          <section className="space-y-2.5">
+            <h2 className="text-base sm:text-lg font-black text-slate-900">
+              4. 육아 동지를 위한 멘탈 케어 팁
             </h2>
-            <p className="text-xs sm:text-sm text-indigo-950/90 leading-relaxed font-medium break-keep bg-indigo-50/70 p-4 rounded-2xl border border-indigo-100">
+            <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-normal break-keep bg-slate-100/70 p-5 rounded-2xl border border-slate-200/60">
               {guide.momTip}
             </p>
           </section>
 
           {/* 하단 태그 */}
-          <div className="pt-2 flex flex-wrap gap-1.5 border-t border-slate-100">
+          <div className="pt-3 flex flex-wrap gap-2 border-t border-slate-100">
             {guide.keywords.map((kw) => (
-              <span key={kw} className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+              <span key={kw} className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
                 {kw}
               </span>
             ))}
@@ -120,26 +117,26 @@ export default async function WonderWeekDetailPage({ params }: Props) {
           <div className="pt-2">
             <Link
               href="/"
-              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-sm transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2"
             >
-              <span>🔮</span> 우리 아기 생년월일로 원더윅스 도약기 계산하기
+              <span>우리 아기 생년월일로 원더윅스 도약기 계산하기</span>
             </Link>
           </div>
 
         </article>
 
-        {/* 다른 도약기 탐색 링크 퀵내비게이션 */}
-        <div className="bg-white rounded-2xl p-4 border border-slate-200 text-left space-y-2.5 shadow-2xs">
-          <span className="text-xs font-bold text-slate-700 block">원더윅스 1~10차 도약기 전체 보기</span>
-          <div className="grid grid-cols-5 gap-1.5">
+        {/* 다른 도약기 탐색 퀵내비게이션 */}
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 text-left space-y-3 shadow-2xs">
+          <span className="text-xs font-bold text-slate-500 block">원더윅스 1~10차 도약기 전체 보기</span>
+          <div className="grid grid-cols-5 gap-2">
             {Object.values(WONDER_WEEKS_GUIDES).map((w) => (
               <Link
                 key={w.slug}
                 href={`/wonder-weeks/${w.slug}`}
-                className={`text-center py-2 text-[11px] font-bold rounded-xl border transition-colors ${
+                className={`text-center py-2.5 text-xs font-bold rounded-xl border transition-colors ${
                   w.slug === leap
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-slate-50 hover:bg-indigo-50 text-slate-700 border-slate-200'
+                    ? 'bg-slate-900 text-white border-slate-900'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
                 }`}
               >
                 {w.leapNumber}도약기
