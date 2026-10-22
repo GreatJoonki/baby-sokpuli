@@ -3259,7 +3259,7 @@ export default function Home() {
             <span>·</span>
             <Link href="/guide/water" className="hover:text-indigo-600">수(水)기질</Link>
             <span>·</span>
-            <span className="text-slate-700">원더윅스 10대 도약기</span>
+            <Link href="/wonder-weeks/4" className="hover:text-indigo-600">원더윅스 10대 도약기</Link>
             <span>·</span>
             <Link href="/privacy" className="hover:text-indigo-600">개인정보처리방침</Link>
             <span>·</span>
