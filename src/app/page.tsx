@@ -3247,30 +3247,23 @@ export default function Home() {
             하단 최하단 푸터 (독립 가이드 페이지 영구 연결)
            ======================================================== */}
         <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-3 text-[11px] text-slate-500">
-          <div className="flex flex-wrap justify-center items-center gap-2.5 text-xs font-semibold text-slate-600">
-            <Link href="/guide" className="hover:text-indigo-600 underline transition-colors">
-              사주 기질 백서
-            </Link>
-            <span className="text-slate-300">·</span>
-            <Link href="/wonder-weeks" className="hover:text-rose-600 underline transition-colors">
-              원더윅스 10대 도약기
-            </Link>
-            <span className="text-slate-300">·</span>
-            <button
-              type="button"
-              onClick={() => setIsPrivacyModalOpen(true)}
-              className="hover:text-slate-900 underline transition-colors"
-            >
-              개인정보처리방침
-            </button>
-            <span className="text-slate-300">·</span>
-            <button
-              type="button"
-              onClick={() => setIsLoungeOpen(true)}
-              className="hover:text-slate-900 underline transition-colors"
-            >
-              문의하기
-            </button>
+          {/* 🔗 구글 봇 색인용 백서 및 주요 서비스 링크 리스트 */}
+          <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-slate-500 font-semibold pb-2">
+            <Link href="/guide/wood" className="hover:text-indigo-600">목(木)기질</Link>
+            <span>·</span>
+            <Link href="/guide/fire" className="hover:text-indigo-600">화(火)기질</Link>
+            <span>·</span>
+            <Link href="/guide/earth" className="hover:text-indigo-600">토(土)기질</Link>
+            <span>·</span>
+            <Link href="/guide/metal" className="hover:text-indigo-600">금(金)기질</Link>
+            <span>·</span>
+            <Link href="/guide/water" className="hover:text-indigo-600">수(水)기질</Link>
+            <span>·</span>
+            <span className="text-slate-700">원더윅스 10대 도약기</span>
+            <span>·</span>
+            <Link href="/privacy" className="hover:text-indigo-600">개인정보처리방침</Link>
+            <span>·</span>
+            <a href="mailto:hamin.save.moment@gmail.com" className="hover:text-indigo-600">문의하기</a>
           </div>
 
           <p className="leading-relaxed break-keep text-slate-400">
