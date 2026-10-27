@@ -338,74 +338,72 @@ return elements[daySum % elements.length];
 }
 
 function BabyAnimalHybridMascot({
-cheonganIndex,
-animalIndex,
-colorLabel,
-animalModifier,
-characterTitle,
+  cheonganIndex,
+  animalIndex,
+  colorLabel,
+  animalModifier,
+  characterTitle,
 }: {
-cheonganIndex: number;
-animalIndex: number;
-colorLabel: string;
-animalModifier: string;
-characterTitle: string;
+  cheonganIndex: number;
+  animalIndex: number;
+  colorLabel: string;
+  animalModifier: string;
+  characterTitle: string;
 }) {
-const colorKey = CHEONGAN_TO_COLOR[cheonganIndex] || 'blue';
-const animalKey = JIJI_TO_ANIMAL[animalIndex] || 'tiger';
-const currentAnimal = JIJI_LIST[animalIndex] || JIJI_LIST[2];
+  const colorKey = CHEONGAN_TO_COLOR[cheonganIndex] || 'blue';
+  const animalKey = JIJI_TO_ANIMAL[animalIndex] || 'tiger';
+  const currentAnimal = JIJI_LIST[animalIndex] || JIJI_LIST[2];
 
-const targetFile = /animals/${colorKey}_${animalKey}.png;
-const [imgSrc, setImgSrc] = useState(targetFile);
-const [isError, setIsError] = useState(false);
+  const targetFile = `/animals/${colorKey}_${animalKey}.png`;
+  const [imgSrc, setImgSrc] = useState(targetFile);
+  const [isError, setIsError] = useState(false);
 
-useEffect(() => {
-setImgSrc(/animals/${colorKey}_${animalKey}.png);
-setIsError(false);
-}, [colorKey, animalKey]);
+  useEffect(() => {
+    setImgSrc(`/animals/${colorKey}_${animalKey}.png`);
+    setIsError(false);
+  }, [colorKey, animalKey]);
 
-const handleError = () => {
-if (imgSrc !== /animals/${currentAnimal.fallbackFileName}) {
-setImgSrc(/animals/${currentAnimal.fallbackFileName});
-} else {
-setIsError(true);
-}
-};
+  const handleError = () => {
+    if (imgSrc !== `/animals/${currentAnimal.fallbackFileName}`) {
+      setImgSrc(`/animals/${currentAnimal.fallbackFileName}`);
+    } else {
+      setIsError(true);
+    }
+  };
 
-return (
-
-
-
-
-
-✨
-⭐
-💫
-
-
-  <div className="relative z-10 bg-white/95 backdrop-blur-md text-slate-900 text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xs border border-slate-200/90 flex items-center space-x-1.5 mb-5">
-    <span className="text-amber-700 font-bold">&ldquo;{animalModifier}&rdquo;</span>
-    <span className="text-slate-300">·</span>
-    <span className="text-slate-900">{characterTitle}</span>
-  </div>
-
-  <div className="relative z-10 w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] my-1">
-    {!isError ? (
-      <img
-        src={imgSrc}
-        alt={`${colorLabel} 캐릭터`}
-        onError={handleError}
-        className="w-full h-full object-contain rounded-3xl animate-fadeIn scale-110"
-      />
-    ) : (
-      <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-3xl">
-        <span className="text-6xl">🍼</span>
+  return (
+    <div className="w-full bg-gradient-to-b from-amber-50/60 to-[#FAF8F5] rounded-3xl border border-amber-200/60 p-6 my-3 flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+        <div className="w-44 h-44 rounded-full bg-amber-300/30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]"></div>
       </div>
-    )}
-  </div>
-</div>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
+        <div className="absolute top-4 left-6 text-xs animate-[bounce_3s_infinite]">✨</div>
+        <div className="absolute bottom-6 right-8 text-xs animate-[bounce_4s_infinite_1s]">⭐</div>
+        <div className="absolute top-1/2 left-4 text-xs animate-[pulse_2s_infinite]">💫</div>
+      </div>
 
+      <div className="relative z-10 bg-white/95 backdrop-blur-md text-slate-900 text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xs border border-slate-200/90 flex items-center space-x-1.5 mb-5">
+        <span className="text-amber-700 font-bold">&ldquo;{animalModifier}&rdquo;</span>
+        <span className="text-slate-300">·</span>
+        <span className="text-slate-900">{characterTitle}</span>
+      </div>
 
-);
+      <div className="relative z-10 w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] my-1">
+        {!isError ? (
+          <img
+            src={imgSrc}
+            alt={`${colorLabel} 캐릭터`}
+            onError={handleError}
+            className="w-full h-full object-contain rounded-3xl animate-fadeIn scale-110"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-white/40 rounded-3xl">
+            <span className="text-6xl">🍼</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function HealingPotionIcon({ potionColor }: { potionColor: string }) {
