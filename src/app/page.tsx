@@ -407,14 +407,14 @@ function BabyAnimalHybridMascot({
 }
 
 function HealingPotionIcon({ potionColor }: { potionColor: string }) {
-return (
-
-
-
-
-
-
-);
+  return (
+    <svg viewBox="0 0 24 24" className="w-8 h-8 drop-shadow-sm">
+      <path d="M9 3 H15 V5 H9 Z" fill="#94A3B8" stroke="#1E293B" strokeWidth="1.5" />
+      <path d="M10 5 H14 V8 L19 14 C20 16 19 20 16 21 H8 C5 20 4 16 5 14 L10 8 Z" fill={potionColor} stroke="#1E293B" strokeWidth="2" />
+      <circle cx="10" cy="14" r="2" fill="#FFFFFF" opacity="0.7" />
+      <circle cx="14" cy="16" r="1.5" fill="#FFFFFF" opacity="0.6" />
+    </svg>
+  );
 }
 
 interface TemperamentStatBarProps {
