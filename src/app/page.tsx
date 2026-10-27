@@ -305,7 +305,7 @@ function calculateTodayBabyWeather(babyElementKey: 'wood' | 'fire' | 'earth' | '
     (babyElementKey === 'earth' && todayElement === 'wood')
   ) {
     return {
-      icon: '🌦️️',
+      icon: '🌦',
       status: '소나기 주의 (감각 민감도 UP)',
       tension: '오늘 기운이 아기의 성향을 살짝 자극해 작은 일에도 보챌 수 있어요.',
       tip: '이유 없는 떼쓰기는 성장의 과부하 신호예요. 통제하거나 다그치기보다 포근한 스킨십으로 안정감을 주세요.',
@@ -879,7 +879,7 @@ export default function Home() {
         ...(prev || {}),
         chore,
         chemistryScore,
-      }));
+      });
 
       setIsAnalyzingDaily(false);
     }, 1500);
@@ -1018,7 +1018,6 @@ export default function Home() {
 
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<'form' | 'result'>('form');
-  // 💡 아래 한 줄 추가: 초기 진입 시 5대 허브만 띄우는 상태
   const [viewMode, setViewMode] = useState<'hub' | 'form'>('hub');
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -1082,10 +1081,9 @@ export default function Home() {
   const [isTarotRevealed, setIsTarotRevealed] = useState(false);
   const [tarotImgError, setTarotImgError] = useState(false);
   const tarotIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const tarotTimeoutRef = useRef<NodeJS.Timeout | null>(null); // 💡 이 줄이 누락되어 있었습니다!
+  const tarotTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const tarotCardCaptureRef = useRef<HTMLDivElement>(null);
   const [isDownloadingTarot, setIsDownloadingTarot] = useState(false);
-  
 
   const handleDownloadTarotCard = async () => {
     if (!tarotCardCaptureRef.current) return;
@@ -1386,7 +1384,7 @@ export default function Home() {
     setTarotSelectedCard(null);
     setIsTarotRevealed(false);
     setIsTarotAnalyzing(false);
-    setViewMode('form'); // 💡 폼 단독 노출
+    setViewMode('form');
     setStep('form');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1404,29 +1402,6 @@ export default function Home() {
         handleAddNewChild();
         setParentingDifficulty(null);
       }
-    }
-  };
-
-  const handleSubscribeTarotPush = async () => {
-    if (typeof window === 'undefined' || !('Notification' in window)) {
-      alert('현재 브라우저는 웹 알림 기능을 지원하지 않습니다.');
-      return;
-    }
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        setTarotPushSubscribed(true);
-        trackEvent('subscribe_tarot_push', 'Engagement', '타로 갱신 알림 구독 완료');
-        new Notification('🔮 육아 타로 운세 알림이 등록되었습니다!', {
-          body: `매일 자정 새로운 우주의 기운과 ${name || '우리 아이'}의 속마음 카드를 배달해 드릴게요 ✨`,
-          icon: '/favicon.ico',
-        });
-      } else {
-        alert('알림 권한이 차단되어 있습니다. 브라우저 설정에서 알림을 허용해주세요.');
-      }
-    } catch (e) {
-      console.error(e);
-      alert('알림 등록 중 일시적인 오류가 발생했습니다.');
     }
   };
 
@@ -1888,8 +1863,8 @@ export default function Home() {
     try {
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: '#FAF5EA',
+        pixelRatio: 3,
+        backgroundColor: '#0F172A',
       });
 
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -1897,7 +1872,7 @@ export default function Home() {
         setIosSavedImageUrl(dataUrl);
       } else {
         const link = document.createElement('a');
-        link.download = `${name || '아이'}_기질카드_baby-sokpuli.png`;
+        link.download = `${name || '아이'}_기질포토카드_baby-sokpuli.png`;
         link.href = dataUrl;
         link.click();
       }
@@ -1957,9 +1932,8 @@ export default function Home() {
         }
       `}} /> 
 
-      <div className="w-full max-w-md mx-auto bg-[#FFFFFF] min-h-screen sm:min-h-0 sm:rounded-[36px] shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col p-5 sm:p-6 relative border border-slate-100 overflow-x-hidden">
+      <div className="w-full max-w-md bg-[#FFFFFF] min-h-screen sm:min-h-0 sm:rounded-[36px] shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col p-5 sm:p-6 relative border border-slate-100 overflow-x-hidden">
         
-        {/* 상단 단일 헤더 (중복 서브타이틀 완전 제거) */}
         <header className="pt-2 pb-1 text-center">
           <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 flex items-center justify-center gap-1.5">
             <span>아기속풀이</span>
@@ -1970,7 +1944,6 @@ export default function Home() {
           </p>
         </header>
 
-        {/* B안: 차분하고 고급스러운 정적 웰컴 칩 (움직임 없음) */}
         <div className="flex justify-center my-2 animate-fadeIn">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-[11px] font-semibold text-slate-600 shadow-2xs">
             <span>💌</span>
@@ -1978,12 +1951,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ========================================================
-            VIEW 1: 다이렉트 5대 킬러 기능 허브 (클린 모던 시스템)
-           ======================================================== */}
         {!isEntered && step === 'form' && viewMode === 'hub' && (
           <div className="space-y-3 py-1 animate-fadeIn">
-            {/* 등록된 아이 도감 스위처 (프로필 있을 때만 노출) */}
             {profiles.length > 0 && (
               <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/70 space-y-2 mb-1">
                 <div className="text-[11px] font-bold text-slate-400">등록된 아이 도감 바로가기</div>
@@ -2010,7 +1979,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* 5대 기능 카드 리스트 */}
             <div className="space-y-2.5">
               <button
                 type="button"
@@ -2122,22 +2090,15 @@ export default function Home() {
           </div>
         )}
 
-        
-
-        {/* ========================================================
-            상단 내비게이션 바 (입장 후 상단 고정)
-           ======================================================== */}
         {isEntered && (
           <div className="flex justify-between items-center bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200/90 shadow-2xs mb-3 animate-fadeIn">
             <button
               type="button"
               onClick={() => {
                 if (coupleModeType) {
-                  // 💡 가상 2세 진행 중이면 -> 커플 메뉴 홈으로 복귀
                   setCoupleModeType(null);
                   setCoupleResult(null);
                 } else {
-                  // 💡 커플 홈이면 -> 메인 5대 허브로 복귀
                   setIsEntered(false);
                   setStep('form');
                   setViewMode('hub');
@@ -2157,14 +2118,10 @@ export default function Home() {
           </div>
         )}
 
-        {/* ========================================================
-            VIEW 2: 육아 모드 본문
-           ======================================================== */}
         {!(isEntered && activeTabMode === 'couple') && (
           <div className="space-y-6">
-              {step === 'form' && viewMode === 'form' && (
+            {step === 'form' && viewMode === 'form' && (
               <div ref={formSectionRef} id="baby-birth-form" className="space-y-3.5">
-                {/* 💡 상단 뒤로가기 헤더 (5대 허브로 복귀) */}
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                   <button
                     type="button"
@@ -2179,7 +2136,6 @@ export default function Home() {
                   <span className="text-xs font-extrabold text-slate-800">아이 정보 입력</span>
                 </div>
 
-                {/* 🌟 기존 검은색 오늘의 기운 카드 100% 보존 */}
                 <div className="mb-3 bg-slate-900 text-white p-4.5 rounded-2xl shadow-sm relative overflow-hidden flex items-center justify-between">
                   <div className="space-y-1 relative z-10 break-keep">
                     <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block">
@@ -2318,7 +2274,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* 💡 옥에 티 제거: 중복 배너 3개를 걷어내고 메인 기질카드 생성 버튼만 단독 배치 */}
                   <div className="pt-2 pb-1">
                     <button
                       type="submit"
@@ -2335,15 +2290,14 @@ export default function Home() {
             {step === 'result' && (
               <div className="space-y-4 pb-4 pt-1 animate-fadeIn">
                 
-                {/* 💡 [복원] 상단 내비게이션 & 등록된 아이들 전환 스위처 */}
                 <div className="space-y-2 pb-1 border-b border-slate-100">
                   <div className="flex items-center justify-between">
                     <button
                       type="button"
                       onClick={() => {
-                        setStep('form');        // 💡 1. 폼/허브 단계로 복귀
-                        setViewMode('hub');     // 💡 2. 5대 허브 화면 지정
-                        setIsEntered(false);    // 💡 3. 초기 허브 상태 확정
+                        setStep('form');
+                        setViewMode('hub');
+                        setIsEntered(false);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1 py-1"
@@ -2359,7 +2313,6 @@ export default function Home() {
                     </button>
                   </div>
 
-                  {/* 등록된 아이 목록 탭 (클릭 시 즉시 전환 / ✕ 클릭 시 삭제) */}
                   {profiles.length > 0 && (
                     <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
                       <span className="text-xs font-bold text-slate-400 whitespace-nowrap mr-1">
@@ -2392,121 +2345,89 @@ export default function Home() {
                     </div>
                   )}
                 </div>
+
+                {/* =========================================================
+                    ✨ [적용 완료] 캡처 시에만 다크 프리미엄으로 변환되는 카드 (cardRef)
+                   ========================================================= */}
                 <div
                   ref={cardRef}
-                  className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col items-center text-center relative overflow-hidden border border-slate-200 space-y-4"
+                  className="bg-slate-900 text-white rounded-3xl p-6 sm:p-7 shadow-xl flex flex-col justify-between relative overflow-hidden border border-slate-800 space-y-5"
                 >
-                  <div className="w-full flex justify-between items-center pb-3 border-b border-slate-100">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs font-extrabold bg-slate-900 text-white px-2.5 py-1 rounded-md">
-                        기질도감
+                  <div
+                    className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl opacity-25 pointer-events-none"
+                    style={{ backgroundColor: elementTag.color }}
+                  />
+                  <div
+                    className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none"
+                    style={{ backgroundColor: elementTag.color }}
+                  />
+
+                  <div className="w-full flex justify-between items-start relative z-10">
+                    <div className="text-left space-y-0.5">
+                      <span className="text-[10px] font-mono font-bold tracking-widest text-slate-400 uppercase block">
+                        SOKPULI TEMPERAMENT CARD
                       </span>
-                      <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight break-keep">
-                        {name}
+                      <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
+                        <span>{name}</span>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white/10 text-slate-200 border border-white/10">
+                          {calculatedAgeText}
+                        </span>
                       </h2>
                     </div>
 
-                    <div className="flex items-center space-x-1">
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-800 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center space-x-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: elementTag.color }} />
-                        <span>{elementTag.name}의 기운</span>
+                    <span
+                      className="text-xs font-extrabold px-3 py-1 rounded-full border flex items-center gap-1.5 shadow-2xs"
+                      style={{
+                        backgroundColor: `${elementTag.color}20`,
+                        borderColor: `${elementTag.color}50`,
+                        color: '#FFFFFF',
+                      }}
+                    >
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: elementTag.color }} />
+                      <span>{elementTag.name} 기질</span>
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 my-1">
+                    <BabyAnimalHybridMascot
+                      cheonganIndex={characterCheonganIndex}
+                      animalIndex={characterAnimalIndex}
+                      colorLabel={colorLabel}
+                      animalModifier={animalModifier}
+                      characterTitle={characterTitle}
+                    />
+                  </div>
+
+                  <div className="w-full bg-white/5 backdrop-blur-xs border border-white/10 px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold text-slate-100 leading-relaxed break-keep text-center relative z-10">
+                    &ldquo;{oneLineSummary}&rdquo;
+                  </div>
+
+                  <div className="w-full grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-left relative z-10">
+                    <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
+                      <span className="text-[10px] font-bold text-slate-400 block">탐색 · 호기심</span>
+                      <span className="text-xl sm:text-2xl font-black font-mono text-sky-400 tracking-tight">
+                        {scores.curiosity}<span className="text-xs font-normal text-slate-500 ml-0.5">점</span>
+                      </span>
+                    </div>
+                    <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
+                      <span className="text-[10px] font-bold text-slate-400 block">체력 · 활동량</span>
+                      <span className="text-xl sm:text-2xl font-black font-mono text-emerald-400 tracking-tight">
+                        {scores.energy}<span className="text-xs font-normal text-slate-500 ml-0.5">점</span>
+                      </span>
+                    </div>
+                    <div className="bg-white/5 p-3 rounded-2xl border border-white/5">
+                      <span className="text-[10px] font-bold text-slate-400 block">감각 · 예민도</span>
+                      <span className="text-xl sm:text-2xl font-black font-mono text-rose-400 tracking-tight">
+                        {scores.fussy}<span className="text-xs font-normal text-slate-500 ml-0.5">점</span>
                       </span>
                     </div>
                   </div>
 
-                  <BabyAnimalHybridMascot
-                    cheonganIndex={characterCheonganIndex}
-                    animalIndex={characterAnimalIndex}
-                    colorLabel={colorLabel}
-                    animalModifier={animalModifier}
-                    characterTitle={characterTitle}
-                  />
-
-                  <div className="w-full bg-slate-50 py-2.5 px-3.5 rounded-xl text-xs sm:text-sm font-bold text-slate-800 flex justify-between items-center border border-slate-100">
-                    <span>🎂 {calculatedAgeText}</span>
-                    <span className="break-keep font-extrabold text-slate-900">📌 {solutionData.badge.split('·')[1]?.trim() || solutionData.badge}</span>
-                  </div>
-
-                  <div className="w-full bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-slate-900 leading-relaxed break-keep">
-                    &ldquo;{oneLineSummary}&rdquo;
-                  </div>
-
-                  {parentingDifficulty && (
-                    <div className="w-full p-4 rounded-2xl border text-left space-y-2 bg-slate-50 border-slate-200 shadow-2xs break-keep">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-black uppercase tracking-wider text-slate-700">
-                          부모-자녀 기질 비교 및 육아 난이도
-                        </span>
-                        <span className="text-xs font-black px-2.5 py-0.5 rounded bg-slate-900 text-white shadow-2xs font-mono">
-                          난이도 점수: {parentingDifficulty.score}점 / 100점
-                        </span>
-                      </div>
-                      <div className="text-xs sm:text-sm font-black text-slate-900 flex items-center space-x-1.5">
-                        <span>{parentingDifficulty.icon}</span>
-                        <span>진단 결과: {parentingDifficulty.level}</span>
-                      </div>
-                      <p className="text-xs sm:text-sm font-medium text-slate-600 leading-relaxed">
-                        {parentingDifficulty.summary}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="w-full space-y-4 bg-slate-50/80 rounded-2xl p-4 text-left border border-slate-200/80 shadow-2xs">
-                    <div className="text-sm sm:text-base font-black text-slate-900 pb-1.5 border-b border-slate-200">
-                      우리 아이 핵심 기질 성향 분석
-                    </div>
-
-                    <TemperamentStatBar
-                      id="curiosity"
-                      categoryTag="탐색"
-                      name="우리 아이 호기심 레벨"
-                      score={scores.curiosity}
-                      fillColor="#38BDF8"
-                      activeTooltip={activeTooltip}
-                      onToggleTooltip={handleToggleTooltip}
-                      description={{
-                        meaning: '주변 사물과 환경 변화에 반응하고 새로운 감각을 탐험하려는 지적 호기심 성향이에요.',
-                        levelInterpretation: `${scores.curiosity}점은 새로운 소리나 장난감에 눈을 반짝이며 적극적으로 손을 뻗는 호기심 대장 유형이에요!`,
-                        careTip: '촉감 놀이책이나 사운드북, 가벼운 바깥 산책으로 다양한 자극을 주면 기분이 아주 좋아져요.',
-                      }}
-                    />
-
-                    <TemperamentStatBar
-                      id="energy"
-                      categoryTag="체력"
-                      name="일일 활동 에너자이저"
-                      score={scores.energy}
-                      fillColor="#4ADE80"
-                      activeTooltip={activeTooltip}
-                      onToggleTooltip={handleToggleTooltip}
-                      description={{
-                        meaning: '신체를 움직이고 에너지를 신나게 발산하려는 기초 활력이에요.',
-                        levelInterpretation: `${scores.energy}점은 지치지 않고 즐겁게 움직이며 온몸으로 놀아야 만족하는 에너자이저 성향이에요!`,
-                        careTip: '낮 동안 신체 놀이나 터미타임으로 에너지를 충분히 쏟게 해주면 밤잠을 푹 자요.',
-                      }}
-                    />
-
-                    <TemperamentStatBar
-                      id="fussy"
-                      categoryTag="감각"
-                      name="감정 및 수면 예민도"
-                      score={scores.fussy}
-                      fillColor="#F43F5E"
-                      activeTooltip={activeTooltip}
-                      onToggleTooltip={handleToggleTooltip}
-                      description={{
-                        meaning: ageMode === 'infant'
-                          ? '원더윅스 급성장기 도약기에 아기가 느끼는 뇌 과부하와 칭얼거림 수준이에요.'
-                          : '새로운 환경이나 감정 자극에 대해 아이가 느끼는 섬세한 감각 반응 수준이에요.',
-                        levelInterpretation: `${scores.fussy}점은 현재 비교적 차분하고 안정적인 정서 상태를 유지하는 편안한 구간이에요.`,
-                        careTip: '갑작스러운 보챔이나 고집은 성장의 정상 신호이니 따뜻한 눈빛으로 공감해 주세요.',
-                      }}
-                    />
-                  </div>
-
-                  <div className="w-full pt-3 border-t border-slate-100 flex justify-between items-center text-xs sm:text-sm text-slate-600 font-bold font-mono">
-                    <span>{jijiHanja} {animalName}띠 아기 도감</span>
-                    <span className="tracking-widest">baby-sokpuli</span>
+                  <div className="w-full pt-2 border-t border-white/10 flex justify-between items-center text-[10px] text-slate-500 font-mono relative z-10">
+                    <span className="truncate max-w-[210px]">
+                      P&lt;SOKPULI&lt;&lt;{jijiHanja}&lt;&lt;{birthDate.replace(/\./g, '')}
+                    </span>
+                    <span className="text-slate-400 font-bold tracking-wider">baby-sokpuli.vercel.app</span>
                   </div>
                 </div>
 
@@ -2519,14 +2440,70 @@ export default function Home() {
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    <span>{isDownloading ? '기질 카드 생성 중...' : '우리 아이 기질 카드 이미지로 저장하기'}</span>
+                    <span>{isDownloading ? '포토 카드 생성 중...' : '기질 포토 카드 이미지로 저장하기'}</span>
                   </button>
                   <p className="text-[11px] text-slate-500 font-medium text-center">
-                    💡 사진첩에 저장한 뒤 인스타그램 스토리나 피드에 공유해보세요!
+                    사진첩에 저장한 뒤 인스타그램 스토리나 단톡방에 공유해보세요!
                   </p>
                 </div>
 
-                {/* 결과 화면 크로스셀 배너 (단일 화이트 카드 시스템) */}
+                {/* 상세 기질 성향 게이지 & 툴팁 (화면 열람 전용) */}
+                <div className="w-full space-y-4 bg-white rounded-3xl p-5 text-left border border-slate-200 shadow-2xs">
+                  <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <span className="text-sm sm:text-base font-black text-slate-900">
+                      우리 아이 핵심 기질 상세 풀이
+                    </span>
+                    <span className="text-[11px] font-semibold text-slate-400">! 아이콘을 눌러보세요</span>
+                  </div>
+
+                  <TemperamentStatBar
+                    id="curiosity"
+                    categoryTag="탐색"
+                    name="우리 아이 호기심 레벨"
+                    score={scores.curiosity}
+                    fillColor="#38BDF8"
+                    activeTooltip={activeTooltip}
+                    onToggleTooltip={handleToggleTooltip}
+                    description={{
+                      meaning: '주변 사물과 환경 변화에 반응하고 새로운 감각을 탐험하려는 지적 호기심 성향이에요.',
+                      levelInterpretation: `${scores.curiosity}점은 새로운 소리나 장난감에 눈을 반짝이며 적극적으로 손을 뻗는 호기심 대장 유형이에요!`,
+                      careTip: '촉감 놀이책이나 사운드북, 가벼운 바깥 산책으로 다양한 자극을 주면 기분이 아주 좋아져요.',
+                    }}
+                  />
+
+                  <TemperamentStatBar
+                    id="energy"
+                    categoryTag="체력"
+                    name="일일 활동 에너자이저"
+                    score={scores.energy}
+                    fillColor="#4ADE80"
+                    activeTooltip={activeTooltip}
+                    onToggleTooltip={handleToggleTooltip}
+                    description={{
+                      meaning: '신체를 움직이고 에너지를 신나게 발산하려는 기초 활력이에요.',
+                      levelInterpretation: `${scores.energy}점은 지치지 않고 즐겁게 움직이며 온몸으로 놀아야 만족하는 에너자이저 성향이에요!`,
+                      careTip: '낮 동안 신체 놀이나 터미타임으로 에너지를 충분히 쏟게 해주면 밤잠을 푹 자요.',
+                    }}
+                  />
+
+                  <TemperamentStatBar
+                    id="fussy"
+                    categoryTag="감각"
+                    name="감정 및 수면 예민도"
+                    score={scores.fussy}
+                    fillColor="#F43F5E"
+                    activeTooltip={activeTooltip}
+                    onToggleTooltip={handleToggleTooltip}
+                    description={{
+                      meaning: ageMode === 'infant'
+                        ? '원더윅스 급성장기 도약기에 아기가 느끼는 뇌 과부하와 칭얼거림 수준이에요.'
+                        : '새로운 환경이나 감정 자극에 대해 아이가 느끼는 섬세한 감각 반응 수준이에요.',
+                      levelInterpretation: `${scores.fussy}점은 현재 비교적 차분하고 안정적인 정서 상태를 유지하는 편안한 구간이에요.`,
+                      careTip: '갑작스러운 보챔이나 고집은 성장의 정상 신호이니 따뜻한 눈빛으로 공감해 주세요.',
+                    }}
+                  />
+                </div>
+
                 <div className="space-y-2.5 pt-1 text-left">
                   <div className="text-xs font-bold text-slate-600 px-1">함께 즐기는 패밀리 도감</div>
 
@@ -2611,7 +2588,6 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* 오늘의 성장 노트 (원더윅스 신호, 대책, 부모 팁) */}
                 <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm text-slate-900 space-y-4 border border-slate-200">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                     <div className="space-y-0.5">
@@ -2654,7 +2630,6 @@ export default function Home() {
                       {solutionData.mainTitle}
                     </h4>
 
-                    {/* 자주 보이는 모습 */}
                     <div className="p-3.5 bg-white rounded-xl border border-slate-200/90 space-y-1.5 shadow-2xs">
                       <span className="text-xs font-extrabold text-rose-600 flex items-center gap-1">
                         <span>👀</span> 자주 보이는 모습 (아기 신호)
@@ -2669,7 +2644,6 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    {/* 오늘 해볼 수 있는 대책 */}
                     <div className="p-3.5 bg-white rounded-xl border border-slate-200/90 space-y-1.5 shadow-2xs">
                       <span className="text-xs font-extrabold text-indigo-600 flex items-center gap-1">
                         <span>💡</span> 오늘 해볼 수 있는 실전 대책
@@ -2684,7 +2658,6 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    {/* 부모 안심 처방 */}
                     <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 font-semibold space-y-1 shadow-2xs">
                       <span className="font-black flex items-center gap-1 text-amber-800">
                         <span>☕</span> 부모 멘탈 안심 처방전
@@ -2694,7 +2667,6 @@ export default function Home() {
                       </p>
                     </div>
 
-                    {/* 전체 도약기 팝업 버튼 */}
                     <button
                       type="button"
                       onClick={() => setIsAllLeapsModalOpen(true)}
@@ -2800,14 +2772,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* ========================================================
-            VIEW 3: 커플 모드 본문
-           ======================================================== */}
         {isEntered && activeTabMode === 'couple' && (
           <div className="space-y-4 animate-fadeIn">
-            
-            
-
             {!coupleModeType && (
               <div className="space-y-3.5 animate-fadeIn">
                 <div className="text-center space-y-1 mb-2">
@@ -2856,22 +2822,21 @@ export default function Home() {
                 {isAnalyzingCouple ? (
                  <div className="py-10 text-center space-y-4 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-rose-100 shadow-md">
                   <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-rose-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-black shadow-md border-2 border-white animate-pulse">
-                   🧬
+                    🧬
+                  </div>
+                  <div className="space-y-1.5">
+                    <h4 className="text-base font-black text-slate-900 break-keep">
+                      두 사람의 60갑자 사주 기운과 가상 2세 유전자 대조 중...
+                    </h4>
+                    <p className="text-xs text-slate-500 break-keep">
+                      두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 있습니다 ✨
+                    </p>
+                  </div>
+                  <div className="w-44 mx-auto bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-rose-500 to-indigo-600 h-full rounded-full animate-pulse" style={{ width: '75%' }} />
+                  </div>
                 </div>
-    <div className="space-y-1.5">
-      <h4 className="text-base font-black text-slate-900 break-keep">
-        두 사람의 60갑자 사주 기운과 가상 2세 유전자 대조 중...
-      </h4>
-      <p className="text-xs text-slate-500 break-keep">
-        두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 있습니다 ✨
-      </p>
-    </div>
-    {/* 부드러운 진행 바 */}
-    <div className="w-44 mx-auto bg-slate-200 h-2 rounded-full overflow-hidden">
-      <div className="bg-gradient-to-r from-rose-500 to-indigo-600 h-full rounded-full animate-pulse" style={{ width: '75%' }} />
-    </div>
-  </div>
-) : (
+                ) : (
                   <>
                     <div className="bg-white rounded-3xl p-5 border border-rose-100 shadow-md space-y-3.5">
                       <div className="text-center space-y-1 pb-1">
@@ -3005,7 +2970,6 @@ export default function Home() {
                             </div>
                           </div>
 
-                          {/* ☕ 힐링템 & 🎬 만든 아빠의 숏폼 (퍼센트 바 바로 밑에 안전 배치) */}
                           <div className="pt-2 space-y-2.5">
                             <div className="p-3.5 bg-white/90 border border-rose-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
                               <div className="flex justify-between items-center">
@@ -3170,84 +3134,75 @@ export default function Home() {
                 </div>
               </div>
             )}
-
           </div>
         )}
-        {/* 📘 구글 애드센스 승인 전용: 아기속풀이 육아 백과 & FAQ (정적 텍스트 보강) */}
-      <section className="mt-12 max-w-md mx-auto px-4 mb-8">
-        <div className="bg-slate-50/80 border border-slate-200/95 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
-          
-          <div className="space-y-1">
-            <h3 className="text-base sm:text-lg font-black text-slate-800 flex items-center gap-2">
-              <span>📘</span> 아기속풀이 육아 백과 & FAQ
-            </h3>
-            <p className="text-xs text-slate-500 font-medium tracking-tight">
-              아기 기질과 원더윅스, 심야 타로에 대한 모든 것
-            </p>
+
+        <section className="mt-12 max-w-md mx-auto px-4 mb-8">
+          <div className="bg-slate-50/80 border border-slate-200/95 rounded-3xl p-5 sm:p-6 space-y-4 shadow-2xs">
+            
+            <div className="space-y-1">
+              <h3 className="text-base sm:text-lg font-black text-slate-800 flex items-center gap-2">
+                <span>📘</span> 아기속풀이 육아 백과 & FAQ
+              </h3>
+              <p className="text-xs text-slate-500 font-medium tracking-tight">
+                아기 기질과 원더윅스, 심야 타로에 대한 모든 것
+              </p>
+            </div>
+
+            <div className="space-y-3.5 pt-1 text-left">
+              <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+                <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                  <span className="text-indigo-600 shrink-0">Q.</span>
+                  <span>아기속풀이 분석은 어떤 원리로 제공되나요?</span>
+                </h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                  전통 기질 분석(사주 오행)과 소아청소년 성장 발달 주기를 바탕으로 아기 고유의 성향을 진단합니다. 타고난 기질과 도약기(원더윅스) 변화를 함께 분석하여 신뢰도 높은 육아 솔루션을 제공합니다.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+                <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                  <span className="text-indigo-600 shrink-0">Q.</span>
+                  <span>원더윅스(도약기)란 무엇이고 어떻게 대처하나요?</span>
+                </h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                  원더윅스는 아기의 뇌와 신체가 급성장하면서 불안을 느끼는 '마의 구간'입니다. 특히 제4도약기(19주 폭풍 등)에는 잠투정과 등센서가 심해지는데, 안아주기 대신 아기띠로 진정시키거나 일정한 수면 의식을 반복하는 것이 중요합니다.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+                <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                  <span className="text-indigo-600 shrink-0">Q.</span>
+                  <span>밤에 자주 깰 때(수면 퇴행) 꿀팁이 있나요?</span>
+                </h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                  아기가 밤중에 깰 때는 조명을 최소화하고, 눈을 맞추거나 자극을 주지 않는 '무반응 침묵 육아'가 가장 효과적입니다. 백소음이나 따뜻한 마사지로 안정을 유도하세요.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
+                <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
+                  <span className="text-indigo-600 shrink-0">Q.</span>
+                  <span>심야 아기 타로는 과학적인가요?</span>
+                </h4>
+                <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                  부모가 아기의 행동 신호를 세심히 관찰하고 감정에 공감할 수 있도록 돕는 심리적 가이드입니다. 불안을 낮추고 오늘 밤 행동에 맞춘 맞춤형 조언을 참고용으로 활용해 보세요.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-1 flex flex-wrap gap-1.5 justify-center">
+              {['#아기기질분석', '#원더윅스계산', '#등센서원인', '#수면퇴행', '#심야타로', '#부모성향'].map((tag) => (
+                <span key={tag} className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
           </div>
+        </section>
 
-          <div className="space-y-3.5 pt-1 text-left">
-            {/* Q1 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
-              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
-                <span className="text-indigo-600 shrink-0">Q.</span>
-                <span>아기속풀이 분석은 어떤 원리로 제공되나요?</span>
-              </h4>
-              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                전통 기질 분석(사주 오행)과 소아청소년 성장 발달 주기를 바탕으로 아기 고유의 성향을 진단합니다. 타고난 기질과 도약기(원더윅스) 변화를 함께 분석하여 신뢰도 높은 육아 솔루션을 제공합니다.
-              </p>
-            </div>
-
-            {/* Q2 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
-              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
-                <span className="text-indigo-600 shrink-0">Q.</span>
-                <span>원더윅스(도약기)란 무엇이고 어떻게 대처하나요?</span>
-              </h4>
-              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                원더윅스는 아기의 뇌와 신체가 급성장하면서 불안을 느끼는 '마의 구간'입니다. 특히 제4도약기(19주 폭풍 등)에는 잠투정과 등센서가 심해지는데, 안아주기 대신 아기띠로 진정시키거나 일정한 수면 의식을 반복하는 것이 중요합니다.
-              </p>
-            </div>
-
-            {/* Q3 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
-              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
-                <span className="text-indigo-600 shrink-0">Q.</span>
-                <span>밤에 자주 깰 때(수면 퇴행) 꿀팁이 있나요?</span>
-              </h4>
-              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                아기가 밤중에 깰 때는 조명을 최소화하고, 눈을 맞추거나 자극을 주지 않는 '무반응 침묵 육아'가 가장 효과적입니다. 백소음이나 따뜻한 마사지로 안정을 유도하세요.
-              </p>
-            </div>
-
-            {/* Q4 */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-2xs space-y-2.5">
-              <h4 className="text-xs sm:text-[13px] font-black text-slate-900 flex gap-1.5 leading-snug">
-                <span className="text-indigo-600 shrink-0">Q.</span>
-                <span>심야 아기 타로는 과학적인가요?</span>
-              </h4>
-              <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                부모가 아기의 행동 신호를 세심히 관찰하고 감정에 공감할 수 있도록 돕는 심리적 가이드입니다. 불안을 낮추고 오늘 밤 행동에 맞춘 맞춤형 조언을 참고용으로 활용해 보세요.
-              </p>
-            </div>
-          </div>
-
-          {/* 🏷️ 하단 태그 */}
-          <div className="pt-1 flex flex-wrap gap-1.5 justify-center">
-            {['#아기기질분석', '#원더윅스계산', '#등센서원인', '#수면퇴행', '#심야타로', '#부모성향'].map((tag) => (
-              <span key={tag} className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
-                {tag}
-              </span>
-            ))}
-          </div>
-
-        </div>
-      </section>
-        {/* ========================================================
-            하단 최하단 푸터 (독립 가이드 페이지 영구 연결)
-           ======================================================== */}
         <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-3 text-[11px] text-slate-500">
-          {/* 🔗 구글 봇 색인용 백서 및 주요 서비스 링크 리스트 */}
           <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-slate-500 font-semibold pb-2">
             <Link href="/guide/wood" className="hover:text-indigo-600">목(木)기질</Link>
             <span>·</span>
@@ -3273,10 +3228,8 @@ export default function Home() {
           <p className="text-[10px] text-slate-400">
             © 2026 Baby Sokpuli. All rights reserved.
           </p>
-          
         </footer>
 
-        {/* 🌟 10대 도약기 전체 타임라인 가이드 모달 */}
         {isAllLeapsModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto text-slate-900">
@@ -3290,869 +3243,4 @@ export default function Home() {
                   </h3>
                 </div>
                 <button
-                  onClick={() => setIsAllLeapsModalOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 flex items-center justify-center hover:bg-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-3.5 text-left text-xs leading-relaxed break-keep">
-                <p className="text-slate-500 font-medium">
-                  ※ 원더윅스는 출생일 대신 <b>출산 예정일</b> 기준 생후 주수로 계산됩니다.
-                </p>
-
-                {WONDER_LEAPS.map((leap) => (
-                  <div key={leap.leapIndex} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-black text-slate-900 text-xs">
-                        {leap.name}
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100">
-                        {Math.floor(leap.startDay / 7)}~{Math.ceil(leap.endDay / 7)}주차
-                      </span>
-                    </div>
-                    <p className="text-slate-600 text-[11px] font-medium">{leap.description}</p>
-                    
-                    <div className="pt-1 space-y-1 text-[11px]">
-                      <div className="text-rose-600 font-bold">• 신호: {leap.signals[0]}</div>
-                      <div className="text-indigo-600 font-bold">• 대책: {leap.actions[0]}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => setIsAllLeapsModalOpen(false)}
-                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl transition-all shadow-md break-keep"
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 모달 1: 타로 모달 (소프트 미스틱 화이트 테마) */}
-        {isTarotModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-slate-900 animate-slide-up">
-              
-              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-base">
-                    🔮
-                  </span>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-extrabold text-slate-900">
-                      오늘의 아기 속마음 타로
-                    </h3>
-                    <p className="text-[11px] text-slate-500 font-medium">오늘 우리 아이는 어떤 하루를 보내고 있을까요?</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleCloseTarotModal}
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold transition-colors"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {isTarotAnalyzing ? (
-                <div className="py-10 text-center space-y-4 animate-fadeIn">
-                  <div className="w-16 h-16 mx-auto bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-2xl font-black shadow-2xs border border-indigo-100 animate-pulse">
-                    🔮
-                  </div>
-                  <div className="space-y-1.5">
-                    <h4 className="text-base font-black text-slate-900">
-                      오늘 우리 아이의 주파수와 카드를 조율 중...
-                    </h4>
-                    <p className="text-xs text-slate-500 font-medium">
-                      오늘 날짜의 우주 기운과 아이의 기질을 대조하고 있어요 ✨
-                    </p>
-                  </div>
-                  <div className="w-40 mx-auto bg-slate-100 h-2 rounded-full overflow-hidden">
-                    <div className="bg-indigo-600 h-full rounded-full animate-pulse" style={{ width: '70%' }} />
-                  </div>
-                </div>
-              ) : !isTarotRevealed ? (
-                <div className="space-y-4 text-center py-1">
-                  <div className="p-3.5 bg-indigo-50/60 rounded-2xl border border-indigo-100/80 text-xs text-indigo-950 font-medium leading-relaxed">
-                    💡 오늘 아이의 <span className="font-extrabold text-indigo-700">잠투정, 등센서, 이앓이</span>를 마음속으로 떠올린 뒤, 가장 끌리는 카드 1장을 터치하세요.
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-2.5 py-2">
-                    {[1, 2, 3].map((num) => (
-                      <button
-                        key={num}
-                        type="button"
-                        onClick={() => handleSelectTarotCard(num)}
-                        className="group aspect-[3/4.2] bg-gradient-to-b from-white via-indigo-50/30 to-purple-50/40 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:shadow-md flex flex-col items-center justify-center p-2 transition-all duration-300 interactive-card relative overflow-hidden"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-white shadow-2xs border border-indigo-100 flex items-center justify-center text-xl mb-2 group-hover:scale-110 transition-transform">
-                          🌙
-                        </div>
-                        <span className="text-[11px] font-extrabold text-slate-700 group-hover:text-indigo-600">
-                          {num}번 카드
-                        </span>
-                        <span className="text-[9px] text-slate-400 mt-0.5">선택하기</span>
-                      </button>
-                    ))}
-                  </div>
-
-                  <p className="text-[11px] text-slate-400 font-medium">
-                    ※ 카드는 하루에 한 번만 선고되며 매일 밤 자정에 리셋됩니다.
-                  </p>
-                </div>
-              ) : (
-                tarotSelectedCard && (() => {
-                  const displayKorTitle = tarotSelectedCard.korTitle || tarotSelectedCard.name?.split('(')[0]?.trim() || '통잠의 축복';
-                  const displayEngSub = tarotSelectedCard.engSub || tarotSelectedCard.name?.split('(')[1]?.replace(')', '').trim() || 'The Slumber';
-
-                  return (
-                    <div className="space-y-4 text-left animate-slide-up">
-                      {/* 📸 인스타 스토리 캡처 다운로드 영역 */}
-                      <div
-                        ref={tarotCardCaptureRef}
-                        className="bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 border border-slate-200/90 rounded-3xl p-5 flex flex-col items-center text-center shadow-xs space-y-4"
-                      >
-                        {/* 🌟 210px x 290px 대형 실물 타로 카드 규격 */}
-                        <div className="w-52 h-72 sm:w-56 sm:h-80 rounded-2xl overflow-hidden bg-white border-2 border-indigo-200/80 shadow-lg shrink-0 flex items-center justify-center relative animate-soft-float">
-                          {!tarotImgError ? (
-                            <img
-                              src={tarotSelectedCard.image}
-                              alt={displayKorTitle}
-                              onError={() => setTarotImgError(true)}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-6xl">🔮</span>
-                          )}
-                        </div>
-
-                        {/* 카드 타이틀 & 뱃지 */}
-                        <div className="space-y-1">
-                          <span className="text-[11px] font-extrabold text-indigo-600 bg-white border border-indigo-200 px-3 py-1 rounded-full inline-block shadow-2xs">
-                            {tarotSelectedCard.animal || '수호동물'} · {tarotSelectedCard.keyword || '속마음'}
-                          </span>
-                          <h4 className="text-lg sm:text-xl font-black text-slate-900 pt-1 tracking-tight">
-                            {displayKorTitle}
-                          </h4>
-                          <p className="text-xs text-slate-400 font-mono tracking-wider uppercase">
-                            {displayEngSub}
-                          </p>
-                        </div>
-
-                        {/* 아기의 속마음 말풍선 */}
-                        <div className="w-full p-3.5 bg-rose-50/80 rounded-2xl border border-rose-100 text-left space-y-1">
-                          <span className="text-[11px] font-extrabold text-rose-600 flex items-center gap-1">
-                            <span>💬</span> 아기의 오늘 밤 속마음
-                          </span>
-                          <p className="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed break-keep">
-                            &ldquo;{tarotSelectedCard.babyVoice}&rdquo;
-                          </p>
-                        </div>
-
-                        {/* 야간 통잠 난이도 바 */}
-                        <div className="w-full p-3 rounded-xl bg-white border border-slate-200/80 text-xs font-bold flex justify-between items-center shadow-2xs">
-                          <span className="text-slate-600">🌙 오늘 밤 통잠 난이도</span>
-                          <span className="text-indigo-600 font-black">{tarotSelectedCard.nightDifficulty}</span>
-                        </div>
-
-                        <div className="w-full pt-1 flex justify-between items-center text-[10px] text-slate-400 font-mono">
-                          <span>아기속풀이 PRO · 데일리 타로</span>
-                          <span>baby-sokpuli</span>
-                        </div>
-                      </div>
-
-                      {/* 부모 안심 처방전 (모달 내 안내용) */}
-                      <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
-                        <span className="text-[11px] font-extrabold text-slate-700 flex items-center gap-1">
-                          <span>☕</span> 부모 안심 처방전
-                        </span>
-                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                          {tarotSelectedCard.prescription}
-                        </p>
-                      </div>
-
-                      {/* 💡 [복원] 타로 카드 이미지 다운로드 버튼 */}
-                      <button
-                        type="button"
-                        onClick={handleDownloadTarotCard}
-                        disabled={isDownloadingTarot}
-                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                      >
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        <span>{isDownloadingTarot ? '타로 카드 생성 중...' : '📸 타로 카드 이미지로 저장하기'}</span>
-                      </button>
-                      {/* ☕ 힐링템 & 🎬 만든 아빠의 숏폼 */}
-                      <div className="p-3.5 bg-white/90 border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
-                        <div className="flex justify-between items-center">
-                          <span className="text-[11px] font-extrabold text-indigo-600 flex items-center gap-1">
-                            <span>☕</span> 부모 힐링 라운지
-                          </span>
-                          <span className="text-[9px] text-slate-400 font-mono">추천 콘텐츠</span>
-                        </div>
-                        <p className="text-xs font-bold text-slate-800 leading-snug break-keep">
-                          타로 확인 후 만든 아빠의 리얼 육아 숏폼 구경 & 육퇴 힐링템 둘러보기
-                        </p>
-                        <div className="flex space-x-2 pt-1">
-                          <a
-                            href={SERVICE_LINKS.youtube}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
-                          >
-                            <span>▶ 만든 아빠의 숏폼</span>
-                          </a>
-                          <a
-                            href={SERVICE_LINKS.parentHealing}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
-                          >
-                            <span>🛒 육퇴 힐링템 구경</span>
-                          </a>
-                        </div>
-                      </div>
-
-                      {/* 모달 닫기 버튼 */}
-                      <button
-                        type="button"
-                        onClick={handleCloseTarotModal}
-                        className="w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm rounded-xl transition-all"
-                      >
-                        확인 완료
-                      </button>
-                    </div>
-                  );
-                })()
-              )}
-
-            </div>
-          </div>
-        )}
-
-        {/* 모달 2: 부모-자녀 매칭 모달 */}
-        {isParentMatchModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-slate-900">
-              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                <div>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">
-                    PARENT-CHILD MATCHING
-                  </span>
-                  <h3 className="text-base sm:text-lg font-black text-slate-900 break-keep">
-                    우리 아이 육아 난이도 측정
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsParentMatchModalOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 flex items-center justify-center hover:bg-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {isAnalyzingParentMatch ? (
-                <div className="py-10 text-center space-y-4 animate-fadeIn bg-slate-50 rounded-3xl p-6 border border-amber-100 shadow-md">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-black shadow-md border-2 border-white animate-pulse">
-                    🔥
-                  </div>
-                  <div className="space-y-1.5">
-                    <h4 className="text-sm sm:text-base font-black text-slate-900 break-keep">
-                      아이와 부모의 기질 에너지 대조 중...
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-500 break-keep">
-                      부모님의 오행 기운과 아이의 본성을 비교해 육아 난이도를 정밀 연산하고 있습니다 ✨
-                    </p>
-                  </div>
-                  <div className="w-44 mx-auto bg-slate-200 h-2 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 h-full rounded-full animate-pulse" style={{ width: '75%' }} />
-                  </div>
-                </div>
-              ) : !parentingDifficulty ? (
-                <form onSubmit={handleCalculateParentMatchModal} noValidate className="space-y-4 text-left">
-                  <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed break-keep">
-                    아이의 기질과 <b>부모 생년월일 (엄마/아빠 중 한 분)</b>을 비교하여 우리 집만의 정밀 육아 난이도 점수를 측정해 드립니다.
-                  </p>
-
-                  <div className="space-y-1.5">
-                    <label className="block text-xs sm:text-sm font-bold text-slate-800 break-keep">
-                      부모 생년월일 (8자리)
-                    </label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="예: 1993.08.15"
-                      value={parentBirth}
-                      onChange={(e) => handleDateChange(e.target.value, setParentBirth, 'parentBirth')}
-                      className={`w-full px-4 py-3 rounded-xl border text-xs sm:text-sm font-bold text-slate-900 bg-slate-50 placeholder:text-slate-400 focus:outline-none transition-all ${
-                        parentMatchError ? 'border-rose-500 bg-rose-50/50' : 'border-slate-200 focus:border-slate-800'
-                      }`}
-                    />
-                    {parentMatchError && (
-                      <p className="text-xs sm:text-sm font-semibold text-rose-600 mt-1 break-keep">⚠️ {parentMatchError}</p>
-                    )}
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-gradient-to-r from-[#FF5E3A] to-[#FF2A68] hover:opacity-90 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md transition-all flex items-center justify-center break-keep"
-                  >
-                    🔥 육아 난이도 측정 시작하기
-                  </button>
-                </form>
-              ) : (
-                <div className="space-y-4 text-left animate-fadeIn">
-                  <div ref={parentMatchCardRef} className="bg-slate-50 p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center space-x-2.5">
-                        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-xl shadow-2xs border border-slate-200">
-                          {parentingDifficulty.icon}
-                        </div>
-                        <div>
-                          <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase">
-                            {parentingDifficulty.grade} · {parentingDifficulty.badge}
-                          </span>
-                          <h4 className="text-base sm:text-lg font-black text-slate-900">
-                            {parentingDifficulty.level}
-                          </h4>
-                        </div>
-                      </div>
-                      <div className="text-right font-mono">
-                        <div className="text-[11px] text-slate-500 font-bold">난이도 지수</div>
-                        <div className="text-2xl font-black text-slate-900">{parentingDifficulty.score}<span className="text-xs text-slate-400">/100</span></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1 pt-0.5">
-                      <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden p-0.5">
-                        <div
-                          className="h-full rounded-full transition-all duration-700 shadow-xs"
-                          style={{ width: `${parentingDifficulty.score}%`, backgroundColor: parentingDifficulty.barColor }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-[10px] font-bold text-slate-400">
-                        <span>평화 모드 (10점)</span>
-                        <span>챌린지 모드 (100점)</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2.5 pt-1 text-xs sm:text-sm">
-                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1 shadow-2xs">
-                        <div className="font-extrabold text-amber-700 flex items-center space-x-1">
-                          <span>📌</span><span>핵심 케미스트리</span>
-                        </div>
-                        <div className="text-slate-800 font-semibold leading-relaxed">{parentingDifficulty.summary}</div>
-                      </div>
-
-                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1 shadow-2xs">
-                        <div className="font-extrabold text-sky-700 flex items-center space-x-1">
-                          <span>⚡</span><span>상호 작용 (시너지)</span>
-                        </div>
-                        <div className="text-slate-700 font-medium leading-relaxed">{parentingDifficulty.synergy}</div>
-                      </div>
-
-                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 space-y-1.5 shadow-2xs">
-                        <div className="flex justify-between items-center">
-                          <div className="font-extrabold text-emerald-700 flex items-center space-x-1">
-                            <span>💡</span><span>실전 훈육 대화 스크립트</span>
-                          </div>
-                          <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md font-bold">전체 공개</span>
-                        </div>
-                        <div className="text-slate-700 font-medium leading-relaxed break-keep bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                          {parentingDifficulty.solution}
-                        </div>
-                      </div>
-
-                      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                        <div className="flex items-center space-x-2.5">
-                          <span className="text-2xl flex-shrink-0">{parentingDifficulty.parentHealingItem.icon}</span>
-                          <div className="break-keep">
-                            <div className="text-[11px] font-bold text-amber-700">고생한 부모를 위한 충전템</div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900 mt-0.5">{parentingDifficulty.parentHealingItem.title}</div>
-                            <div className="text-[10px] text-slate-500">{parentingDifficulty.parentHealingItem.subTitle}</div>
-                          </div>
-                        </div>
-                        <a
-                          href={parentingDifficulty.parentHealingItem.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full sm:w-auto px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold text-center whitespace-nowrap shadow-xs"
-                        >
-                          추천 보기
-                        </a>
-                      </div>
-                      {/* 🎬 만든 아빠의 숏폼 (기존 힐링템 바로 밑에 추가) */}
-                      <div className="p-3.5 bg-rose-50/70 rounded-2xl border border-rose-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                        <div className="flex items-center space-x-2.5">
-                          <span className="text-2xl flex-shrink-0">👶</span>
-                          <div className="break-keep">
-                            <div className="text-[11px] font-bold text-rose-700">만든 아빠의 현실 육아 숏폼</div>
-                            <div className="text-xs sm:text-sm font-black text-slate-900 mt-0.5">우당탕탕 리얼 일상 구경하기</div>
-                            <div className="text-[10px] text-slate-500">실제 두 아이 키우며 밤새우는 생존기</div>
-                          </div>
-                        </div>
-                        <a
-                          href={SERVICE_LINKS.youtube}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center whitespace-nowrap shadow-xs flex items-center justify-center gap-1"
-                        >
-                          <span>▶ 숏폼 구경</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleDownloadParentMatchCard}
-                    disabled={isDownloadingParentMatch}
-                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95 break-keep"
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    <span>{isDownloadingParentMatch ? '결과 카드 캡처 중...' : '🔥 육아 난이도 진단 결과 이미지로 저장하기'}</span>
-                  </button>
-
-                  <button
-                    onClick={handleShareResult}
-                    className="w-full py-3.5 bg-[#FEE500] hover:bg-[#FADA0A] text-[#191919] font-black text-xs sm:text-sm rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 active:scale-[0.99]"
-                  >
-                    <span>💬</span>
-                    <span>결과 공유하기 (카톡 / 링크)</span>
-                  </button>
-
-                  <button
-                    onClick={() => setIsParentMatchModalOpen(false)}
-                    className="w-full py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs sm:text-sm rounded-2xl transition-all shadow-xs break-keep"
-                  >
-                    확인 완료
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* 모달 3: 오행 판결소 모달 (클린 모던 코트룸 테마) */}
-        {isChemiModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-slate-900 animate-slide-up">
-              
-              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-base border border-slate-200">
-                    ⚖️
-                  </span>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-extrabold text-slate-900">
-                      오늘 밤 육아 당번 판결소
-                    </h3>
-                    <p className="text-[11px] text-slate-500 font-medium">엄마 vs 아빠 오늘의 육아 주인공은?</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleCloseChemiModal}
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold transition-colors"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {isAnalyzingChemi ? (
-                <div className="py-6 text-center space-y-4 animate-fadeIn">
-                  <div className="space-y-1.5">
-                    <div className="w-14 h-14 mx-auto bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-black shadow-2xs border border-indigo-100 animate-pulse">
-                      ⚖️
-                    </div>
-                    <h4 className="text-sm font-extrabold text-slate-900 mt-2">
-                      부모의 오늘 오행 파워 실시간 심리 중...
-                    </h4>
-                    <p className="text-xs text-slate-500">
-                      우주의 기운을 공정하게 판결하고 있습니다 (탕! 탕! 탕! 🔨)
-                    </p>
-                  </div>
-
-                  {/* 💡 살려둔 실시간 기운 게이지 연출 */}
-                  <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                    <div className="space-y-1.5 text-left">
-                      <div className="flex justify-between text-xs font-bold">
-                        <span className="text-rose-600">👩 엄마의 오늘 기운</span>
-                        <span className="font-mono text-slate-700">{dynamicMomBar}%</span>
-                      </div>
-                      <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                        <div className="bg-rose-500 h-full rounded-full transition-all duration-200" style={{ width: `${dynamicMomBar}%` }} />
-                      </div>
-                    </div>
-
-                    <div className="text-center text-xs font-black text-slate-400">VS</div>
-
-                    <div className="space-y-1.5 text-left">
-                      <div className="flex justify-between text-xs font-bold">
-                        <span className="text-blue-600">👨 아빠의 오늘 기운</span>
-                        <span className="font-mono text-slate-700">{dynamicDadBar}%</span>
-                      </div>
-                      <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                        <div className="bg-blue-500 h-full rounded-full transition-all duration-200" style={{ width: `${dynamicDadBar}%` }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : !chemiResult ? (
-                <form onSubmit={handleCalculateChemi} noValidate className="space-y-3.5 text-left pt-1">
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    오늘 날짜의 오행 기운과 두 분의 사주를 대조해 <b>오늘 집안의 평화를 지킬 육아 주인공</b>을 판정해 드립니다.
-                  </p>
-
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800">
-                      👩 엄마 생년월일 (8자리)
-                    </label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="예: 1993.08.15"
-                      value={momBirth}
-                      onChange={(e) => handleDateChange(e.target.value, setMomBirth, 'momBirth')}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:outline-none transition-all ${
-                        chemiErrors.mom ? 'border-rose-500 bg-rose-50/50' : 'border-slate-200 focus:border-slate-800'
-                      }`}
-                    />
-                    {chemiErrors.mom && <p className="text-xs font-semibold text-rose-600 mt-1">⚠️ {chemiErrors.mom}</p>}
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-slate-800">
-                      👨 아빠 생년월일 (8자리)
-                    </label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      placeholder="예: 1991.04.22"
-                      value={dadBirth}
-                      onChange={(e) => handleDateChange(e.target.value, setDadBirth, 'dadBirth')}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold text-slate-900 bg-white placeholder:text-slate-400 focus:outline-none transition-all ${
-                        chemiErrors.dad ? 'border-rose-500 bg-rose-50/50' : 'border-slate-200 focus:border-slate-800'
-                      }`}
-                    />
-                    {chemiErrors.dad && <p className="text-xs font-semibold text-rose-600 mt-1">⚠️ {chemiErrors.dad}</p>}
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-2xs transition-all active:scale-[0.98] mt-2"
-                  >
-                    ⚖️ 오늘의 육아 판결 받기
-                  </button>
-                </form>
-              ) : (
-                <div className="space-y-3.5 text-center animate-slide-up">
-                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-                    <span className="text-[10px] font-extrabold text-slate-500 bg-white border border-slate-200 px-2.5 py-1 rounded-full uppercase tracking-wider inline-block">
-                      오행 법정 최종 선고
-                    </span>
-                    <h4 className="text-xl font-black text-slate-900">
-                      오늘의 육아 주인공은 &ldquo;{chemiResult.best}&rdquo;!
-                    </h4>
-                    <p className="text-xs text-slate-600 leading-relaxed font-medium pt-1">
-                      {chemiResult.summary}
-                    </p>
-                    <div className="p-3 bg-white rounded-xl border border-slate-200/80 text-[11px] text-slate-500 text-left leading-relaxed mt-2">
-                      💡 <b>판결 사유:</b> {chemiResult.reason}
-                    </div>
-                  </div>
-                  {/* ☕ 야간 힐링템 & 🎬 만든 아빠의 숏폼 (결과창 하단 안전 배치) */}
-                  <div className="p-3.5 bg-white border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-extrabold text-indigo-600 flex items-center gap-1">
-                        <span>☕</span> 당번 판결 라운지
-                      </span>
-                      <span className="text-[9px] text-slate-400 font-mono">추천 콘텐츠</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-800 leading-snug break-keep">
-                      판결 확인 후 만든 아빠의 리얼 육아 숏폼 구경 & 야간 힐링템 둘러보기
-                    </p>
-                    <div className="flex space-x-2 pt-1">
-                      <a
-                        href={SERVICE_LINKS.youtube}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
-                      >
-                        <span>▶ 만든 아빠의 숏폼</span>
-                      </a>
-                      <a
-                        href={SERVICE_LINKS.parentHealing}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold text-center transition-all shadow-xs flex items-center justify-center gap-1"
-                      >
-                        <span>🛒 야간 힐링템 구경</span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleCloseChemiModal}
-                    className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-2xs transition-all active:scale-[0.98]"
-                  >
-                    판결 승복 및 확인 완료
-                  </button>
-                </div>
-              )}
-
-            </div>
-          </div>
-        )}
-
-        {/* 모달 4: 패밀리 라운지 모달 */}
-        {isLoungeOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
-              <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
-                <div className="text-left">
-                  <span className="text-xs font-bold text-sky-700 uppercase tracking-wider block mb-0.5">
-                    새로운 기능 제안 및 남매 아빠 후원하기
-                  </span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
-                    LOUNGE
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsLoungeOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-700 flex items-center justify-center hover:bg-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="bg-gradient-to-br from-amber-500/10 via-rose-500/10 to-amber-500/5 border border-amber-400/50 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xl">🥤</span>
-                    <h4 className="text-xs sm:text-sm font-black text-slate-900 break-keep">
-                      남매 아빠에게 콜라 한 캔 후원하기
-                    </h4>
-                  </div>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed break-keep">
-                  오늘 서비스가 작게나마 웃음과 위로를 드렸다면, 남매 육아와 사이트 운영에 힘이 나는 시원한 콜라 한 캔을 선물해주세요!
-                </p>
-
-                <div className="p-3.5 bg-white rounded-2xl border border-slate-200 flex items-center justify-between shadow-2xs">
-                  <div className="break-keep">
-                    <div className="text-xs font-bold text-slate-500">
-                      {DONATION_CONFIG.bankName} (예금주: {DONATION_CONFIG.holderName})
-                    </div>
-                    <div className="text-xs sm:text-sm font-black font-mono text-slate-900 mt-0.5">
-                      {DONATION_CONFIG.accountNumber}
-                    </div>
-                  </div>
-                  <button
-                    onClick={handleCopyAccount}
-                    className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs whitespace-nowrap ${
-                      copyFeedback ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white hover:bg-slate-800 active:scale-95'
-                    }`}
-                  >
-                    {copyFeedback ? '✓ 복사완료!' : '계좌 복사'}
-                  </button>
-                </div>
-                {copyFeedback && (
-                  <p className="text-xs font-bold text-emerald-600 text-center animate-fadeIn break-keep">
-                    🎉 계좌가 복사되었습니다! 금융 앱에서 바로 붙여넣어 송금하실 수 있어요.
-                  </p>
-                )}
-              </div>
-
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
-                <div className="flex items-center space-x-2">
-                  <span className="w-6 h-6 bg-red-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">
-                    ▶
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 break-keep">
-                    아기속풀이 실제 모델! 하민&하윤 유튜브
-                  </h4>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
-                  원더윅스 폭풍을 온몸으로 이겨내고 있는 하민이와 하윤이의 생생한 일상과 육아 성장 숏폼을 구경해보세요.
-                </p>
-                <a
-                  href={SERVICE_LINKS.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackEvent('click_youtube', 'Outbound', '유튜브 채널 방문')}
-                  className="block w-full py-3 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs sm:text-sm font-bold rounded-xl text-center transition-all break-keep"
-                >
-                  하민&하윤이 유튜브 채널 구경가기
-                </a>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4.5 text-left shadow-2xs space-y-3">
-                <div className="flex items-center space-x-2">
-                  <span className="w-6 h-6 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">
-                    💡
-                  </span>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 break-keep">
-                    아이디어 & 새로운 기능 제안
-                  </h4>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed break-keep">
-                  &ldquo;이런 기능이 더 있으면 좋겠어요!&rdquo; 등 다양한 아이디어를 인스타 DM으로 남겨주시면 아빠가 직접 읽고 반영해요.
-                </p>
-                <a
-                  href={SERVICE_LINKS.instagramDM}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackEvent('click_instagram', 'Outbound', '인스타그램 DM 문의')}
-                  className="block w-full py-3 bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 text-xs sm:text-sm font-bold rounded-xl text-center transition-all active:scale-[0.98] shadow-2xs break-keep"
-                >
-                  인스타 DM으로 새로운 기능 제안하기
-                </a>
-              </div>
-
-              <button
-                onClick={() => setIsLoungeOpen(false)}
-                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all break-keep"
-              >
-                확인 완료
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 모달 5: AI 분석 미리보기 모달 */}
-        {isAiReportModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-center pb-3.5 border-b border-slate-100">
-                <div className="text-left">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-0.5">
-                    AI ANALYSIS PREVIEW
-                  </span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 break-keep">
-                    우리 아이 10년 성장 가이드 미리보기
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsAiReportModalOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-700 flex items-center justify-center hover:bg-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="p-4.5 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-3 break-keep">
-                <div className="inline-block bg-slate-900 text-white px-2.5 py-1 rounded text-xs font-extrabold">
-                  정식 런칭 예정 목차
-                </div>
-                <ul className="text-xs sm:text-sm text-slate-800 space-y-2.5 font-medium">
-                  <li>• <b>제1장:</b> {name || '아이'}의 타고난 5대 오행 본성과 감각 레이더 분석</li>
-                  <li>• <b>제2장:</b> 고집부리고 드러누울 때 통하는 맞춤형 대화법</li>
-                  <li>• <b>제3장:</b> 초등학교 입학 전 자기주도성 & 집중력 케어</li>
-                  <li>• <b>제4장:</b> 엄마·아빠와의 오행 궁합 및 부부 역할 분담</li>
-                  <li>• <b>제5장:</b> 지친 육아 동지들을 위한 멘탈 케어 응원 편지</li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => setIsAiReportModalOpen(false)}
-                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs transition-all break-keep"
-              >
-                확인 완료
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 모달 6: iOS 이미지 저장 가이드 모달 */}
-        {iosSavedImageUrl && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-            <div className="w-full max-w-sm bg-white rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-              <div className="space-y-1.5 break-keep">
-                <span className="text-3xl">📸</span>
-                <h4 className="text-base sm:text-lg font-black text-slate-900">
-                  카드를 사진첩에 저장하기
-                </h4>
-                <p className="text-xs sm:text-sm text-amber-800 font-bold bg-amber-50 py-2 px-3 rounded-xl border border-amber-200">
-                  👉 아래 이미지를 <b>길게 꾹 눌러서</b> [사진에 추가]를 선택해주세요!
-                </p>
-              </div>
-
-              <div className="max-h-[60vh] overflow-y-auto rounded-2xl border border-slate-200 p-1 shadow-inner">
-                <img
-                  src={iosSavedImageUrl}
-                  alt="우리 아이 기질 카드"
-                  className="w-full h-auto rounded-xl object-contain"
-                />
-              </div>
-
-              <button
-                onClick={() => setIosSavedImageUrl(null)}
-                className="w-full py-4 bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-xs active:scale-95 transition-all break-keep"
-              >
-                확인 완료
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 모달 7: 개인정보처리방침 팝업 모달 */}
-        {isPrivacyModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto text-slate-900 text-left">
-              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                <h3 className="text-base font-black text-slate-900">개인정보처리방침</h3>
-                <button
-                  type="button"
-                  onClick={() => setIsPrivacyModalOpen(false)}
-                  className="w-8 h-8 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 flex items-center justify-center hover:bg-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="text-xs text-slate-600 space-y-3 leading-relaxed break-keep">
-                <p>
-                  &lsquo;아기속풀이&rsquo;는 이용자의 개인정보를 소중히 다루며, 관련 법령을 준수합니다.
-                </p>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                  <span className="font-bold text-slate-800 block">1. 수집하는 개인정보 항목 및 보관 방식</span>
-                  <p>
-                    이용자가 입력한 아이 이름, 생년월일, 태어난 시간, 부모 및 커플 생년월일 정보는 <b>외부 서버로 전송되거나 데이터베이스에 저장되지 않습니다.</b> 모든 연산과 임시 저장은 이용자의 스마트폰/PC 웹 브라우저(localStorage) 내부에서만 안전하게 동작합니다.
-                  </p>
-                </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                  <span className="font-bold text-slate-800 block">2. 제3자 제공 및 마케팅 활용</span>
-                  <p>
-                    수집된 데이터가 서버에 남지 않으므로 어떠한 제3자에게도 정보를 제공하거나 공유하지 않습니다.
-                  </p>
-                </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                  <span className="font-bold text-slate-800 block">3. 문의처</span>
-                  <p>
-                    개인정보 보호 관련 문의 및 서비스 피드백은 아래 이메일로 접수해 주시면 성실히 답변해 드리겠습니다.<br />
-                    이메일: <a href="mailto:hamin.save.moment@gmail.com" className="text-slate-900 font-bold underline">hamin.save.moment@gmail.com</a>
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsPrivacyModalOpen(false)}
-                className="w-full py-3.5 bg-slate-900 text-white font-bold text-xs rounded-xl shadow-xs"
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
-
-      </div>
-    </main>
-  );
-}
+                  onClick={() => setIsAllLeapsModalOpen
