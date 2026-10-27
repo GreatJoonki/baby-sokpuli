@@ -418,83 +418,83 @@ function HealingPotionIcon({ potionColor }: { potionColor: string }) {
 }
 
 interface TemperamentStatBarProps {
-id: 'curiosity' | 'energy' | 'fussy';
-categoryTag: string;
-name: string;
-score: number;
-fillColor: string;
-description: { meaning: string; levelInterpretation: string; careTip: string };
-activeTooltip: string | null;
-onToggleTooltip: (id: 'curiosity' | 'energy' | 'fussy') => void;
+  id: 'curiosity' | 'energy' | 'fussy';
+  categoryTag: string;
+  name: string;
+  score: number;
+  fillColor: string;
+  description: { meaning: string; levelInterpretation: string; careTip: string };
+  activeTooltip: string | null;
+  onToggleTooltip: (id: 'curiosity' | 'energy' | 'fussy') => void;
 }
 
 function TemperamentStatBar({
-id,
-categoryTag,
-name,
-score,
-fillColor,
-description,
-activeTooltip,
-onToggleTooltip,
+  id,
+  categoryTag,
+  name,
+  score,
+  fillColor,
+  description,
+  activeTooltip,
+  onToggleTooltip,
 }: TemperamentStatBarProps) {
-const isOpen = activeTooltip === id;
+  const isOpen = activeTooltip === id;
 
-return (
-
-
-
-
-{categoryTag}
-
-{name}
-<button
-type="button"
-onClick={() => onToggleTooltip(id)}
-aria-label={${name} 설명 보기}
-className={w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-extrabold transition-all ${ isOpen ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-50' }}
->
-!
-
-
-<span className="font-mono font-black tracking-tight" style={{ color: fillColor }}>
-{score}점
-
-
-
-  <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
-    <div
-      className="h-full rounded-full transition-all duration-500 shadow-xs"
-      style={{ width: `${score}%`, backgroundColor: fillColor }}
-    />
-  </div>
-
-  {isOpen && (
-    <div className="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs text-left space-y-2 animate-fadeIn break-keep text-xs">
-      <div>
-        <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
-          어떤 성향인가요?
+  return (
+    <div className="space-y-2 pb-3 border-b border-slate-100 last:border-b-0 last:pb-0">
+      <div className="flex justify-between items-center text-xs sm:text-sm">
+        <div className="flex items-center space-x-2">
+          <span className="text-[11px] font-extrabold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">
+            {categoryTag}
+          </span>
+          <span className="font-extrabold text-slate-900 break-keep">{name}</span>
+          <button
+            type="button"
+            onClick={() => onToggleTooltip(id)}
+            aria-label={`${name} 설명 보기`}
+            className={`w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-extrabold transition-all ${
+              isOpen ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            !
+          </button>
+        </div>
+        <span className="font-mono font-black tracking-tight" style={{ color: fillColor }}>
+          {score}점
         </span>
-        <p className="font-semibold text-slate-800 leading-relaxed">{description.meaning}</p>
       </div>
-      <div>
-        <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
-          점수 분석 ({score}점)
-        </span>
-        <p className="font-medium text-slate-700 leading-relaxed">{description.levelInterpretation}</p>
+
+      <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
+        <div
+          className="h-full rounded-full transition-all duration-500 shadow-xs"
+          style={{ width: `${score}%`, backgroundColor: fillColor }}
+        />
       </div>
-      <div className="pt-1.5 border-t border-slate-200">
-        <p className="font-bold text-slate-900 flex items-start space-x-1">
-          <span className="flex-shrink-0 text-slate-900">포인트:</span>
-          <span className="text-slate-700 font-medium leading-relaxed">{description.careTip}</span>
-        </p>
-      </div>
+
+      {isOpen && (
+        <div className="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs text-left space-y-2 animate-fadeIn break-keep text-xs">
+          <div>
+            <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
+              어떤 성향인가요?
+            </span>
+            <p className="font-semibold text-slate-800 leading-relaxed">{description.meaning}</p>
+          </div>
+          <div>
+            <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
+              점수 분석 ({score}점)
+            </span>
+            <p className="font-medium text-slate-700 leading-relaxed">{description.levelInterpretation}</p>
+          </div>
+          <div className="pt-1.5 border-t border-slate-200">
+            <p className="font-bold text-slate-900 flex items-start space-x-1">
+              <span className="flex-shrink-0 text-slate-900">포인트:</span>
+              <span className="text-slate-700 font-medium leading-relaxed">{description.careTip}</span>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
-  )}
-</div>
-
-
-);
+  );
 }
 
 interface WonderLeapDetail {
