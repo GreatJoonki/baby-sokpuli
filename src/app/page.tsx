@@ -439,10 +439,10 @@ function TemperamentStatBar({
   const isOpen = activeTooltip === id;
 
   return (
-    <div className="space-y-2.5 pb-3.5 border-b border-slate-100 last:border-b-0 last:pb-0">
-      <div className="flex justify-between items-center text-sm sm:text-base">
+    <div className="space-y-2 pb-3 border-b border-slate-100 last:border-b-0 last:pb-0">
+      <div className="flex justify-between items-center text-xs sm:text-sm">
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-extrabold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md">
+          <span className="text-[11px] font-extrabold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">
             {categoryTag}
           </span>
           <span className="font-extrabold text-slate-900 break-keep">{name}</span>
@@ -450,7 +450,7 @@ function TemperamentStatBar({
             type="button"
             onClick={() => onToggleTooltip(id)}
             aria-label={`${name} 설명 보기`}
-            className={`w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-xs font-extrabold transition-all ${
+            className={`w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-extrabold transition-all ${
               isOpen ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-50'
             }`}
           >
@@ -462,7 +462,7 @@ function TemperamentStatBar({
         </span>
       </div>
 
-      <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5">
+      <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
         <div
           className="h-full rounded-full transition-all duration-500 shadow-xs"
           style={{ width: `${score}%`, backgroundColor: fillColor }}
@@ -470,21 +470,21 @@ function TemperamentStatBar({
       </div>
 
       {isOpen && (
-        <div className="mt-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-xs text-left space-y-2.5 animate-fadeIn break-keep text-sm sm:text-base">
+        <div className="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs text-left space-y-2 animate-fadeIn break-keep text-xs">
           <div>
-            <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">
+            <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
               어떤 성향인가요?
             </span>
             <p className="font-semibold text-slate-800 leading-relaxed">{description.meaning}</p>
           </div>
           <div>
-            <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1">
+            <span className="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider block mb-0.5">
               점수 분석 ({score}점)
             </span>
             <p className="font-medium text-slate-700 leading-relaxed">{description.levelInterpretation}</p>
           </div>
-          <div className="pt-2 border-t border-slate-200">
-            <p className="font-bold text-slate-900 flex items-start space-x-1.5">
+          <div className="pt-1.5 border-t border-slate-200">
+            <p className="font-bold text-slate-900 flex items-start space-x-1">
               <span className="flex-shrink-0 text-slate-900">포인트:</span>
               <span className="text-slate-700 font-medium leading-relaxed">{description.careTip}</span>
             </p>
@@ -725,7 +725,6 @@ export default function Home() {
   const [isAnalyzingDaily, setIsAnalyzingDaily] = useState(false);
   const [isAllLeapsModalOpen, setIsAllLeapsModalOpen] = useState(false);
 
-  // 💡 기질 카드 보기 토글 상태 추가
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
   const handleCalculateCouple = () => {
@@ -2350,29 +2349,31 @@ export default function Home() {
                 </div>
 
                 {/* =========================================================
-                    ✨ [NEW 개편] 최상단 콤팩트 프로필 요약 바 & 기질 카드 열기 버튼
+                    ✨ [토스 스타일 통째로 통합] "햇살이 기질 카드 보기" 깔끔한 일체형 배너
                    ========================================================= */}
-                <div className="bg-slate-900 text-white rounded-2xl p-4.5 shadow-md flex items-center justify-between relative overflow-hidden">
-                  <div className="space-y-0.5 text-left relative z-10">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-extrabold px-2 py-0.5 rounded bg-white/20 text-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsCardModalOpen(true)}
+                  className="w-full bg-[#111827] text-white p-4 rounded-2xl shadow-sm flex items-center justify-between text-left active:scale-[0.98] transition-all group"
+                >
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-white/15 text-slate-200">
                         {elementTag.name} 기질
                       </span>
-                      <h2 className="text-base sm:text-lg font-black text-white">{name} 도감</h2>
+                      <span className="text-sm sm:text-base font-black text-white group-hover:text-amber-300 transition-colors">
+                        {name} 기질 카드 보기
+                      </span>
                     </div>
-                    <p className="text-xs text-slate-300 font-medium">🎂 {calculatedAgeText}</p>
+                    <p className="text-xs text-slate-400 font-medium">🎂 {calculatedAgeText}</p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setIsCardModalOpen(true)}
-                    className="px-3.5 py-2.5 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-xs font-black shadow-xs transition-all shrink-0 flex items-center gap-1 relative z-10"
-                  >
-                    <span>🖼️</span> 기질 카드 보기
-                  </button>
-                </div>
+                  <span className="text-xs font-bold text-slate-300 bg-white/10 px-3 py-2 rounded-xl group-hover:bg-white/20 transition-all shrink-0">
+                    카드 열기 ➔
+                  </span>
+                </button>
 
                 {/* =========================================================
-                    ✨ [NEW 개편] 최우선 배치: 오늘의 성장 노트 (데일리 브리핑)
+                    오늘의 성장 노트 (데일리 브리핑)
                    ========================================================= */}
                 <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm text-slate-900 space-y-4 border border-slate-200">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -3009,31 +3010,31 @@ export default function Home() {
         )}
 
         {/* =========================================================
-            ✨ [NEW 모달] 기질 포토 카드 다시 보기 팝업 모달
+            ✨ [토스 스타일 깔끔한 화이트 테마] 기질 카드 보기 모달
            ========================================================= */}
         {isCardModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-md bg-[#0F172A] rounded-t-3xl sm:rounded-3xl border border-slate-800 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-white animate-slide-up">
+          <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+            <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-slate-900 animate-slide-up">
               
-              <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center text-base">
+                  <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-base border border-slate-200">
                     🖼️
                   </span>
-                  <h3 className="text-sm sm:text-base font-extrabold text-white">
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900">
                     우리 아이 기질 포토 카드
                   </h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsCardModalOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center text-xs font-bold transition-colors"
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold transition-colors"
                 >
                   ✕
                 </button>
               </div>
 
-              {/* 📸 모달 내부 포토 카드 영역 (cardRef 연결) */}
+              {/* 📸 모달 내부 포토 카드 영역 (cardRef 연결 - 저장 시 다크 프리미엄 유지) */}
               <div
                 ref={cardRef}
                 className="bg-slate-900 text-white rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden border border-slate-800 space-y-5"
@@ -3120,14 +3121,14 @@ export default function Home() {
               <button
                 onClick={handleDownloadCard}
                 disabled={isDownloading}
-                className="w-full py-4 bg-white hover:bg-slate-100 text-slate-900 rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95"
+                className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs sm:text-sm font-black shadow-sm transition-all flex items-center justify-center space-x-2 active:scale-95"
               >
                 <span>{isDownloading ? '포토 카드 생성 중...' : '📸 기질 포토 카드 이미지로 저장하기'}</span>
               </button>
 
-              {/* 상세 스탯 바 토글 (모달 내 열람용) */}
-              <div className="w-full space-y-3 bg-slate-800/80 rounded-2xl p-4 text-left border border-slate-700">
-                <div className="text-xs font-black text-slate-200 pb-1 border-b border-slate-700">
+              {/* 💡 [수정 완료] 상세 스탯 바 3개 모두 정상 노출되는 깔끔한 화이트 테마 박스 */}
+              <div className="w-full space-y-3 bg-slate-50 rounded-2xl p-4 text-left border border-slate-200">
+                <div className="text-xs font-black text-slate-900 pb-1 border-b border-slate-200">
                   상세 기질 성향 점수
                 </div>
                 <TemperamentStatBar
@@ -3158,14 +3159,30 @@ export default function Home() {
                     careTip: '낮 동안 신체 놀이나 터미타임으로 에너지를 충분히 쏟게 해주면 밤잠을 푹 자요.',
                   }}
                 />
+                <TemperamentStatBar
+                  id="fussy"
+                  categoryTag="감각"
+                  name="감정 및 수면 예민도"
+                  score={scores.fussy}
+                  fillColor="#F43F5E"
+                  activeTooltip={activeTooltip}
+                  onToggleTooltip={handleToggleTooltip}
+                  description={{
+                    meaning: ageMode === 'infant'
+                      ? '원더윅스 급성장기 도약기에 아기가 느끼는 뇌 과부하와 칭얼거림 수준이에요.'
+                      : '새로운 환경이나 감정 자극에 대해 아이가 느끼는 섬세한 감각 반응 수준이에요.',
+                    levelInterpretation: `${scores.fussy}점은 현재 비교적 차분하고 안정적인 정서 상태를 유지하는 편안한 구간이에요.`,
+                    careTip: '갑작스러운 보챔이나 고집은 성장의 정상 신호이니 따뜻한 눈빛으로 공감해 주세요.',
+                  }}
+                />
               </div>
 
               <button
                 type="button"
                 onClick={() => setIsCardModalOpen(false)}
-                className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-all"
+                className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all"
               >
-                닫기
+                확인 완료
               </button>
             </div>
           </div>
