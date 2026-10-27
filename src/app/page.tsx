@@ -123,43 +123,43 @@ errorMsg?: string;
 }
 
 function validateDateString(
-dateStr: string,
-options: {
-allowFuture?: boolean;
-minYear?: number;
-maxYear?: number;
-fieldName?: string;
-} = {}
+  dateStr: string,
+  options: {
+    allowFuture?: boolean;
+    minYear?: number;
+    maxYear?: number;
+    fieldName?: string;
+  } = {}
 ): DateValidationResult {
-const {
-allowFuture = false,
-minYear = 1940,
-maxYear = new Date().getFullYear() + 1,
-fieldName = '날짜',
-} = options;
+  const {
+    allowFuture = false,
+    minYear = 1940,
+    maxYear = new Date().getFullYear() + 1,
+    fieldName = '날짜',
+  } = options;
 
-const digits = dateStr.replace(/[^0-9]/g, '');
+  const digits = dateStr.replace(/[^0-9]/g, '');
 
-if (!digits) return { isValid: false, errorMsg: ${fieldName}를 입력해주세요. };
-if (digits.length !== 8) return { isValid: false, errorMsg: ${fieldName} 8자리를 끝까지 입력해주세요. (예: 2024.05.10) };
+  if (!digits) return { isValid: false, errorMsg: `${fieldName}를 입력해주세요.` };
+  if (digits.length !== 8) return { isValid: false, errorMsg: `${fieldName} 8자리를 끝까지 입력해주세요. (예: 2024.05.10)` };
 
-const year = parseInt(digits.slice(0, 4), 10);
-const month = parseInt(digits.slice(4, 6), 10);
-const day = parseInt(digits.slice(6, 8), 10);
+  const year = parseInt(digits.slice(0, 4), 10);
+  const month = parseInt(digits.slice(4, 6), 10);
+  const day = parseInt(digits.slice(6, 8), 10);
 
-if (year < minYear || year > maxYear) return { isValid: false, errorMsg: 연도는 ${minYear}년~${maxYear}년 사이여야 해요. };
-if (month < 1 || month > 12) return { isValid: false, errorMsg: '월은 01월부터 12월 사이여야 해요.' };
+  if (year < minYear || year > maxYear) return { isValid: false, errorMsg: `연도는 ${minYear}년~${maxYear}년 사이여야 해요.` };
+  if (month < 1 || month > 12) return { isValid: false, errorMsg: '월은 01월부터 12월 사이여야 해요.' };
 
-const maxDaysInMonth = new Date(year, month, 0).getDate();
-if (day < 1 || day > maxDaysInMonth) return { isValid: false, errorMsg: ${year}년 ${month}월은 ${maxDaysInMonth}일까지 있어요. 존재하지 않는 날짜예요. };
+  const maxDaysInMonth = new Date(year, month, 0).getDate();
+  if (day < 1 || day > maxDaysInMonth) return { isValid: false, errorMsg: `${year}년 ${month}월은 ${maxDaysInMonth}일까지 있어요. 존재하지 않는 날짜예요.` };
 
-const inputDate = new Date(year, month - 1, day);
-const now = new Date();
-now.setHours(23, 59, 59, 999);
+  const inputDate = new Date(year, month - 1, day);
+  const now = new Date();
+  now.setHours(23, 59, 59, 999);
 
-if (!allowFuture && inputDate > now) return { isValid: false, errorMsg: ${fieldName}는 오늘보다 미래일 수 없어요. };
+  if (!allowFuture && inputDate > now) return { isValid: false, errorMsg: `${fieldName}는 오늘보다 미래일 수 없어요.` };
 
-return { isValid: true };
+  return { isValid: true };
 }
 
 interface BabyProfile {
