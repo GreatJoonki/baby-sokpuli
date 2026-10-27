@@ -535,7 +535,7 @@ const WONDER_LEAPS: WonderLeapDetail[] = [
     description: '목을 가누고 소리를 내며 세상과 유연하게 소통할 준비를 해요.',
     signals: ['목에 힘을 주며 뒤집기를 시도함', '딸랑이를 흔들면 소리 방향을 바라봄', '옹알이 소리가 커지고 고음 샤우팅 시작'],
     actions: ['낮 동안 터미타임(배 엎드리기) 3~5분 진행', '아기 옹알이에 나긋나긋하게 눈 맞추며 맞장구치기', '손에 가벼운 치발기나 딸랑이 쥐여주기'],
-    parentTip: '몸을 움직이고 싶은 욕구가 폭발하는 때예요. 낮에 신나게 놀아줘야 밤에 푹 잡니다.',
+    parentTip: '몸을 움직이고 싶은 욕구가 폭발하는 때예요. 낮에 신나게 놀아줘야 밤이 푹 잡니다.',
   },
   {
     leapIndex: 4,
@@ -1166,7 +1166,7 @@ export default function Home() {
     ],
     parentTip: '가장 힘든 마의 구간입니다! 혼자 버티지 마시고 배우자와 교대로 수면을 보충하세요.',
     highlightTag: '도약기 폭풍 탈출 디데이',
-    highlightTitle: '앞으로 10일 뒤(10월 28일)에 맑은 날이 찾아와요',
+    highlightTitle: '앞으로 10일 뒤에 맑은 날이 찾아와요',
     isLeap: true,
     isWonderLeap: true,
     dDayText: '원더윅스 탈출까지 약 D-10일',
@@ -1230,10 +1230,6 @@ export default function Home() {
       } catch (e) {
         console.error('다자녀 프로필 로드 실패', e);
       }
-    }
-    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
-      setPushSubscribed(true);
-      setTarotPushSubscribed(true);
     }
   }, []);
 
@@ -2350,7 +2346,7 @@ export default function Home() {
 
                 {/* =========================================================
                     ✨ [토스 스타일 통째로 통합] "햇살이 기질 카드 보기" 깔끔한 일체형 배너
-                   ========================================================= */}
+                    ========================================================= */}
                 <button
                   type="button"
                   onClick={() => setIsCardModalOpen(true)}
@@ -2374,7 +2370,7 @@ export default function Home() {
 
                 {/* =========================================================
                     오늘의 성장 노트 (데일리 브리핑)
-                   ========================================================= */}
+                    ========================================================= */}
                 <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm text-slate-900 space-y-4 border border-slate-200">
                   <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                     <div className="space-y-0.5 text-left">
@@ -3010,8 +3006,8 @@ export default function Home() {
         )}
 
         {/* =========================================================
-            ✨ [토스 스타일 깔끔한 화이트 테마] 기질 카드 보기 모달
-           ========================================================= */}
+            기질 카드 보기 모달
+            ========================================================= */}
         {isCardModalOpen && (
           <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
             <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto text-slate-900 animate-slide-up">
@@ -3034,7 +3030,6 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* 📸 모달 내부 포토 카드 영역 (cardRef 연결 - 저장 시 다크 프리미엄 유지) */}
               <div
                 ref={cardRef}
                 className="bg-slate-900 text-white rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden border border-slate-800 space-y-5"
@@ -3117,7 +3112,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 이미지 저장 버튼 */}
               <button
                 onClick={handleDownloadCard}
                 disabled={isDownloading}
@@ -3126,7 +3120,6 @@ export default function Home() {
                 <span>{isDownloading ? '포토 카드 생성 중...' : '📸 기질 포토 카드 이미지로 저장하기'}</span>
               </button>
 
-              {/* 💡 [수정 완료] 상세 스탯 바 3개 모두 정상 노출되는 깔끔한 화이트 테마 박스 */}
               <div className="w-full space-y-3 bg-slate-50 rounded-2xl p-4 text-left border border-slate-200">
                 <div className="text-xs font-black text-slate-900 pb-1 border-b border-slate-200">
                   상세 기질 성향 점수
@@ -3484,7 +3477,7 @@ export default function Home() {
                         <span>{isDownloadingTarot ? '타로 카드 생성 중...' : '📸 타로 카드 이미지로 저장하기'}</span>
                       </button>
 
-                      <div className="p-3.5 bg-white/90 border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
+                      <div className="w-full p-3.5 bg-white/90 border border-indigo-200/80 rounded-2xl text-left space-y-2 shadow-2xs">
                         <div className="flex justify-between items-center">
                           <span className="text-[11px] font-extrabold text-indigo-600 flex items-center gap-1">
                             <span>☕</span> 부모 힐링 라운지
