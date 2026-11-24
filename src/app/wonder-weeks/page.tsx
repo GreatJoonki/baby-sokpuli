@@ -20,8 +20,8 @@ export const metadata: Metadata = {
 
 export default function WonderWeeksPage() {
   return (
-    <main className="min-h-screen bg-[#E9ECEF] flex justify-center py-0 sm:py-8 font-sans antialiased text-slate-900">
-      <div className="w-full max-w-xl bg-[#FFFFFF] min-h-screen sm:min-h-0 sm:rounded-[36px] shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col p-6 sm:p-8 border border-slate-100 space-y-6">
+    <main className="min-h-screen bg-[#F8FAFC] app-bg flex justify-center py-0 sm:py-8 font-sans antialiased text-slate-900">
+      <div className="w-full max-w-xl bg-[#FFFFFF] min-h-screen sm:min-h-0 sm:rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex flex-col p-6 sm:p-8 border border-slate-100/80 space-y-6">
         
         {/* 상단 내비게이션 */}
         <header className="flex justify-between items-center border-b border-slate-100 pb-4">
@@ -37,7 +37,7 @@ export default function WonderWeeksPage() {
         </header>
 
         {/* 본문 아티클 */}
-        <article className="space-y-6 text-slate-800 leading-relaxed text-xs sm:text-sm break-keep">
+        <article className="space-y-6 text-slate-800 leading-relaxed text-sm sm:text-base break-keep">
           <div className="space-y-2 border-b border-slate-100 pb-5">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
               DEVELOPMENTAL MILESTONES
