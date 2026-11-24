@@ -5,6 +5,17 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: '원더윅스(Wonder Weeks) 10대 도약기 완벽 분석 백과 | 아기속풀이 PRO',
   description: '생후 20개월 동안 겪는 10번의 두뇌 급성장 도약기 주기, 출산 예정일 기준 계산법, 수면 퇴행 극복 솔루션을 제공합니다.',
+  alternates: {
+    canonical: '/wonder-weeks',
+  },
+  openGraph: {
+    title: '원더윅스(Wonder Weeks) 10대 도약기 완벽 분석 백과 | 아기속풀이 PRO',
+    description: '생후 20개월 동안 겪는 10번의 두뇌 급성장 도약기 주기, 출산 예정일 기준 계산법, 수면 퇴행 극복 솔루션을 제공합니다.',
+    url: 'https://baby-sokpuli.vercel.app/wonder-weeks',
+    siteName: '아기속풀이 PRO',
+    locale: 'ko_KR',
+    type: 'article',
+  },
 };
 
 export default function WonderWeeksPage() {
