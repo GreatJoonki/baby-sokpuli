@@ -137,6 +137,11 @@ export default function FeatureLanding({
               ))}
             </div>
           </nav>
+          <p className="pt-2 text-center text-[11px] text-slate-400">
+            <Link href="/privacy" className="font-semibold text-slate-500 hover:text-slate-900 transition-colors">
+              개인정보처리방침
+            </Link>
+          </p>
         </div>
       </div>
     </main>
