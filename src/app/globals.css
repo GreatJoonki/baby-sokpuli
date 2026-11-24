@@ -74,13 +74,13 @@ body {
 .night-mode [class~="bg-amber-50"] { background-color: #3a2e1a !important; }
 .night-mode [class~="bg-amber-50/80"] { background-color: rgba(58, 46, 26, 0.85) !important; }
 .night-mode [class~="bg-emerald-100"] { background-color: #14352a !important; }
-.night-mode [class~="text-slate-950"] { color: #f8fafc !important; }
+/* text-slate-950은 앰버 버튼(bg-amber-400) 전용으로만 쓰여 오버라이드하지 않는다 — 밝은 버튼 위 어두운 글자가 정답 */
 .night-mode [class~="text-slate-900"] { color: #f1f5f9 !important; }
 .night-mode [class~="text-slate-800"] { color: #e2e8f0 !important; }
 .night-mode [class~="text-slate-700"] { color: #cbd5e1 !important; }
 .night-mode [class~="text-slate-600"] { color: #b6c2d2 !important; }
 .night-mode [class~="text-slate-500"] { color: #94a3b8 !important; }
-.night-mode [class~="text-slate-400"] { color: #7d8ca3 !important; }
+.night-mode [class~="text-slate-400"] { color: #96a7bd !important; }
 .night-mode [class~="text-rose-600"] { color: #fb7185 !important; }
 .night-mode [class~="text-rose-700"] { color: #fda4af !important; }
 .night-mode [class~="text-indigo-600"] { color: #a5b4fc !important; }
@@ -100,7 +100,59 @@ body {
 .night-mode [class~="border-indigo-200"] { border-color: #3b4470 !important; }
 .night-mode [class~="border-amber-200"] { border-color: #57451f !important; }
 .night-mode [class~="border-amber-300"] { border-color: #6b551f !important; }
-.night-mode ::placeholder { color: #7d8ca3 !important; }
+.night-mode ::placeholder { color: #96a7bd !important; }
+
+/* ===== 밤중 모드 2차 감사 보강: 반투명 배경·추가 텍스트/보더·그라데이션 카드·아트워크 보호 ===== */
+.night-mode [class~="bg-white/90"] { background-color: rgba(28, 41, 66, 0.94) !important; }
+.night-mode [class~="bg-rose-50/80"] { background-color: rgba(58, 34, 48, 0.82) !important; }
+.night-mode [class~="bg-rose-50/60"] { background-color: rgba(58, 34, 48, 0.62) !important; }
+.night-mode [class~="bg-indigo-50/50"] { background-color: rgba(38, 43, 74, 0.55) !important; }
+.night-mode [class~="bg-indigo-50/60"] { background-color: rgba(38, 43, 74, 0.62) !important; }
+.night-mode [class~="bg-indigo-50/70"] { background-color: rgba(38, 43, 74, 0.72) !important; }
+.night-mode [class~="bg-amber-50/70"] { background-color: rgba(58, 46, 26, 0.72) !important; }
+.night-mode [class~="bg-slate-50/50"] { background-color: rgba(30, 41, 59, 0.55) !important; }
+.night-mode [class~="bg-slate-100/70"] { background-color: rgba(38, 52, 73, 0.72) !important; }
+.night-mode [class~="bg-red-50"] { background-color: #3a2027 !important; }
+.night-mode [class~="bg-emerald-50"] { background-color: #12291f !important; }
+.night-mode [class~="bg-orange-200"] { background-color: #57451f !important; }
+.night-mode [class~="bg-rose-400"] { background-color: #e11d48 !important; }
+.night-mode [class~="text-rose-500"] { color: #fb7185 !important; }
+.night-mode [class~="text-amber-700"] { color: #fcd34d !important; }
+.night-mode [class~="text-sky-700"] { color: #7dd3fc !important; }
+.night-mode [class~="text-emerald-600"] { color: #6ee7b7 !important; }
+.night-mode [class~="text-red-600"] { color: #fca5a5 !important; }
+.night-mode [class~="text-orange-800"] { color: #fdba74 !important; }
+.night-mode [class~="text-orange-900"] { color: #fdba74 !important; }
+.night-mode [class~="text-indigo-950"] { color: #dbe4ff !important; }
+.night-mode [class~="border-indigo-100"] { border-color: #2c3350 !important; }
+.night-mode [class~="border-indigo-100/80"] { border-color: rgba(44, 51, 80, 0.85) !important; }
+.night-mode [class~="border-orange-100"] { border-color: #4a3220 !important; }
+.night-mode [class~="border-orange-200"] { border-color: #57451f !important; }
+.night-mode [class~="border-orange-200/80"] { border-color: rgba(87, 69, 31, 0.85) !important; }
+.night-mode [class~="border-rose-300"] { border-color: #7a3049 !important; }
+.night-mode [class~="border-red-200"] { border-color: #6e2f3a !important; }
+.night-mode [class~="border-emerald-200"] { border-color: #1f4d38 !important; }
+.night-mode [class~="border-amber-100"] { border-color: #4a3a1c !important; }
+.night-mode [class~="border-slate-100/80"] { border-color: rgba(38, 52, 77, 0.85) !important; }
+
+/* 밝은 그라데이션 카드: 밤중에는 같은 무드의 어두운 그라데이션으로 교체 (JSX에 마커 클래스 부여) */
+.night-mode .nm-tarot-card { background-image: linear-gradient(to bottom, #262b4d, #1d2748 55%, #16223c) !important; }
+.night-mode .nm-baby-card { background-image: linear-gradient(to bottom right, #33261a, #2c1e26 55%, #1c2942) !important; }
+.night-mode .nm-pair-panel { background-image: linear-gradient(to right, #3a2230, #2b2040 50%, #262b4a) !important; }
+.night-mode .nm-pick-btn { background-image: linear-gradient(to bottom, #232f4d, #1c2942) !important; }
+.night-mode .nm-resume-card { background-image: linear-gradient(to right, #3a2230, #3a2e1a 50%, #1e2f45) !important; }
+.night-mode .nm-couple-cta { background-image: linear-gradient(to right, #e11d48, #d9267a 50%, #4f46e5) !important; }
+
+/* 밝은 종이/아트워크로 남아야 하는 영역(nm-art): 안쪽 글자색은 낮 색상 그대로 보호 */
+.night-mode .nm-art [class~="text-slate-900"] { color: #0f172a !important; }
+.night-mode .nm-art [class~="text-rose-600"] { color: #e11d48 !important; }
+.night-mode .nm-art [class~="text-amber-700"] { color: #b45309 !important; }
+.night-mode .nm-art [class~="border-slate-200/90"] { border-color: rgba(226, 232, 240, 0.9) !important; }
+/* 도장 종이는 밤중에도 거의 불투명하게 유지해 도장 글자 대비 확보 */
+.night-mode .nm-art[class~="bg-white/85"] { background-color: rgba(255, 255, 255, 0.97) !important; }
+
+/* 기질 점수: 데이터 색상(인라인)을 밤중에만 살짝 밝혀 어떤 색이든 읽히게 */
+.night-mode .trait-score { filter: brightness(1.4) saturate(1.15); }
 
 /* ===== 모션: 섹션 등장 스태거, 점수 바 채움 ===== */
 @keyframes fadeSlideUp {
