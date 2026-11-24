@@ -5,6 +5,17 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: '60갑자 사주 오행과 영유아 기질 발달 가이드 | 아기속풀이 PRO',
   description: '전통 동양 명리학의 음양오행 간지 체계와 현대 아동 발달심리학을 융합한 영유아 선천 기질 분석 백서입니다.',
+  alternates: {
+    canonical: '/guide',
+  },
+  openGraph: {
+    title: '60갑자 사주 오행과 영유아 기질 발달 가이드 | 아기속풀이 PRO',
+    description: '전통 동양 명리학의 음양오행 간지 체계와 현대 아동 발달심리학을 융합한 영유아 선천 기질 분석 백서입니다.',
+    url: 'https://baby-sokpuli.vercel.app/guide',
+    siteName: '아기속풀이 PRO',
+    locale: 'ko_KR',
+    type: 'article',
+  },
 };
 
 export default function GuidePage() {
@@ -65,7 +76,7 @@ export default function GuidePage() {
                   목(木)의 기운: 진취적 탐색형 (Explorative Learner)
                 </h3>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
-                  봄의 싹트듯 위로 뻗어 나가는 성질을 가지며, 높은 지적 호기심과 빠른 대근육 발달을 특징으로 합니다. 눈앞의 물건을 직접 만지고 조작해야 직성이 풀리며, 제지당했을 때 일시적으로 강한 좌절감을 표현합니다. 대근육 놀이와 자율적 선택권 부여가 양육의 핵심입니다.
+                  봄에 싹이 트듯 위로 뻗어 나가는 성질을 가지며, 높은 지적 호기심과 빠른 대근육 발달을 특징으로 합니다. 눈앞의 물건을 직접 만지고 조작해야 직성이 풀리며, 제지당했을 때 일시적으로 강한 좌절감을 표현합니다. 대근육 놀이와 자율적 선택권 부여가 양육의 핵심입니다.
                 </p>
               </div>
 
@@ -75,7 +86,7 @@ export default function GuidePage() {
                   화(火)의 기운: 활동적 표현형 (Expressive Dynamo)
                 </h3>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
-                  여름의 불꽃처럼 에너지가 밖으로 분출되는 성향입니다. 감정 표현이 즉각적이고 활발하며 낯선 자극에 호의적으로 접근합니다. 에너지 소모량이 많아 낮 동안 충분한 신체 에너지를 방전시키지 않으면 밤잠 투정과 재수면 각성이 잦아지는 특성을 보입니다.
+                  여름의 불꽃처럼 에너지가 밖으로 분출되는 성향입니다. 감정 표현이 즉각적이고 활발하며 낯선 자극에 호의적으로 접근합니다. 에너지 소모량이 많아 낮 동안 충분한 신체 에너지를 방전시키지 않으면 밤잠 투정이 심해지고 밤중에 자주 깨는 특성을 보입니다.
                 </p>
               </div>
 
