@@ -21,6 +21,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${guide.title} | 아기속풀이 육아 백과`,
     description: `${guide.subTitle} - ${guide.timing} 아기 수면 퇴행 및 성장 도약기 대처 가이드`,
     keywords: guide.keywords.join(', '),
+    alternates: {
+      canonical: `/wonder-weeks/${leap}`,
+    },
+    openGraph: {
+      title: `${guide.title} | 아기속풀이 육아 백과`,
+      description: `${guide.subTitle} - ${guide.timing} 아기 수면 퇴행 및 성장 도약기 대처 가이드`,
+      url: `https://baby-sokpuli.vercel.app/wonder-weeks/${leap}`,
+      siteName: '아기속풀이 PRO',
+      locale: 'ko_KR',
+      type: 'article',
+    },
   };
 }
 
