@@ -21,6 +21,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${guide.title} | 아기속풀이 육아 백과`,
     description: `${guide.subTitle} - 사주 오행 기질별 맞춤 수면 솔루션 및 양육 가이드`,
     keywords: guide.keywords.join(', '),
+    alternates: {
+      canonical: `/guide/${element}`,
+    },
+    openGraph: {
+      title: `${guide.title} | 아기속풀이 육아 백과`,
+      description: `${guide.subTitle} - 사주 오행 기질별 맞춤 수면 솔루션 및 양육 가이드`,
+      url: `https://baby-sokpuli.vercel.app/guide/${element}`,
+      siteName: '아기속풀이 PRO',
+      locale: 'ko_KR',
+      type: 'article',
+    },
   };
 }
 
