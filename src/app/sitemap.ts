@@ -74,6 +74,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    // 개인정보처리방침
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
     // 15개 상세 백서 페이지 전체 포함
     ...guideDetailUrls,
     ...wonderWeeksDetailUrls,
