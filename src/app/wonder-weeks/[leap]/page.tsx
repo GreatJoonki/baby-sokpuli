@@ -44,7 +44,7 @@ export default async function WonderWeekDetailPage({ params }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6">
+    <main className="min-h-screen bg-[#F8FAFC] app-bg py-10 px-4 sm:px-6">
       <div className="max-w-xl mx-auto space-y-6">
         
         {/* 상단 네비게이션 */}
