@@ -1153,6 +1153,11 @@ export default function Home() {
 
   const [mounted, setMounted] = useState(false);
   const [isNightMode, setIsNightMode] = useState(false);
+  const [attendance, setAttendance] = useState<{
+    streak: number;
+    total: number;
+    week: { label: string; attended: boolean; isToday: boolean }[];
+  } | null>(null);
   const [step, setStep] = useState<'form' | 'result'>('form');
   const [viewMode, setViewMode] = useState<'hub' | 'form'>('hub');
 
@@ -1565,6 +1570,48 @@ export default function Home() {
       console.error('다자녀 프로필 로드 실패', e);
     }
 
+    // 출석 도장: 오늘 방문을 기록하고 연속 출석(스트릭)과 이번 주 출석 현황을 계산
+    try {
+      const ATT_KEY = 'attendance_log_v1';
+      const fmtDate = (d: Date) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      let visitDates: string[] = [];
+      const rawVisits = localStorage.getItem(ATT_KEY);
+      if (rawVisits) {
+        const parsedVisits = JSON.parse(rawVisits);
+        if (Array.isArray(parsedVisits)) {
+          visitDates = parsedVisits.filter((x: unknown) => typeof x === 'string');
+        }
+      }
+      const todayDate = new Date();
+      const todayStr = fmtDate(todayDate);
+      if (!visitDates.includes(todayStr)) {
+        visitDates = [...visitDates, todayStr].sort().slice(-365);
+        localStorage.setItem(ATT_KEY, JSON.stringify(visitDates));
+      }
+      const attendedSet = new Set(visitDates);
+      // 오늘부터 거꾸로 세는 연속 출석 (하루라도 비면 스트릭 리셋)
+      let streakCount = 0;
+      const streakCursor = new Date(todayDate);
+      while (attendedSet.has(fmtDate(streakCursor))) {
+        streakCount += 1;
+        streakCursor.setDate(streakCursor.getDate() - 1);
+      }
+      // 이번 주(월~일) 출석 현황
+      const mondayDate = new Date(todayDate);
+      mondayDate.setDate(todayDate.getDate() - ((todayDate.getDay() + 6) % 7));
+      const weekLabels = ['월', '화', '수', '목', '금', '토', '일'];
+      const weekStatus = weekLabels.map((label, i) => {
+        const d = new Date(mondayDate);
+        d.setDate(mondayDate.getDate() + i);
+        const ds = fmtDate(d);
+        return { label, attended: attendedSet.has(ds), isToday: ds === todayStr };
+      });
+      setAttendance({ streak: streakCount, total: visitDates.length, week: weekStatus });
+    } catch (e) {
+      console.error('출석 도장 로드 실패', e);
+    }
+
     // 결과 공유 링크로 들어온 경우: 같은 결과를 바로 표시
     try {
       const params = new URLSearchParams(window.location.search);
@@ -1765,6 +1812,32 @@ export default function Home() {
     setIsEntered(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // 기능별 랜딩 페이지 CTA(?feature=)로 들어온 경우: 해당 기능을 바로 연다 (최초 진입 시 1회)
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      try {
+        const feature = new URLSearchParams(window.location.search).get('feature');
+        if (feature === 'tarot') {
+          handleOpenTarotModal();
+        } else if (feature === 'court') {
+          handleOpenChemiModal();
+        } else if (feature === 'difficulty') {
+          setIsParentMatchModalOpen(true);
+        } else if (feature === 'couple') {
+          handleOpenVirtualBabySimulator();
+        } else if (feature === 'temperament') {
+          setStep('form');
+          setViewMode('form');
+          handleScrollToForm();
+        }
+      } catch (e) {
+        console.error('기능 파라미터 처리 실패', e);
+      }
+    }, 60);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const applyProfileToState = (profile: BabyProfile) => {
     setName(profile.name);
@@ -2423,16 +2496,67 @@ export default function Home() {
                   </span>
                   {lastLeapStatus && (
                     <span className="text-sm text-slate-600 font-medium leading-relaxed block">
-                      {lastLeapStatus.kind === 'in'
-                        ? `🌪️ 지금 도약 중이에요 · ${lastLeapStatus.name} (탈출까지 D-${lastLeapStatus.daysLeft})`
-                        : lastLeapStatus.kind === 'next'
-                        ? `다음 도약까지 D-${lastLeapStatus.dDay} · ${lastLeapStatus.name}`
-                        : '원더윅스 졸업 완료 · 성장 안정기예요 🎉'}
+                      {lastLeapStatus.kind === 'in' ? (
+                        <>
+                          🌪️ 지금 도약 중이에요 · {lastLeapStatus.name} (탈출까지{' '}
+                          <span className="keep-line">D-{lastLeapStatus.daysLeft}</span>)
+                        </>
+                      ) : lastLeapStatus.kind === 'next' ? (
+                        <>
+                          다음 도약까지 <span className="keep-line">D-{lastLeapStatus.dDay}</span> ·{' '}
+                          {lastLeapStatus.name}
+                        </>
+                      ) : (
+                        '원더윅스 졸업 완료 · 성장 안정기예요 🎉'
+                      )}
                     </span>
                   )}
                 </div>
                 <span className="text-slate-400 group-hover:text-slate-700 text-lg font-bold pr-1 transition-colors">→</span>
               </button>
+            )}
+
+            {attendance && (
+              <div className="w-full p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center gap-4 animate-fadeIn">
+                <div className="w-14 h-14 rounded-full border-2 border-rose-300 bg-rose-50 text-rose-500 flex flex-col items-center justify-center shrink-0 -rotate-6 animate-stamp">
+                  <span className="text-base leading-none">🐾</span>
+                  <span className="text-[9px] font-black tracking-widest mt-0.5">출석</span>
+                </div>
+                <div className="flex-1 space-y-1.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-base font-extrabold text-slate-900 tracking-tight">오늘의 출석 도장</h3>
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-50 text-rose-600 border border-rose-100 whitespace-nowrap">
+                      연속 {attendance.streak}일째
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                    {attendance.streak > 1
+                      ? '오늘도 와줬네요! 출석 도장이 쾅 찍혔어요.'
+                      : '오늘의 출석 도장이 쾅 찍혔어요. 내일도 오면 연속 출석이 이어져요.'}
+                  </p>
+                  <div className="space-y-1 pt-0.5">
+                    <div className="flex items-center gap-1.5">
+                      {attendance.week.map((d, i) => (
+                        <div key={i} className="flex flex-col items-center gap-1">
+                          <span
+                            className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black ${
+                              d.attended ? 'bg-rose-400 text-white' : 'bg-slate-100 text-slate-300'
+                            } ${d.isToday ? 'ring-2 ring-rose-300 ring-offset-1' : ''}`}
+                          >
+                            {d.attended ? '✓' : ''}
+                          </span>
+                          <span className={`text-[9px] font-bold ${d.isToday ? 'text-rose-500' : 'text-slate-400'}`}>
+                            {d.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-400 block">
+                      지금까지 총 {attendance.total}일 출석했어요
+                    </span>
+                  </div>
+                </div>
+              </div>
             )}
 
             {profiles.length > 0 && (
@@ -2840,16 +2964,16 @@ export default function Home() {
                   </div>
 
                   <div className="bg-slate-50/80 rounded-2xl p-4.5 sm:p-5 border border-slate-200/80 space-y-4 text-left">
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
                       <span className="text-base font-black text-slate-900 shrink-0 break-keep">
                         원더윅스 분석
                       </span>
-                      <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3.5 py-1 rounded-full border border-indigo-200 break-keep text-center">
+                      <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 sm:px-3.5 py-1 rounded-full border border-indigo-200 break-keep text-center whitespace-nowrap tracking-tight">
                         {solutionData.badge}
                       </span>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm font-bold">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-bold">
                       <div className="bg-white border border-slate-200/80 p-3 rounded-xl shadow-2xs flex flex-col items-start justify-center gap-1.5">
                         <span className="text-slate-500">도약 폭풍 여부</span>
                         <span className={`px-2.5 py-0.5 rounded-md text-xs font-extrabold ${solutionData.isWonderLeap ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
@@ -2858,7 +2982,7 @@ export default function Home() {
                       </div>
                       <div className="bg-white border border-slate-200/80 p-3 rounded-xl shadow-2xs flex flex-col items-start justify-center gap-1.5">
                         <span className="text-slate-500">남은 기간</span>
-                        <span className="font-extrabold text-slate-900 break-keep">{solutionData.dDayText.replace('원더윅스 ', '')}</span>
+                        <span className="font-extrabold text-slate-900 keep-line">{solutionData.dDayText.replace('원더윅스 ', '')}</span>
                       </div>
                     </div>
 
@@ -3254,7 +3378,7 @@ export default function Home() {
                         <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl p-6 sm:p-7 border border-orange-200 shadow-sm space-y-5">
                           <div className="flex justify-between items-center flex-wrap gap-2 pb-3 border-b border-orange-200/80">
                             <span className="text-xs font-black text-orange-900">FUTURE BABY SIMULATOR</span>
-                            <span className="px-3.5 py-1 bg-orange-200 text-orange-900 rounded-full text-xs font-extrabold break-keep">
+                            <span className="px-3.5 py-1 bg-orange-200 text-orange-900 rounded-full text-xs font-extrabold break-keep whitespace-nowrap">
                               육아 난이도: {coupleResult.baby.difficulty}
                             </span>
                           </div>
@@ -3510,7 +3634,7 @@ export default function Home() {
                   </div>
 
                   <span
-                    className="text-xs font-extrabold px-3.5 py-1 rounded-full border flex items-center gap-1.5 shadow-2xs"
+                    className="text-xs font-extrabold px-3.5 py-1 rounded-full border flex items-center gap-1.5 shadow-2xs shrink-0 whitespace-nowrap"
                     style={{
                       backgroundColor: `${elementTag.color}20`,
                       borderColor: `${elementTag.color}50`,

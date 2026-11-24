@@ -43,6 +43,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    // 기능별 SEO 랜딩 페이지 5종
+    {
+      url: `${baseUrl}/temperament`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/tarot`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/court`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/couple`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/difficulty`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     // 15개 상세 백서 페이지 전체 포함
     ...guideDetailUrls,
     ...wonderWeeksDetailUrls,

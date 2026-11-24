@@ -1,6 +1,10 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
+
+export const viewport: Viewport = {
+  themeColor: '#FFF1F2',
+};
 
 export const metadata: Metadata = {
   title: '아기속풀이 PRO - 기질 분석 & 커플 가상 2세 시뮬레이터',
@@ -27,14 +31,7 @@ export const metadata: Metadata = {
     description: '사주 오행으로 읽어보는 우리 아이 기질 도감과 설레는 커플 가상 2세 시뮬레이션',
     url: 'https://baby-sokpuli.vercel.app',
     siteName: '아기속풀이 PRO',
-    images: [
-      {
-        url: 'https://baby-sokpuli.vercel.app/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: '우리 아이 기질카드 대표 썸네일',
-      },
-    ],
+    // og 이미지는 파일 컨벤션(opengraph-image.tsx)이 경로별로 자동 연결한다
     locale: 'ko_KR',
     type: 'website',
   },
@@ -42,7 +39,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '우리 아이 기질카드 & 육아 난이도 측정 🍼',
     description: '생년월일로 쏙 뽑아보는 60갑자 기질 분석과 부모-자녀 육아 난이도 진단!',
-    images: ['https://baby-sokpuli.vercel.app/og-image.png'],
   },
 };
 
