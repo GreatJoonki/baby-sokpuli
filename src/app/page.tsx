@@ -404,7 +404,7 @@ function BabyAnimalHybridMascot({
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-amber-50/60 to-[#FAF8F5] rounded-3xl border border-amber-200/60 p-6 my-3 flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
+    <div className="nm-art w-full bg-gradient-to-b from-amber-50/60 to-[#FAF8F5] rounded-3xl border border-amber-200/60 p-6 my-3 flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
         <div className="w-44 h-44 rounded-full bg-amber-300/30 blur-2xl animate-[pulse_4s_ease-in-out_infinite]"></div>
       </div>
@@ -492,7 +492,7 @@ function TemperamentStatBar({
             !
           </button>
         </div>
-        <span className="font-mono font-black tracking-tight" style={{ color: fillColor }}>
+        <span className="trait-score font-mono font-black tracking-tight" style={{ color: fillColor }}>
           {displayScore}점
         </span>
       </div>
@@ -2485,7 +2485,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => handleSelectChild(lastProfile)}
-                className="w-full p-5 rounded-2xl bg-gradient-to-r from-rose-50 via-amber-50 to-sky-50 border border-rose-200/80 text-left shadow-2xs hover:border-rose-300 active:scale-[0.98] transition-all flex items-center justify-between interactive-card group"
+                className="nm-resume-card w-full p-5 rounded-2xl bg-gradient-to-r from-rose-50 via-amber-50 to-sky-50 border border-rose-200/80 text-left shadow-2xs hover:border-rose-300 active:scale-[0.98] transition-all flex items-center justify-between interactive-card group"
               >
                 <div className="space-y-1">
                   <span className="text-[11px] font-extrabold tracking-wider text-rose-500 uppercase block">
@@ -3314,7 +3314,7 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={handleCalculateCouple}
-                        className="btn-jelly w-full py-4 bg-gradient-to-r from-rose-400 via-pink-400 to-indigo-400 hover:from-rose-500 hover:to-indigo-500 text-white font-black text-sm rounded-2xl shadow-sm transition-all transform active:scale-98 flex items-center justify-center gap-2"
+                        className="nm-couple-cta btn-jelly w-full py-4 bg-gradient-to-r from-rose-400 via-pink-400 to-indigo-400 hover:from-rose-500 hover:to-indigo-500 text-white font-black text-sm rounded-2xl shadow-sm transition-all transform active:scale-98 flex items-center justify-center gap-2"
                       >
                         <span>🔮</span> 가상 2세 성향 시뮬레이션 시작하기
                       </button>
@@ -3327,7 +3327,7 @@ export default function Home() {
                             60갑자 커플 수호신 페어링
                           </span>
 
-                          <div className="flex items-center justify-around py-5 bg-gradient-to-r from-rose-50/60 via-purple-50/40 to-indigo-50/60 rounded-2xl border border-slate-100">
+                          <div className="nm-pair-panel flex items-center justify-around py-5 bg-gradient-to-r from-rose-50/60 via-purple-50/40 to-indigo-50/60 rounded-2xl border border-slate-100">
                             <div className="space-y-1.5">
                               <div className="text-4xl sm:text-5xl">{coupleResult.p1AnimalIcon}</div>
                               <span className="text-sm sm:text-base font-black text-slate-900 block">{partner1Name || '나'}</span>
@@ -3375,7 +3375,7 @@ export default function Home() {
                           </button>
                         </div>
 
-                        <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl p-6 sm:p-7 border border-orange-200 shadow-sm space-y-5">
+                        <div className="nm-baby-card bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl p-6 sm:p-7 border border-orange-200 shadow-sm space-y-5">
                           <div className="flex justify-between items-center flex-wrap gap-2 pb-3 border-b border-orange-200/80">
                             <span className="text-xs font-black text-orange-900">FUTURE BABY SIMULATOR</span>
                             <span className="px-3.5 py-1 bg-orange-200 text-orange-900 rounded-full text-xs font-extrabold break-keep whitespace-nowrap">
@@ -3398,7 +3398,7 @@ export default function Home() {
                             </p>
                           </div>
 
-                          <div className="bg-white/95 p-4.5 rounded-2xl border border-orange-100 space-y-3 text-xs sm:text-sm">
+                          <div className="bg-white/90 p-4.5 rounded-2xl border border-orange-100 space-y-3 text-xs sm:text-sm">
                             <div className="flex justify-between font-black text-slate-800">
                               <span>{partner1Name || '나'} 성향: {coupleResult.baby.dadPercent}%</span>
                               <span>{partner2Name || '연인'} 성향: {coupleResult.baby.momPercent}%</span>
@@ -3976,7 +3976,7 @@ export default function Home() {
                         key={num}
                         type="button"
                         onClick={() => handleSelectTarotCard(num)}
-                        className="group aspect-[3/4.2] bg-gradient-to-b from-white via-indigo-50/30 to-purple-50/40 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:shadow-md flex flex-col items-center justify-center p-3 transition-all duration-300 interactive-card relative overflow-hidden"
+                        className="nm-pick-btn group aspect-[3/4.2] bg-gradient-to-b from-white via-indigo-50/30 to-purple-50/40 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:shadow-md flex flex-col items-center justify-center p-3 transition-all duration-300 interactive-card relative overflow-hidden"
                       >
                         <div className="w-12 h-12 rounded-xl bg-white shadow-2xs border border-indigo-100 flex items-center justify-center text-xl mb-2.5 group-hover:scale-110 transition-transform">
                           🌙
@@ -4002,7 +4002,7 @@ export default function Home() {
                     <div className="space-y-4 text-left animate-slide-up">
                       <div
                         ref={tarotCardCaptureRef}
-                        className="bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 border border-slate-200/90 rounded-3xl p-6 flex flex-col items-center text-center shadow-xs space-y-4"
+                        className="nm-tarot-card bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 border border-slate-200/90 rounded-3xl p-6 flex flex-col items-center text-center shadow-xs space-y-4"
                       >
                         {!tarotFlipSettled ? (
                           <div className="tarot-flip w-56 h-80 shrink-0 animate-soft-float" aria-hidden>
@@ -4449,7 +4449,7 @@ export default function Home() {
                 <div className="space-y-4 text-center animate-slide-up">
                   <div ref={chemiResultRef} className="space-y-4">
                     <div className="relative p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
-                      <div aria-hidden className="animate-stamp pointer-events-none absolute -top-4 right-4 z-10 rounded-lg border-[3px] border-rose-600/90 bg-white/85 px-2.5 py-1 text-center shadow-sm">
+                      <div aria-hidden className="nm-art animate-stamp pointer-events-none absolute -top-4 right-4 z-10 rounded-lg border-[3px] border-rose-600/90 bg-white/85 px-2.5 py-1 text-center shadow-sm">
                         <div className="text-[10px] font-black tracking-widest text-rose-600">아기속풀이 법정</div>
                         <div className="text-base font-black leading-tight text-rose-600">판결 완료</div>
                       </div>
