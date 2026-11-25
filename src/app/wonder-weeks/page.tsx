@@ -70,75 +70,85 @@ export default function WonderWeeksPage() {
             </h2>
             
             <div className="space-y-3 pt-1">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/1" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제1도약기 (생후 5주경) · 감각의 변화</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   빛, 냄새, 소리 등 오감 자극이 뇌로 한꺼번에 쏟아져 들어옵니다. 모로반사가 증가하고 깜짝 놀라며 우는 횟수가 늘어납니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/2" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제2도약기 (생후 8주경) · 패턴의 인지</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   자신의 손과 발을 신기하게 응시하며, 주변 사물의 규칙적인 명암 패턴과 목소리 억양을 인지하기 시작합니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/3" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제3도약기 (생후 12주경) · 유연한 변화</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   목을 가누고 딸랑이를 흔드는 등 부드러운 움직임을 통제합니다. 옹알이가 급증하고 주변과 소통하려는 반응이 두드러집니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/4" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-rose-600">제4도약기 (생후 19주경) · 마의 19주 폭풍</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   인과관계와 사건의 발생 순서를 깨닫습니다. 뇌 신경망의 대규모 리모델링으로 인해 심각한 수면 퇴행과 등센서 각성이 동반되는 가장 힘든 구간입니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/5" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제5도약기 (생후 26주경) · 관계의 인지</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   사물과 양육자 사이의 물리적 거리를 이해합니다. 엄마 아빠와 자신이 떨어질 수 있다는 사실을 인지하며 분리불안이 본격화됩니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/6" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제6도약기 (생후 37주경) · 범주의 인지</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   강아지 인형과 진짜 강아지가 같은 &lsquo;동물&rsquo;이라는 공통점을 묶어 사고하기 시작합니다. 촉감 놀이와 그림책에 눈을 뜹니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/7" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제7도약기 (생후 46주경) · 순서의 도약</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   물건을 통에 넣었다 빼는 일의 연속성을 이해합니다. 숟가락질 시도와 블록 쌓기 등 소근육 협응이 급격히 정교해집니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/8" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제8도약기 (생후 55주경) · 체계의 도약</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   돌 무렵 식사 시간, 목욕 시간 등 하루 일과의 순서와 가족 간의 약속을 직관적으로 이해하고 따르기 시작합니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/9" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-indigo-700">제9도약기 (생후 64주경) · 원리의 도약</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   자아와 소유 개념이 생기며 고집을 부리고 떼를 씁니다. 자신의 의도대로 상황을 조작하려는 협상 본능이 나타납니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1">
+              <Link href="/wonder-weeks/10" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <span className="text-xs font-black text-emerald-600">제10도약기 (생후 75주경) · 체계의 완성</span>
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   단어 조합 대화가 가능해지며 사회적 규칙과 타인의 감정을 이해하는 꼬마 대장으로 훌쩍 성장합니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">도약기 백서 자세히 보기 →</span>
+              </Link>
             </div>
           </section>
 
