@@ -265,6 +265,49 @@ h1, h2, h3, h4 {
   to { transform: translateX(360%) skewX(-18deg); }
 }
 
+/* ===== 결과 카드 홀로그램 프레임: 파스텔 그라데이션 테두리 (빛 반사 효과는 쓰지 않음) ===== */
+.holo-card {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(140deg, #f9a8d4, #fde68a, #6ee7b7, #7dd3fc, #c4b5fd, #f9a8d4) border-box;
+}
+.holo-frame {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(#fefdf4, #fefdf4) padding-box,
+    linear-gradient(140deg, #f9a8d4, #fde68a, #6ee7b7, #7dd3fc, #c4b5fd, #f9a8d4) border-box;
+}
+/* ===== 판결 문장 줄바꿈: 어절 단위(keep-all) + pretty 줄바꿈 =====
+   본문 단락에 text-wrap: balance를 쓰면 줄 길이를 균등하게 맞추려고 각 줄이
+   너비의 60%쯤에서 일찍 끊겨 오른쪽 여백이 크게 남는다(사용자 지적).
+   balance는 제목 같은 한두 줄짜리 짧은 문구 전용으로 남기고, 본문 단락은
+   pretty를 써서 너비를 채우면서도 마지막 줄 고아(한 단어만 남는 줄)를 피한다. */
+.verdict-text {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+/* 결과 캡처 카드는 밤중 모드에서도 밝은 종이 카드로 유지해 저장 이미지의 낮/밤 일관성을 지킨다 */
+.night-mode .holo-card [class~="bg-white"] { background-color: #ffffff !important; }
+.night-mode .holo-card [class~="bg-slate-50"] { background-color: #f8fafc !important; }
+.night-mode .holo-card [class~="bg-slate-50/80"] { background-color: rgba(248, 250, 252, 0.85) !important; }
+.night-mode .holo-card [class~="bg-rose-50"] { background-color: #fff1f2 !important; }
+.night-mode .holo-card [class~="text-slate-900"] { color: #0f172a !important; }
+.night-mode .holo-card [class~="text-slate-800"] { color: #1e293b !important; }
+.night-mode .holo-card [class~="text-slate-700"] { color: #334155 !important; }
+.night-mode .holo-card [class~="text-slate-600"] { color: #475569 !important; }
+.night-mode .holo-card [class~="text-slate-500"] { color: #64748b !important; }
+.night-mode .holo-card [class~="text-slate-400"] { color: #94a3b8 !important; }
+.night-mode .holo-card [class~="text-rose-600"] { color: #e11d48 !important; }
+.night-mode .holo-card [class~="text-blue-600"] { color: #2563eb !important; }
+.night-mode .holo-card [class~="text-indigo-700"] { color: #4338ca !important; }
+.night-mode .holo-card [class~="border-slate-200"] { border-color: #e2e8f0 !important; }
+.night-mode .holo-card [class~="border-slate-200/80"] { border-color: rgba(226, 232, 240, 0.8) !important; }
+.night-mode .holo-card [class~="border-slate-200/85"] { border-color: rgba(226, 232, 240, 0.85) !important; }
+.night-mode .holo-card [class~="border-rose-100"] { border-color: #ffe4e6 !important; }
+.night-mode .holo-card [class~="border-rose-200/80"] { border-color: rgba(254, 205, 211, 0.8) !important; }
+
 /* ===== 컨페티 (JS WAAPI로 조각을 애니메이션) ===== */
 .confetti-layer {
   position: fixed;
@@ -280,6 +323,56 @@ h1, h2, h3, h4 {
   will-change: transform, opacity;
 }
 
+/* ===== 십이지 라인 드로잉 드리프트: 배경에 천천히 떠다니는 선 그림 (장식 전용) ===== */
+.zodiac-layer {
+  color: #94a3b8;
+}
+.night-mode .zodiac-layer {
+  color: #5b729e;
+}
+@keyframes zodiacDrift {
+  0% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+  50% { transform: translate3d(14px, -22px, 0) rotate(2.5deg); }
+  100% { transform: translate3d(-10px, -42px, 0) rotate(-2deg); }
+}
+.zodiac-drift-item {
+  position: absolute;
+  animation-name: zodiacDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
+}
+
+/* ===== 첫 화면 구름 걷히기: 하단 장식 레이어 (pointer-events 없음 — 클릭을 절대 막지 않음) ===== */
+.cloud-layer {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: min(100%, 32rem);
+  height: 44vh;
+  max-height: 430px;
+  min-height: 210px;
+  z-index: 30;
+  pointer-events: none;
+  color: #ffffff;
+  opacity: 0.96;
+  transition: opacity 0.9s ease, transform 0.9s ease, visibility 0.9s ease;
+}
+.cloud-layer.cloud-cleared {
+  opacity: 0;
+  transform: translateX(-50%) translateY(54px);
+  visibility: hidden;
+}
+.night-mode .cloud-layer {
+  color: #2b3c5c;
+  opacity: 0.92;
+}
+.night-mode .cloud-layer.cloud-cleared {
+  opacity: 0;
+}
+
 /* 모션 최소화 선호 시 애니메이션 사실상 비활성화 */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -287,5 +380,11 @@ h1, h2, h3, h4 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .zodiac-drift-item {
+    animation: none !important;
+  }
+  .cloud-layer {
+    display: none !important;
   }
 }

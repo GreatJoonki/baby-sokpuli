@@ -74,6 +74,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/name-match`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     // 개인정보처리방침
     {
       url: `${baseUrl}/privacy`,
