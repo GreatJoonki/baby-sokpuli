@@ -17,7 +17,7 @@ export type FeatureLandingProps = {
   intro: string[];
   sections: LandingSection[];
   /** 메인 앱에서 열 기능 (?feature= 값) */
-  feature: 'tarot' | 'court' | 'temperament' | 'couple' | 'difficulty';
+  feature: 'tarot' | 'court' | 'temperament' | 'couple' | 'difficulty' | 'name';
   ctaText: string;
   /** 정직 고지 한 줄 (재미 목적 등) */
   note?: string;
@@ -29,6 +29,7 @@ export const FEATURE_LINKS: { href: string; label: string }[] = [
   { href: '/tarot', label: '오늘의 아기 속마음 타로' },
   { href: '/court', label: '오늘 밤 육아 당번 판결소' },
   { href: '/couple', label: '커플 가상 2세 시뮬레이터' },
+  { href: '/name-match', label: '아기 이름 궁합' },
   { href: '/difficulty', label: '부모-자녀 육아 난이도 진단' },
   { href: '/guide', label: '사주 오행 기질 백서' },
 ];
@@ -49,7 +50,7 @@ export default function FeatureLanding({
   ctaText,
   note,
 }: FeatureLandingProps) {
-  const currentHref = `/${feature === 'temperament' ? 'temperament' : feature}`;
+  const currentHref = feature === 'name' ? '/name-match' : `/${feature}`;
   const others = FEATURE_LINKS.filter((l) => l.href !== currentHref);
 
   return (
