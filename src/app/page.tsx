@@ -117,7 +117,7 @@ const TAROT_CARDS_DATA: TarotCardItem[] = [
 function useVisitorTracker() {
   const [visitInfo, setVisitInfo] = useState<{ count: number; message: string }>({
     count: 1,
-    message: '첫 방문을 환영해요! 우리 아이 기질 도감을 열어보세요 🌱',
+    message: '첫 방문을 환영해요! 기질 도감을 열어보세요',
   });
 
   useEffect(() => {
@@ -133,11 +133,11 @@ function useVisitorTracker() {
         localStorage.setItem('last_visit_date', todayStr);
       }
 
-      let msg = '첫 방문을 환영해요! 우리 아이 기질 도감을 열어보세요 🌱';
+      let msg = '첫 방문을 환영해요! 기질 도감을 열어보세요';
       if (currentCount === 2) {
-        msg = '다시 만나서 반가워요! 오늘도 함께 힘내요 ☕ (2번째 방문)';
+        msg = '다시 만나서 반가워요! 오늘도 힘내요 (2번째 방문)';
       } else if (currentCount >= 3) {
-        msg = `벌써 ${currentCount}번째 함께하고 계시네요! 완벽한 하루 되세요 🌿`;
+        msg = `벌써 ${currentCount}번째 함께하고 계시네요! 완벽한 하루 되세요`;
       }
 
       setVisitInfo({ count: currentCount, message: msg });
@@ -3035,7 +3035,7 @@ export default function Home() {
         <div className="flex justify-center my-3 animate-fadeIn">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-600 shadow-2xs">
             <span>💌</span>
-            <span className="break-keep">{glueBannerText(visitor.message)}</span>
+            <span className="break-keep whitespace-nowrap">{glueBannerText(visitor.message)}</span>
           </div>
         </div>
 
