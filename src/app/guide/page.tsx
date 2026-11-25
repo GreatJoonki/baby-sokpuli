@@ -70,7 +70,7 @@ export default function GuidePage() {
             </h2>
             
             <div className="space-y-3 pt-1">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5">
+              <Link href="/guide/wood" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <h3 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span>
                   목(木)의 기운: 진취적 탐색형 (Explorative Learner)
@@ -78,9 +78,10 @@ export default function GuidePage() {
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   봄에 싹이 트듯 위로 뻗어 나가는 성질을 가지며, 높은 지적 호기심과 빠른 대근육 발달을 특징으로 합니다. 눈앞의 물건을 직접 만지고 조작해야 직성이 풀리며, 제지당했을 때 일시적으로 강한 좌절감을 표현합니다. 대근육 놀이와 자율적 선택권 부여가 양육의 핵심입니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">기질 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5">
+              <Link href="/guide/fire" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <h3 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
                   화(火)의 기운: 활동적 표현형 (Expressive Dynamo)
@@ -88,9 +89,10 @@ export default function GuidePage() {
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   여름의 불꽃처럼 에너지가 밖으로 분출되는 성향입니다. 감정 표현이 즉각적이고 활발하며 낯선 자극에 호의적으로 접근합니다. 에너지 소모량이 많아 낮 동안 충분한 신체 에너지를 방전시키지 않으면 밤잠 투정이 심해지고 밤중에 자주 깨는 특성을 보입니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">기질 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5">
+              <Link href="/guide/earth" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <h3 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
                   토(土)의 기운: 온화한 수용형 (Grounded Anchor)
@@ -98,9 +100,10 @@ export default function GuidePage() {
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   환절기의 완충재처럼 매사에 우직하고 완만하게 반응합니다. 급격한 환경 변화에는 신중하게 적응하지만, 한번 형성된 수면 및 수유 리듬은 높은 일관성을 유지합니다. 비위(소화기) 순환이 편안할 때 정서적 안정감이 극대화됩니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">기질 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5">
+              <Link href="/guide/metal" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <h3 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-slate-400 inline-block"></span>
                   금(金)의 기운: 섬세한 질서형 (Reflective Observer)
@@ -108,9 +111,10 @@ export default function GuidePage() {
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   가을의 결실처럼 단단하고 명확한 경계를 선호합니다. 감각(청각, 촉각)이 예민하여 사소한 소음이나 기저귀의 축축함에 즉각 반응합니다. 일과표와 취침 루틴의 규칙성이 지켜질 때 가장 차분하고 정돈된 집중력을 보여줍니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">기질 백서 자세히 보기 →</span>
+              </Link>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5">
+              <Link href="/guide/water" className="block p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-1.5 hover:border-slate-400 hover:bg-slate-100/60 transition-colors group">
                 <h3 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-indigo-900 inline-block"></span>
                   수(水)의 기운: 깊은 정서형 (Empathetic Dreamer)
@@ -118,7 +122,8 @@ export default function GuidePage() {
                 <p className="text-slate-600 text-[11px] sm:text-xs">
                   겨울의 깊은 바다처럼 조용하고 유연한 순환을 나타냅니다. 풍부한 감수성과 관찰력을 지니며, 부모와의 신체 접촉 및 눈맞춤 교감에서 정서적 안전기지를 형성합니다. 분리불안이 도드라질 수 있으므로 충분한 스킨십이 필수적입니다.
                 </p>
-              </div>
+                <span className="text-[11px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors">기질 백서 자세히 보기 →</span>
+              </Link>
             </div>
           </section>
 
