@@ -602,6 +602,43 @@ function glueVerdictText(text: string): React.ReactNode {
   return <>{nodes}</>;
 }
 
+/* ===== 배너·안내 문장 줄바꿈 보정: 문장 끝 이모지(와 끝 괄호 문구)가 혼자 다음 줄로
+   떨어지지 않게, 마지막 어절 + 꼬리 토큰들을 한 덩어리(keep-line)로 묶는다 ===== */
+function glueBannerText(text: string): React.ReactNode {
+  const tokens = text.split(' ');
+  if (tokens.length < 3) return text;
+  let start = tokens.length;
+  let inParen = false;
+  for (let i = tokens.length - 1; i >= 0; i--) {
+    const t = tokens[i];
+    const bare = t.replace(/\uFE0F/g, '');
+    if (/^\p{Extended_Pictographic}+$/u.test(bare)) {
+      start = i;
+      continue;
+    }
+    if (t.endsWith(')')) {
+      inParen = true;
+      start = i;
+      continue;
+    }
+    if (inParen) {
+      start = i;
+      if (t.startsWith('(')) inParen = false;
+      continue;
+    }
+    break;
+  }
+  if (start === tokens.length) return text; // 묶을 꼬리 토큰이 없음
+  if (start > 0) start -= 1; // 이모지가 붙는 마지막 어절까지 함께 묶는다
+  const head = tokens.slice(0, start).join(' ');
+  const tail = tokens.slice(start).join(' ');
+  return (
+    <>
+      {head} <span className="keep-line">{tail}</span>
+    </>
+  );
+}
+
 /* ===== 허브 그룹 헤더: 기능이 많아져도 성격별로 묶어 첫 방문자가 헤매지 않게 ===== */
 function HubGroupHeader({ icon, title, hint }: { icon: string; title: string; hint: string }) {
   return (
@@ -2998,7 +3035,7 @@ export default function Home() {
         <div className="flex justify-center my-3 animate-fadeIn">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-600 shadow-2xs">
             <span>💌</span>
-            <span>{visitor.message}</span>
+            <span className="break-keep">{glueBannerText(visitor.message)}</span>
           </div>
         </div>
 
@@ -3036,7 +3073,7 @@ export default function Home() {
                           {lastLeapStatus.name}
                         </>
                       ) : (
-                        '원더윅스 졸업 완료 · 성장 안정기예요 🎉'
+                        glueBannerText('원더윅스 졸업 완료 · 성장 안정기예요 🎉')
                       )}
                     </span>
                   )}
@@ -3817,7 +3854,7 @@ export default function Home() {
                       두 사람의 60갑자 사주 기운과 가상 2세 유전자 대조 중...
                     </h4>
                     <p className="text-xs sm:text-sm text-slate-500 break-keep">
-                      두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 있습니다 ✨
+                      두 사람의 오행 조화와 태어날 아기의 기질 성향을 정밀하게 연산하고 <span className="keep-line">있습니다 ✨</span>
                     </p>
                   </div>
                   <div className="w-48 mx-auto bg-slate-200 h-2.5 rounded-full overflow-hidden">
@@ -4406,20 +4443,13 @@ export default function Home() {
         <footer className="mt-8 pt-6 pb-6 border-t border-slate-200 text-center space-y-3 text-xs text-slate-500">
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 text-xs text-slate-600 font-semibold pb-2">
             <Link href="/guide/wood" className="hover:text-indigo-600">목(木) 기질</Link>
-            <span>·</span>
-            <Link href="/guide/fire" className="hover:text-indigo-600">화(火) 기질</Link>
-            <span>·</span>
-            <Link href="/guide/earth" className="hover:text-indigo-600">토(土) 기질</Link>
-            <span>·</span>
-            <Link href="/guide/metal" className="hover:text-indigo-600">금(金) 기질</Link>
-            <span>·</span>
-            <Link href="/guide/water" className="hover:text-indigo-600">수(水) 기질</Link>
-            <span>·</span>
-            <Link href="/wonder-weeks/4" className="hover:text-indigo-600">원더윅스 10대 도약기</Link>
-            <span>·</span>
-            <Link href="/privacy" className="hover:text-indigo-600">개인정보처리방침</Link>
-            <span>·</span>
-            <a href="mailto:hamin.save.moment@gmail.com" className="hover:text-indigo-600">문의하기</a>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/guide/fire" className="hover:text-indigo-600">화(火) 기질</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/guide/earth" className="hover:text-indigo-600">토(土) 기질</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/guide/metal" className="hover:text-indigo-600">금(金) 기질</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/guide/water" className="hover:text-indigo-600">수(水) 기질</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/wonder-weeks/4" className="hover:text-indigo-600">원더윅스 10대 도약기</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><Link href="/privacy" className="hover:text-indigo-600">개인정보처리방침</Link></span>
+            <span className="flex items-center gap-3"><span>·</span><a href="mailto:hamin.save.moment@gmail.com" className="hover:text-indigo-600">문의하기</a></span>
           </div>
 
           <p className="leading-relaxed break-keep text-slate-400">
@@ -4521,7 +4551,7 @@ export default function Home() {
                       오늘 우리 아이의 주파수와 카드를 조율 중...
                     </h4>
                     <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                      오늘 날짜의 우주 기운과 아이의 기질을 대조하고 있어요 ✨
+                      오늘 날짜의 우주 기운과 아이의 기질을 대조하고 <span className="keep-line">있어요 ✨</span>
                     </p>
                   </div>
                   <div className="w-44 mx-auto bg-slate-100 h-2.5 rounded-full overflow-hidden">
@@ -4747,7 +4777,7 @@ export default function Home() {
                       아이와 부모의 기질 에너지 대조 중...
                     </h4>
                     <p className="text-xs sm:text-sm text-slate-500 break-keep">
-                      부모님의 오행 기운과 아이의 본성을 비교해 육아 난이도를 정밀 연산하고 있습니다 ✨
+                      부모님의 오행 기운과 아이의 본성을 비교해 육아 난이도를 정밀 연산하고 <span className="keep-line">있습니다 ✨</span>
                     </p>
                   </div>
                   <div className="w-48 mx-auto bg-slate-200 h-2.5 rounded-full overflow-hidden">
@@ -4933,7 +4963,7 @@ export default function Home() {
                       세 이름의 울림을 맞춰보는 중...
                     </h4>
                     <p className="text-xs sm:text-sm text-slate-500 break-keep">
-                      엄마·아빠 이름과 아기 이름의 글자 조합으로 궁합을 읽고 있어요 ✨
+                      엄마·아빠 이름과 아기 이름의 글자 조합으로 궁합을 읽고 <span className="keep-line">있어요 ✨</span>
                     </p>
                   </div>
                   <div className="w-48 mx-auto bg-slate-200 h-2.5 rounded-full overflow-hidden">
@@ -4999,17 +5029,21 @@ export default function Home() {
               ) : (
                 <div className="space-y-4 text-left animate-slide-up">
                   <div ref={nameMatchCardRef} className="holo-card relative p-6 rounded-3xl shadow-xs space-y-4">
-                    <div className="flex items-center justify-center gap-2 text-center flex-wrap">
-                      <span className="px-3.5 py-2 rounded-2xl bg-white border border-slate-200/80 text-sm font-black text-slate-900 shadow-2xs">
-                        👩 {nameMatchMom.trim()}
+                    <div className="flex items-center justify-center gap-1.5 text-center flex-wrap">
+                      <span className="flex items-center gap-1.5">
+                        <span className="px-3 py-1.5 rounded-2xl bg-white border border-slate-200/80 text-[13px] font-black text-slate-900 shadow-2xs whitespace-nowrap">
+                          👩 {nameMatchMom.trim()}
+                        </span>
+                        <span className="text-[#D96C7B] text-sm">♥</span>
+                        <span className="px-3 py-1.5 rounded-2xl bg-white border border-slate-200/80 text-[13px] font-black text-slate-900 shadow-2xs whitespace-nowrap">
+                          👨 {nameMatchDad.trim()}
+                        </span>
                       </span>
-                      <span className="text-[#D96C7B] text-base">♥</span>
-                      <span className="px-3.5 py-2 rounded-2xl bg-white border border-slate-200/80 text-sm font-black text-slate-900 shadow-2xs">
-                        👨 {nameMatchDad.trim()}
-                      </span>
-                      <span className="text-slate-400 font-black">→</span>
-                      <span className="px-3.5 py-2 rounded-2xl bg-rose-50 border border-rose-200/80 text-sm font-black text-[#C75B6E] shadow-2xs">
-                        🍼 {nameMatchBaby.trim()}
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-slate-400 font-black text-[13px]">→</span>
+                        <span className="px-3 py-1.5 rounded-2xl bg-rose-50 border border-rose-200/80 text-[13px] font-black text-[#C75B6E] shadow-2xs whitespace-nowrap">
+                          🍼 {nameMatchBaby.trim()}
+                        </span>
                       </span>
                     </div>
 
